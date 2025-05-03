@@ -1,7 +1,8 @@
 ---
-title: Contents
+title: TableOfContents
 ---
 ### Math
+
 ### Physics
 ### Computer Science
 ### Philosophy

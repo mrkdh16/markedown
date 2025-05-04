@@ -5,12 +5,14 @@ tags:
   - math
 ---
 ### Basics.
-- [[basic definitions]]
+- [[Vector Spaces]]
+- [[Quotient Spaces]]
+- [[The Rank Nullity Theorem]]
 ### Duality
-- [[duality definitions]]
-- [[col rank = row rank]]
+- [[Duality]]
+- [[Column rank = row rank]]
 ### Polynomials
-- [[euclidean rings]]
+- [[Euclidean rings]]
 ### Eigenvalues and Eigenvectors
 - [[the minimal polynomial]]
 ### Jordan Form

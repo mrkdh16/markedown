@@ -2,7 +2,7 @@
 title: Contents
 ---
 ## Math
-- [[Mathematica]]
+- [[Mathematics]]
 - [[Linear Algebra]]
 - [[Probability and Statistics]]
 ## Physics
@@ -14,6 +14,7 @@ title: Contents
 - [[Algorithms]]
 - [[Machine Learning]]
 ## Philosophy
+- [[Philosophia]]
 - [[Religion]]
 - [[Ethics]]
 

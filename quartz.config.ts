@@ -29,28 +29,28 @@ const config: QuartzConfig = {
       },
       colors: {
         lightMode: {
-          light: "#faf8f8",
-          lightgray: "#e5e5e5",
-          gray: "#b8b8b8",
-          darkgray: "#4e4e4e",
-          dark: "#2b2b2b",
-          secondary: "#284b63",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#fff23688",
+          light:      "#faf9f6",   // airy background
+          lightgray:  "#ececec",   // barely‑there borders/cards
+          gray:       "#c4c8cf",   // soft metadata & outlines
+          darkgray:   "#565b66",   // body text (still AA compliant)
+          dark:       "#2e3138",   // headings/icons
+          secondary:  "#6d8da7",   // desaturated slate‑blue link
+          tertiary:   "#c4b07a",   // muted sand‑gold hover
+          highlight:  "rgba(109,141,167,0.10)", // subtler block tint
+          textHighlight: "#c4b07a55",           // faint text mark
         },
         darkMode: {
-          light: "#161618",
-          lightgray: "#393639",
-          gray: "#646464",
-          darkgray: "#d4d4d4",
-          dark: "#ebebec",
-          secondary: "#7b97aa",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#b3aa0288",
+          light:      "#1c1c1c",   // panel background
+          lightgray:  "#404349",   // gentle card edge
+          gray:       "#71757f",   // subdued labels
+          darkgray:   "#d6d9e1",   // body text
+          dark:       "#f4f5f7",   // headings
+          secondary:  "#a3bdd3",   // softened blue for dark bg
+          tertiary:   "#d1be86",   // mellow gold accent
+          highlight:  "rgba(131,161,187,0.10)", // subtle block tint
+          textHighlight: "#d1be8655",           // faint text mark
         },
-      },
+      }       
     },
   },
   plugins: {

@@ -1,5 +1,5 @@
 ---
-title: Contents
+title: Hello There
 ---
 ### Math
 [[linear algebra]] is cool

@@ -1,4 +1,4 @@
-My [website](https://mrkdh16.github.io/brain/) was created with Quartz!
+My [website](https://mrkdh16.github.io/) was created with Quartz!
 
 # Quartz v4
 

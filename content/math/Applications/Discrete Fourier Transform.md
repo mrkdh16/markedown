@@ -1,9 +1,7 @@
 ---
-title: Dim(ann(U))
+title: Discrete Fourier Transform
 draft: true
-tags: 
-aliases:
-  - dimension of the annihilator
+tags:
 ---
  
 ### Definition. / Theorem. / Lemma.

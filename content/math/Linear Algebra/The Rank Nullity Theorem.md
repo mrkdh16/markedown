@@ -1,6 +1,6 @@
 ---
 title: The Rank Nullity Theorem
-draft: false
+draft: true
 tags: 
 aliases:
   - rank nullity

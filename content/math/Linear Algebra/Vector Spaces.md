@@ -1,6 +1,6 @@
 ---
 title: Vector Spaces
-draft: false
+draft: true
 tags:
   - math
   - linear-algebra

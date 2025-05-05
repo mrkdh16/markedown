@@ -1,9 +1,9 @@
 ---
 title: <% tp.file.title %>
 draft: false
-tags: []
+tags:
 ---
  
-### Definition. / Theorem. / Lemma.
+### Definition. / Theorem. / Observation.
 ---
 remark.

@@ -1,5 +1,5 @@
 ---
-title: Column rank = Row rank
+title: Column Rank = Row Rank
 draft: false
 tags:
 ---

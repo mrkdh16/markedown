@@ -1,7 +1,7 @@
 ---
 title: Special Relativity
-draft: false
-tags: []
+draft: true
+tags:
 ---
 - empirical evidence pointed to the fact that the speed of light is constant.
 - this was clearly not true under newtonian physics

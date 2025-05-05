@@ -1,6 +1,6 @@
 ---
 title: Philosophia
-draft: false
+draft: true
 tags:
 ---
 hello worlds

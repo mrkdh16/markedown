@@ -1,7 +1,7 @@
 ---
 title: <% tp.file.title %>
-draft: false
-tags: []
+draft: true
+tags:
 ---
  
 ### Definition. / Theorem. / Lemma.

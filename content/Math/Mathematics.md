@@ -1,6 +1,6 @@
 ---
 title: Mathematics
-draft: false
+draft: true
 tags:
 ---
 > Mathematics is the language with which God has written the universe

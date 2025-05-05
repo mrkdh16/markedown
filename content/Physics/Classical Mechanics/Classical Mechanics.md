@@ -1,6 +1,6 @@
 ---
 title: Classical Mechanics
-draft: false
+draft: true
 tags:
 ---
 - [[EVERYTHING is a Spring]]

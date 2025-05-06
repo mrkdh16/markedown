@@ -5,7 +5,7 @@ tags:
 ---
 ### Theorem.
 Suppose $T:V\rightarrow V$ is a linear operator. If $A$ is the matrix of $T$, the column rank and row rank of $A$ are equal. Equivalently, $rank(A) = rank (A^T)$.
-### Proof Sketch.
+### Proof.
 Recall that the matrix of $T$ is equal to the transpose of the matrix of the dual map $T'$ ([[Matrix of T']]). 
 We need only show that $dim(range(T)) = dim(range(T'))$. The important observation here is that 
 $$
@@ -18,7 +18,7 @@ $$
 and using the [[Dim(ann(U))|dimension of the annihilator]],
 
 $$
-dim(range(T)^0) = dim(V)-dim(range(T)) \implies dim(range(T')) = dim(range(T)).
+dim(range(T)^0) = dim(V)-dim(range(T)) \implies dim(range(T')) = dim(range(T)) \space \square.
 $$
 
 ---

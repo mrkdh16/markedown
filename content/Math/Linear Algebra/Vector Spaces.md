@@ -1,9 +1,7 @@
 ---
 title: Vector Spaces
 draft: false
-tags:
-  - math
-  - linear-algebra
+tags: []
 ---
 #### Definition.
 An *F-vector space* is an abelian group $V$ furnished with a scalar multiplication

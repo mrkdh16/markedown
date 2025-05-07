@@ -24,4 +24,4 @@ $$
 ---
 This theorem is surprisingly hard to prove without the use of duality. However, when looked at through the perspective of duality, the statement boils down to a fairly simple property of dual maps.
 
-One key takeaway from this theorem is that the transpose operation is deeply intertwined with duality. This interpretation of the transpose is enlightening and justifies the seemingly inconsequential operation of 'reflection across the diagonal of a matrix'.
+One key takeaway from this theorem is that the transpose operation is deeply intertwined with duality. This interpretation of the transpose is enlightening and justifies the seemingly inconsequential operation of 'reflection across the diagonal of a matrix.'

@@ -6,7 +6,7 @@ title: Contents
 - [[Linear Algebra]]
 - [[Probability and Statistics]]
 ## Physics
-- [[Natural Philosophy]]
+- [[Physics/Physics|Physics]]
 - [[Classical Mechanics]]
 - [[Special Relativity]]
 ## Computer Science

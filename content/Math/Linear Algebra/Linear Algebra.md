@@ -4,9 +4,9 @@ draft: false
 tags:
   - math
 ---
-Linear algebra is arguably one of the most widely applied fields of math, especially in an age where data science is everywhere. However, at its core, linear algebra is algebraic (shocker) and gives rise to some very elegant mathematics. 
+Linear algebra is arguably one of the most widely applied fields of math, especially in an age where data science is practically everywhere. However, at its core, linear algebra has beautiful algebraic structure and gives rise to some very elegant mathematics. 
 
-Below is a compilation of the most interesting results we talked about in our linear algebra class (mostly following Linear Algebra Done Right by Axler). Some highlights that I personally liked: [[Column Rank = Row Rank]], [[Euclidean Rings]], [[Riesz Representation Theorem]], and [[Real Spectral Theorem]]. 
+Below is a compilation of the most interesting results we talked about in our linear algebra class (mostly following Linear Algebra Done Right by Axler). Some highlights that I personally liked: [[Column Rank = Row Rank]], [[Euclidean Rings]], [[Riesz Representation Theorem]], [[Real Spectral Theorem]], and [[Polar Decomposition]].
 ### Basics.
 Linear algebra is ultimately about [[Vector Spaces]], essentially a special type of abelian group (groups with addition). One of the most fundamental results of linear algebra is the existence of [[Complements]]. This result can be used to derive [[The Rank Nullity Theorem]]. Another way to think of complementary spaces is through [[Quotient Spaces]]. [[Matrices]] are a handy way to think of linear maps. [[Exact Sequences]] seem to be important enough to warrant a mention.
 ### Duality

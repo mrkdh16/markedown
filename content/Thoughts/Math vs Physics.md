@@ -9,3 +9,5 @@ tags:
 	- math arguably bares more similarity to poetry than science
 - in physics, simplicity and elegance and in extension, beauty, is more of a benchmark for the validity of a theory. the ultimate test is how it stands up to empirical evidence
 	- physics will often settle for a good approximation as long as it's good enough and we can quantify how good it exactly is
+
+Mathematics gets a bad rep. Especially in comparison with physics, the PR surrounding math hasn't been the greatest. Physicists have managed to convince the public that what they do is beautiful, necessary 

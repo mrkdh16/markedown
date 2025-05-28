@@ -16,7 +16,7 @@ The ring of polynomials, and in general, [[Euclidean Rings]] have some nice prop
 ### Jordan Form
 [[Diagonalizability]] is of great interest due to ease with which we can work with diagonal matrices. Few linear operators are diagonalizable, but every operator has a [[Jordan Canonical Form]].
 ### Inner Products
-[[Inner Products]] brings geometry into the picture and provides an enlightening way to view vector spaces. [[Inequalities]] are used everywhere in math and many important ones are derived in linear algebra. The [[Riesz Representation Theorem]] provides a canonical isomorphism between an inner product space and its dual space. [[Schur's Theorem]] shows that every linear operator is upper-triangular in some orthonormal basis, and this is immensely useful.
+[[Inner Products]] brings geometry into the picture and provides an enlightening way to view vector spaces. [[Inequalities]] are used everywhere in math and many important ones are derived in linear algebra. The [[Riesz Representation Theorem]] provides a canonical isomorphism between an inner product space and its dual space and serves as a bridge between linear algebra and analysis. [[Schur's Theorem]] shows that every linear operator is upper-triangular in some orthonormal basis, and this is immensely useful.
 ### Spectral Theorem
 The [[Real Spectral Theorem]] and [[Complex Spectral Theorem]] shows that symmetric and normal matrices respectively are diagonalizable. Spectral theorems make physicists' lives much easier.
 ### Decompositions

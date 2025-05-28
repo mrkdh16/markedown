@@ -8,7 +8,7 @@ Classical (Newtonian) mechanics explains a remarkable range of physical phenomen
 
 Here are some of the most interesting ideas we explored in our classical mechanics class.
 
-- [[Energy Diagrams]]
+- [[Energy]]
 - [[Stable Equilibrium]]
 - [[EVERYTHING is a Spring]]
 - [[The Gyroscope]]

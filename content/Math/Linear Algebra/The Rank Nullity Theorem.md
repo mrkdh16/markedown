@@ -13,7 +13,7 @@ Suppose $X=null(T)$. Since [[Every Subspace has a Complement|every subspace of V
 $$
 Tu = T(x+y)=Tx+Ty=0+Ty \implies u=y \in Y,
 $$
-where we used the fact that $T$ is injective. Thus, $U(y) = Tu$ for some $y$ and $U$ is surjective $\square$.
+where we used the fact that $T$ is injective. Thus, $U(y) = Tu$ for some $y$ and $U$ is surjective. $\square$
 
 ---
 A nice thing about this proof is that we never had to invoke any bases. We simply asserted the existence of a complement of $X$ without ever constructing it. The crux of this argument is of course the existence of complements. Zorn's Lemma implies the existence of complements in the infinite-dimensional case, so this proof scales nicely.

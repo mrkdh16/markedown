@@ -3,7 +3,7 @@ title: Riesz Representation Theorem
 draft: false
 tags:
 ---
- 
+
 ### Theorem.
 For any finite-dimensional inner product space $V$, there exists a bijective map $\alpha$ from $V$ to its dual $V'$ such that
 $$

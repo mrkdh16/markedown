@@ -1,5 +1,5 @@
 ---
-title: Computer Science
+title: Word Embeddings
 draft: true
 tags:
 ---

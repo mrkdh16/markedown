@@ -13,7 +13,7 @@ To me, the art of philosophy lies in discovering or inventing one's own value sy
 How do we create a fair society; and what does it even mean to be fair? What am I entitled to?
 ### Existentialism
 Given that we seem to exist in a meaningless universe, how am I to live; what am I to live for?
-### Religion
+### Theology
 Does our world have an intelligent creator? If so, what are the implications?
 - [[On Predestination]]
 - [[The Problem of Evil]]

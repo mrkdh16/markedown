@@ -8,7 +8,6 @@ tags:
 > "*Love is the ultimate and highest goal to which man can aspire. Then I grasped the meaning of the greatest secret that human poetry and human thought and belief have to impart: The salvation of man is through love and in love*"
 > 
 > -Viktor E. Frankl, Man's Search for Meaning
-
 ## Christian Love
 To me, the appeal of Christianity is its insistence on imbuing love with a sense of divinity. We instinctively know that there is something beautiful and powerful about love. Love is at the heart of many artistic endeavors and it seems to be one of the few constants valued across every culture and throughout time. Christianity asserts that God is the source of this love. Furthermore, it asserts that the love that we humans experience is but a diluted version of what God is capable of. God is the sole being capable of unconditional love. God loves everyone regardless of their background, experience, appearance, beliefs, or actions. This is the idea behind Christian forgiveness. 
 ## Predestination

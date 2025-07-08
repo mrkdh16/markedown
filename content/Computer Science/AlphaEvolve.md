@@ -16,6 +16,4 @@ AlphaEvolve thrives in problems that have simple objective functions, i.e. probl
 
 I suppose I never thought about using large language models to navigate a high-dimensional solution space, but with the advent of very fast models such as Google's Flash, this is becoming more and more feasible. Using large language models to supplement the navigation of high-dimensional solution spaces could prove to be revolutionary. The seeming creativity that large language models bring to the table may create machines that look and act dangerously similarly to human scientists and mathematicians.
 
----
-
 Resources: [Terrence Tao Quote ](https://mathstodon.xyz/@tao/114508029896631083), [AlphaEvolve Paper](https://storage.googleapis.com/deepmind-media/DeepMind.com/Blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/AlphaEvolve.pdf)

@@ -1,0 +1,8 @@
+---
+title: On Free Will
+draft: true
+tags:
+---
+The illusion is that we get to choose from an array of desires of varying severity. The truth is that whatever we do choose was in fact what we desired most all along. It's simply not possible to choose something that you did not desire most. Suppose you did choose to do something that you did not desire most. Then, what you're claiming to have desired most is not what you desired most. Whatever you ended up doing is what you desired most. We've established that your 'choices' are simply the ones that you desired most. The question is then do you have control over your desires? Almost by definition, there is no choice involved in desire. A desire is a desire because you desire it. You did not choose that desire. Thus, we reach the conclusion that the choice is an illusion. We are simply acting in accordance with our desires.
+
+I will admit this argument seems to really abuse the definition of desire. In fact, it's almost entirely built on the definition of desire as the feeling of wanting and the quantifiability of these wants. I suppose a possible objection is that wants are not all quantifiable; that wants are not entirely well-ordered. Simply saying that whatever you chose is what you most desired seems intellectually dishonest. It seems feasible to say that we can choose something we desire less through free will without asserting that that thing is what we desired all along.

@@ -1,5 +1,5 @@
 ---
-title: On Intuition
+title: Priorities
 draft: true
 tags:
 ---

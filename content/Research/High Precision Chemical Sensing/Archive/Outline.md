@@ -1,6 +1,6 @@
 ---
 title: Outline
-draft: false
+draft: true
 tags:
 ---
 ## The Objective

@@ -17,11 +17,11 @@ tags:
 
 >It looks like that because of refraction. Particles in the atmosphere scattering the shorter wavelengths of light. It's all predictable physical phenomena.
 
->Say what you want, but we both know that that beauty is not something we can put into words.
+>Say what you want, but we both know that this feeling of awe is not something you can put into words. 
 
 >Because 'beauty' is just a neurological response, and language is a clumsy tool for describing the internal state of the machine. It’s like trying to describe the flavor of a steak by listing its chemical compounds. You can do it, but you miss the… well, the steak-ness of it all. The pleasure is the point. The explanation just helps you find another good steakhouse.
 
->And you're satisfied pleasure as your sole motivation? Do you not yearn for a higher sense of meaning?
+>And you're satisfied with pleasure as your sole motivation? Do you not yearn for a higher sense of meaning?
 
 >Meaning is a concept we invented because we find randomness uncomfortable. The universe is a glorious, chaotic accident, and humanity's one great act of genius was to build a seawall of logic and order to hold the chaos back. Law. Contracts. Traffic lights. That’s our purpose. We make it ourselves.
 
@@ -39,11 +39,11 @@ tags:
 
 >So you see a hero and you think, "Ah, faulty wiring."
 
->I think, 'A tragic loss of a valuable asset, spurred by an irrational but evolutionarily understandable impulse.' It doesn't mean I don't respect the action. I just don't have to pretend it was a message from a higher power.
+>I think, 'A tragic loss, spurred by an irrational but evolutionarily understandable impulse.' It doesn't mean I don't respect the action. I just don't have to pretend it was a message from a higher power.
 
 >You and I both know deep down that there is something special about our world. There is real beauty all around us. You can see it right in front of your eyes at this very moment yet you continue to deny its reality. Beauty and virtue unites us. They makes us human.
 
->We live our lives how we want to and make up rules so we can live together. 
+>We live our lives how we want to and make up rules so we can live together. What you perceive to be real is a delusion.
 
 >Right...
 >

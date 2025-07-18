@@ -2,6 +2,8 @@
 title: Machine Learning
 draft: false
 tags:
+  - computer-science
+  - machine-learning
 ---
 In recent decades, computer science has been remarkably successful at solving problems by casting them as [[Problem-Solving as a Search Problem|search problems in high dimensional solution spaces]]. And this effort has largely been spearheaded by machine learning. 
 

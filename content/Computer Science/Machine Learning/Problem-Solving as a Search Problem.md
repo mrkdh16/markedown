@@ -4,6 +4,7 @@ draft: false
 tags:
   - computer-science
   - math
+  - machine-learning
 ---
 ## Every Problem is a Search Problem
 Almost any well-defined problem can be thought of as a search problem in a high-dimensional [[Vector Spaces|vector space]]. Here, the well-defined condition requires that we are able to parameterize the potential solutions and quantify the quality of each solution through some sort of function. The potential solutions are each represented as a vector which together form a solution space (this may or may not be a vector space in the technical mathematical sense). The function we use to evaluate the solutions is the objective function (or loss function depending on who you ask). 

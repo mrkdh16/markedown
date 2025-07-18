@@ -5,6 +5,8 @@ tags:
 ---
 ## Objective
 Beat baseline classical classification/regression algorithms. I think this paper is the most recent resource that attempted something very similar to what we want: [Analysis of 3D Urticaceae Pollen Classification using Deep Learning Models](https://arxiv.org/pdf/2503.07419).
+
+Want to measure binding events. Ideally, we want to be able to measure one bead binding with one nanodiamond. The analyte concentration is a crux.
 ## Considerations
 3-dimensional nature of microdroplets and integration of z-stack into model -> possible architectures to incorporate 3D spatial information:
 - 3D CNNs

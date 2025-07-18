@@ -2,6 +2,8 @@
 title: AlphaEvolve
 draft: true
 tags:
+  - computer-science
+  - machine-learning
 ---
 Terrence Tao summarizes AlphaEvolve nicely: 
 

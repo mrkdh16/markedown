@@ -4,6 +4,7 @@ draft: false
 tags:
   - computer-science
   - machine-learning
+  - paper
 ---
 ![[Screenshot 2025-07-14 at 10.35.42 AM.png]]
 In the above image, the 5 neurons arranged horizontally represent the 'width' of the ConvNet block (aka. number of kernels/filters, channel dimension of output). 

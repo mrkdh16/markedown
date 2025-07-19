@@ -4,6 +4,7 @@ draft: false
 tags:
   - computer-science
   - machine-learning
+  - paper
 ---
  
 ### Hypothesis.

@@ -11,4 +11,4 @@ tags:
 
 It's worth noting that this article was written ten years ago. We have more empirical evidence for the fact that "local minima are not a serious issue." Bigger and bigger models have been developed with ungodly amounts of parameters and their performance has scaled incredibly well. However, we still lack a mathematical framework for understanding why overparameterized deep networks are able to generalize so well without overfitting to their training data.
 
-Resources: [LeCun, Y., Bengio, Y. & Hinton, G. Deep learning. _Nature_ **521**, 436–444 (2015)](https://www.nature.com/articles/nature14539#citeas)
+References: [LeCun, Y., Bengio, Y. & Hinton, G. Deep learning. _Nature_ **521**, 436–444 (2015)](https://www.nature.com/articles/nature14539#citeas)

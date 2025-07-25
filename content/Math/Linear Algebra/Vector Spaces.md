@@ -4,7 +4,7 @@ draft: false
 tags: []
 ---
 #### Definition.
-An *F-vector space* is an abelian group $V$ furnished with a scalar multiplication
+For a [[Fields|field]] $F$, an *F-vector space* is an abelian group $V$ furnished with a scalar multiplication
 $$
 F \times V \rightarrow V, \space (\lambda,v) \mapsto \lambda v
 $$
@@ -12,9 +12,7 @@ and satisfying some axioms:
 - $\forall \lambda \in V$, the map $m_{\lambda}: v \mapsto \lambda v$ is a homomorphism form $V$ to $V$ (1)
 - $\lambda \mapsto m_{\lambda}$ is a homomorphism of rings from $F$ to the ring of homomorphisms from $V$ to $V$ (2)
 ---
-This long-winded definition of a vector space is a nice way of summarizing the properties of a vector space. The fact that $F$ is an abelian group implies a commutative addition operation for which $V$ is closed under. The additional axioms regarding scalar multiplication simply assert the distributivity (1) and associativity (2) of scalar multiplication. 
-
-The idea that vector spaces were really just fancy abelian groups was an enlightening one for me. I guess that's why linear algebra has the word algebra in it. 
+This long-winded definition of a vector space shows that they are essentially fancy abelian groups. The fact that $F$ is an abelian group implies a commutative addition operation for which $V$ is closed under. The additional axioms regarding scalar multiplication simply assert the distributivity (1) and associativity (2) of scalar multiplication. 
 
 Mathematical jargon aside, vector spaces are powerful because of the level of abstraction they operate at. Part of the reason linear algebra is so widely applicable is because a very wide range of things can be represented as vectors. Such vector representations in turn form a vector space, the collection of all possible forms of said thing. 
 

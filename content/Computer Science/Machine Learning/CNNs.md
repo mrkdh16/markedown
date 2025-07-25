@@ -1,11 +1,11 @@
 ---
 title: CNNs
-draft: true
+draft: false
 tags:
+  - machine-learning
+  - computer-science
 ---
 ## CNN Basics
-Resources: [CNN Textbook Chapter](https://cs231n.github.io/convolutional-networks/)
-
 Gemini Summary + my edits
 ### Core Architectural Components:
 A typical CNN architecture is a sequence of layers. The most common layers are:
@@ -30,3 +30,5 @@ Properly sizing your layers is crucial. Here are some rules of thumb:
     - Use zero-padding (P) to preserve the spatial dimensions of the input. For a filter of size F, setting padding to P=(F−1)/2 maintains the input size. The output width/height can be calculated as W2​=(W1​−F+2P)/S+1.
 - **Pooling Layer (POOL):**
     - The most common setup is max pooling with 2x2 filters and a stride of 2. This effectively downsamples the input by a factor of 2 and discards 75% of the activations.
+
+Resources: [CNN Textbook Chapter](https://cs231n.github.io/convolutional-networks/), [3Blue1Brown video on convolutions](https://youtu.be/KuXjwB4LzSA?feature=shared)

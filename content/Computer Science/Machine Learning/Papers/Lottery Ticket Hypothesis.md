@@ -16,7 +16,7 @@ tags:
 >
 >(...) our iterative pruning strategy interacts with dropout in a complementary way. Srivastava et al. (2014) observe that dropout induces sparse activations in the final network; it is possible that dropout-induced sparsity primes a network to be pruned. If so, dropout techniques that target weights (Wan et al., 2013) or learn per-weight dropout probabilities (Molchanov et al., 2017; Louizos et al., 2018) could make winning tickets even easier to find.
 
-This characterization of dropout makes it seem much less arbitrary than I thought it to be upon first learning about it. It makes a lot of sense and perhaps is connected/related to the LTH in ways we are not aware about.
+[[Fine-Tuning with Very Large Dropout|This characterization of dropout]] makes it seem much less arbitrary than I thought it to be upon first learning about it. It makes a lot of sense and perhaps is connected/related to the LTH in ways we are not aware about.
 
 >The importance of winning ticket initialization. 
 >

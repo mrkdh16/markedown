@@ -1,6 +1,13 @@
 ---
 title: Philosophy
-draft: true
+draft: false
 tags:
+  - philosophy
 ---
-The word philosophy comes from the Greek word 'philsophia,' which means love of wisdom.
+overthinking slightly more formally..
+
+- [[A reasonable argument against reason]]
+- [[AI, Values, and Alignment]]
+- [[Forging Values]]
+- [[On Free Will]]
+- [[On Predestination]]

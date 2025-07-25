@@ -66,8 +66,6 @@ Think of the "correlation of gradients" as a measure of how structured and meani
 >
 >Working in the path-weight basis reduces computing the covariance between gradients at different datapoints to counting the number of co-active paths through the network. The second step is to count co-active paths and adjust for rescaling factors (e.g. due to batch normalization).
 
-hello world
-
 References: 
 [He, Kaiming, et al. "Deep residual learning for image recognition." _Proceedings of the IEEE conference on computer vision and pattern recognition_. 2016.](https://arxiv.org/pdf/1512.03385)
 [Balduzzi, David, et al. "The shattered gradients problem: If resnets are the answer, then what is the question?." _International conference on machine learning_. PMLR, 2017.](https://arxiv.org/pdf/1702.08591)

@@ -2,6 +2,8 @@
 title: Coprime Polynomials
 draft: false
 tags:
+  - math
+  - linear-algebra
 ---
  
 ### Theorem.

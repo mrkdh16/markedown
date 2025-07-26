@@ -2,6 +2,8 @@
 title: Duality
 draft: false
 tags:
+  - math
+  - linear-algebra
 ---
  
 ### Definition(s).

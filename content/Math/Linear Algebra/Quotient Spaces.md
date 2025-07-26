@@ -2,6 +2,8 @@
 title: Quotient Spaces
 draft: false
 tags:
+  - math
+  - linear-algebra
 ---
  
 ### Definition(s).

@@ -2,6 +2,8 @@
 title: Diagonalizability
 draft: false
 tags:
+  - math
+  - linear-algebra
 ---
  
 ### Definition.

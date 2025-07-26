@@ -3,6 +3,7 @@ title: Linear Algebra
 draft: false
 tags:
   - math
+  - linear-algebra
 ---
 Linear algebra is arguably one of the most widely applied fields of math, especially in an age where data science is practically everywhere. However, at its core, linear algebra has beautiful algebraic structure and gives rise to some very elegant mathematics. 
 

@@ -2,6 +2,8 @@
 title: Euclidean Rings
 draft: false
 tags:
+  - math
+  - algebra
 ---
  
 ### Definition. (loose)

@@ -1,7 +1,9 @@
 ---
 title: Matrix of T'
 draft: false
-tags: []
+tags:
+  - math
+  - linear-algebra
 ---
 ### Remark.
 We can show mechanically that the matrix of $T$ is the transpose of the matrix of $T'$. Suppose $e_1,...,e_n$ forms an orthonormal basis of $V$ and $\varphi_1,...\varphi_n$ forms the dual basis of $V'$ ([[Duality]]). We use the definition of a matrix: $M(T) = (a_{ij})$ if $Te_j=\sum_{i=1}^{n}{a_{ij}e_i}$. Observe that for any basis vector $e_j$,

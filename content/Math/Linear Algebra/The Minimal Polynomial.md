@@ -2,6 +2,8 @@
 title: The Minimal Polynomial
 draft: false
 tags:
+  - math
+  - linear-algebra
 ---
  
 ### Definition.

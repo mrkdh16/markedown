@@ -2,6 +2,8 @@
 title: Column Rank = Row Rank
 draft: false
 tags:
+  - math
+  - linear-algebra
 ---
 ### Theorem.
 Suppose $T:V\rightarrow V$ is a linear operator. If $A$ is the matrix of $T$, the column rank and row rank of $A$ are equal. Equivalently, $rank(A) = rank (A^T)$.

@@ -2,6 +2,8 @@
 title: Riesz Representation Theorem
 draft: false
 tags:
+  - math
+  - linear-algebra
 ---
 
 ### Theorem.

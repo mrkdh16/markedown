@@ -2,6 +2,8 @@
 title: Polar Decomposition
 draft: true
 tags:
+  - math
+  - linear-algebra
 ---
 ### Definition. / Theorem. / Lemma.
 ---

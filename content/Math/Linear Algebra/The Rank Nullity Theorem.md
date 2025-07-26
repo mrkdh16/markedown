@@ -1,7 +1,9 @@
 ---
 title: The Rank Nullity Theorem
 draft: false
-tags: 
+tags:
+  - math
+  - linear-algebra
 aliases:
   - rank nullity
 ---

@@ -2,6 +2,8 @@
 title: Exact Sequences
 draft: false
 tags:
+  - math
+  - linear-algebra
 ---
  
 ### Observation.

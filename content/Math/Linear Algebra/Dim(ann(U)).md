@@ -1,7 +1,9 @@
 ---
 title: Dim(ann(U))
 draft: true
-tags: 
+tags:
+  - math
+  - linear-algebra
 aliases:
   - dimension of the annihilator
 ---

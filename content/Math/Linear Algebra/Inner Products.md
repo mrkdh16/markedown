@@ -15,6 +15,7 @@ An *inner product* on an $F$-vector space $V$ is a function that takes each orde
 5. Conjugate symmetry: $\langle u,v \rangle = \overline{\langle v,u \rangle}$ for all $u,v\in V$.
 
 Every inner product $\langle \cdot,\cdot \rangle$ induces a *norm* $|| \cdot ||$ on $V$. This induced norm is defined as such: for an inner product space $V$ and $v\in V$, the induced norm of $v$ is$$||v||=\sqrt{\langle v,v \rangle}.$$
+
 Two vectors $u,v \in V$ are *orthogonal* if $\langle u,v \rangle = 0$.
 ### Remark(s).
 Note that we need not specify additivity or homogeneity in the second slot as the additivity and homogeneity in the first slot and conjugate symmetry are enough to deduce additivity and homogeneity in the second slot. In general, mathematicians tend to opt for simpler and more bare-bones definitions when they can. This can be thought of both as a aesthetic endeavor and an application of Occam's razor as simpler definitions will likely be the most flexible.

@@ -6,10 +6,10 @@ tags:
   - machine-learning
   - paper
 ---
-The authors propose an ante-hoc explainability framework for training neural networks that are inherently interpretable. Evaluating based on explicitness, faithfulness, and stability, the authors show that existing methods for explainability are unsatisfactory. They propose SENNs and show that they are superior with respect to the aforementioned criteria.
+The authors propose an ante-hoc explainability framework for training neural networks that are inherently interpretable. Evaluating based on ==explicitness, faithfulness, and stability==, the authors show that existing methods for explainability are unsatisfactory. They propose SENNs and show that they are superior with respect to the aforementioned criteria.
 ## From Linear Models to SENNs
 The main intuition is that linear models are highly interpretable as we can see exactly what features the model is placing emphasis on, and they make consistent predictions based on a small number of parameters.
->For input features $x_1,...,x_n \in \mathbb{R}$, and associated parameters $\theta_1,...,\theta_n \in \mathbb{R}$ the linear regression model is given by $f(x) = \sum_{i}^{n} \theta_ix_i + \theta_0$. This model is arguably interpretable for three specific reasons: i) ==input features ($x_i$’s) are clearly anchored with the available observations==, e.g., arising from empirical measurements; ii) ==each parameter $\theta_i$ provides a quantitative positive/negative contribution== of the corresponding feature $x_i$ to the predicted value; and iii) the ==aggregation of feature specific terms $\theta_ix_i$ is additive== without conflating feature-by-feature interpretation of impact.
+>For input features $x_1,...,x_n \in \mathbb{R}$, and associated parameters $\theta_1,...,\theta_n \in \mathbb{R}$ the linear regression model is given by $f(x) = \sum_{i}^{n} \theta_ix_i + \theta_0$. This model is arguably interpretable for three specific reasons: i) ==input features (==$x_i$==’s) are clearly anchored with the available observations==, e.g., arising from empirical measurements; ii) ==each parameter ==$\theta_i$ ==provides a quantitative positive/negative contribution== of the corresponding feature $x_i$ to the predicted value; and iii) the ==aggregation of feature specific terms ==$\theta_ix_i$ ==is additive== without conflating feature-by-feature interpretation of impact.
 
 The authors aim to generalize this kind of linear model to simultaneously enrich its learning capabilities while maintaining its interpretability. The generalization is achieved in 3 steps:
 1. Generalizing coefficients
@@ -38,11 +38,11 @@ The authors use the following definition to enforce the notion of "local stabili
 
 The following definition defines the class of functions the authors constitute as self-explaining prediction models:
 >Definition 3.3. Let $x \in \mathcal{X} \subset \mathbb{R}^n$ and $\mathcal{Y} \subseteq \mathbb{R}^m$ be the input and output spaces. We say that $f: \mathcal{X} \rightarrow \mathcal{Y}$ is a self-explaining prediction model if it has the form $$f(x) = g(\theta_1(x)h_1(x), . . . , \theta_k(x)h_k(x))$$ where: 
->P1) $g$ is monotone and completely additively separable 
->P2) For every $z_i := \theta_i(x)h_i(x)$, $g$ satisfies $\frac{\partial g}{\partial z_i} \geq 0$ 
->P3) $\theta$ is locally difference bounded by $h$ 
->P4) $h_i(x)$ is an interpretable representation of $x$ 
->P5) $k$ is small. 
+>- P1) $g$ is monotone and completely additively separable 
+>- P2) For every $z_i := \theta_i(x)h_i(x)$, $g$ satisfies $\frac{\partial g}{\partial z_i} \geq 0$ 
+>- P3) $\theta$ is locally difference bounded by $h$ 
+>- P4) $h_i(x)$ is an interpretable representation of $x$ 
+>- P5) $k$ is small. 
 >In that case, for a given input $x$, we define the explanation of $f(x)$ to be the set $\mathcal{E}_f(x) \equiv {(h_i(x), \theta_i(x))}^k_{i=1}$ of basis concepts and their influence scores.
 
 >Since our aim is maintaining model richness even in the case where the $h_i$ are chosen to be trivial input feature indicators, we rely predominantly on $\theta$ for modeling capacity, realizing it with larger, higher-capacity architectures.

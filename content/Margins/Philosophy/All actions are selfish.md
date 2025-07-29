@@ -1,6 +1,6 @@
 ---
 title: All actions are selfish
-draft: true
+draft: false
 tags:
   - philosophy
 ---
@@ -10,12 +10,10 @@ One objection one might have to psychological egoism is that there seem to be ac
 
 Of course, the egoist has a response. They would argue that the soldier's motivation is still selfish, just in a less obvious way. The soldier might be motivated by a desire to avoid a lifetime of guilt and trauma he would experience if he let his friends die. Alternatively, he could be motivated by the desire for posthumous glory, the wish to be remembered as a hero, or the belief that this sacrifice will guarantee him a reward in the afterlife.
 
-The egoist and the critic can argue about such scenarios for eternity and likely not get anywhere. The bigger gripe I have with this theory is that it abuses language (similar to argument in [[On Free Will]]). In essence, the egoist broadens the scope of selfishness so much that they are able to reduce every intent to a self-regarding one. My view is that the meaning of a word is created in two ways: by its relationship to other words, and by the context in which it is used. 
+The egoist and the critic can argue about such scenarios for eternity and likely not get anywhere. The bigger gripe I have with this theory is that it abuses language (similar to argument in [[On Free Will]]). In essence, the egoist broadens the scope of self-interest so much that they are able to reduce every intent to a self-regarding one. Suppose I were to interview the solider that threw themself on a grenade posthumously. The soldier could very well say that he did what he did because he genuinely cared about his brothers. The egoist would probably argue in response that the soldier is deceiving himself and that his actual, hidden intention was in fact, self-interested. The egoist's argument then boils down to the following: because the solider did what he most wanted to do, his reasoning for doing what he did must be self-interested. This argument now ceases to be a falsifiable psychological hypothesis and becomes a tautology: true by its own contrived definition, but telling us nothing meaningful about human behavior. 
 
-Suppose that there were 
+Beyond the philosophical debate, it's worth questioning whether psychological egoism is a productive worldview. Through psychological egoism, we can choose to view other people as being solely motivated by their self-interest. However, this view of other people is actively cynical and makes genuine relationships incredibly difficult to form and maintain. By flattening the complex landscape of human motivation into one cynical dimension, we lose so much of what makes us human. Psychological egoism demands that we view our friends, family, and partners as strategic actors in a world of universal self-interest. And while the theory might offer a tidy explanation for everything, it does so at the expense of trust, gratitude, and the ability to form the very relationships that give life much of its meaning.
 
-- trivial nature, unfalsifiable
-- not pragmatic
-- self-destructive
+Further damage comes when we apply this view to ourselves. It becomes a convenient excuse for selfish behavior. After all, if the theory is right that all our actions are fundamentally selfish, then any effort to be selfless is pointless. This is a self-destructive belief, as it gives us permission to abandon empathy and always choose the easier, self-serving path. It gives us an excuse to become nihilistic and short-sided. The theory becomes a self-fulfilling prophecy, giving us a blueprint to create the very cynical world it describes.
 
-Resources: [Shaver, Robert, "Egoism", _The Stanford Encyclopedia of Philosophy_ (Spring 2023 Edition)](https://plato.stanford.edu/entries/egoism/), [Mercer, M. In Defence Of Weak Psychological Egoism. _Erkenntnis_ **55**, 217–237 (2001). https://doi.org/10.1023/A:1012902007138](https://link.springer.com/article/10.1023/A:1012902007138)
+Resources: [Shaver, Robert, "Egoism", _The Stanford Encyclopedia of Philosophy_ (Spring 2023 Edition)](https://plato.stanford.edu/entries/egoism/)

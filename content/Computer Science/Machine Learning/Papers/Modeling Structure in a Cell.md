@@ -10,4 +10,6 @@ tags:
 
 >DCell trains a deep neural network to predict phenotype from genotype, with architecture that exactly mirrors the hierarchical structure of an ontology of cellular subsystems. Each cellular subsystem is represented by a group of hidden variables (neurons) in the neural network, and each parent–child relation is represented by a set of edges that fully connect these groups of hidden variables.
 
+>![[Screenshot 2025-07-29 at 9.33.43 AM.png]]
+
 References: [Using deep learning to model the hierarchical structure and function of a cell](https://www.nature.com/articles/nmeth.4627)

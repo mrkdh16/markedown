@@ -5,20 +5,17 @@ tags:
 ---
 ## math
 ## philosophy.
+- reflective equilibrium and the return of objective value
+- the existential vacuum and meaning
+	- There is a cluster of other, more circumscribed arguments for subjectivism, according to which this theory best explains certain intuitive features of meaning in life. For one, subjectivism seems plausible since it is reasonable to think that a meaningful life is an ==authentic== one (Frankfurt 1988, 80–94). If a person’s life is significant insofar as she is true to herself or her deepest nature, then we have some reason to believe that meaning simply is a function of those matters for which the person cares. For another, it is uncontroversial that often meaning comes from ==losing oneself, i.e., in becoming absorbed in an activity or experience==, as opposed to being bored by it or finding it frustrating (Frankfurt 1988, 80–94; Belliotti 2019, 162–70). Work that concentrates the mind and relationships that are engrossing seem central to meaning and to be so because of the subjective elements involved. For a third, meaning is often taken to be something that makes life worth continuing for a specific person, i.e., that ==gives her a reason to get out of bed in the morning==, which subjectivism is thought to account for best (Williams 1976; Svensson 2017; Calhoun 2018).
 - Is it wrong to live solely to fulfill one's desires? / is it wrong to live for one's own self-fulfillment
 	- seems to be widely accepted without in contemporary society
 	- religion offers an ascetic perspective
 	- niestzche and existentialism offers an affirmative perspective
 	- related to what we owe to each other and social contract theory -> we can argue for cooperation and empathy on the basis of selfishness
-- the problem of evil
-- divine hiddenness
-- what do we owe to each other?
 - are we justified in caring more about the people around us than those on the opposite side of the world?
 	- peter singer's utilitarian-based argument
 - an argument against cynicism; an argument for optimism
-- predestination vs free will
-	- the argument for god's irresistible grace implies that humans have no control over their salvation, yet free will is often given as a result of god's unconditional love
-- the value of family as viewed in the US vs Korea
 - do hard things
 	- physics 5a
 - what exactly is fair?

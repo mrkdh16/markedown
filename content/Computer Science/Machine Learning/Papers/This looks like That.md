@@ -1,12 +1,12 @@
 ---
 title: This looks like That
-draft: true
+draft: false
 tags:
   - computer-science
   - machine-learning
   - paper
 ---
-This paper concretely implements the ideas of interpretability discussed in [[Self-Explaining Neural Networks|Towards Robust Interpretability with Self-Explaining Neural Networks]]. Although, it is worth noting that the notion of interpretability is more loosely defined. In essence the authors lean more toward accuracy in the interpretability-accuracy tradeoff. This perspective is elaborated in [[Self-explaining AI|Self-explaining AI as an alternative to interpretable AI]].
+This paper concretely implements the ideas of interpretability discussed in [[Self-Explaining Neural Networks|Rudin et al, Towards Robust Interpretability with Self-Explaining Neural Networks]]. Although, it is worth noting that the notion of interpretability is more loosely defined. The authors lean more toward accuracy in the interpretability-accuracy tradeoff. This perspective is elaborated in [[Self-explaining AI|Elton, Self-explaining AI as an alternative to interpretable AI]].
 ## Motivation
 The key intuition comes from the way humans reason about images. The authors note that 
 >When we are faced with challenging image classification tasks, we often explain our reasoning by dissecting the image, and pointing out prototypical aspects of one class or another. The mounting evidence for each of the classes helps us make our final decision.
@@ -31,6 +31,16 @@ The second stage is the key part in implementing the following constraint:
 >we propose to constrain each convolutional filter to be identical to some latent training patch. This added constraint allows us to interpret the convolutional filters as visualizable prototypical image parts and also necessitates a novel training procedure.
 
 The authors accomplish this by projecting "*each prototype $p_j$ onto the nearest latent training patch from the same class as that of $p_j$.*"
->Mathematically, for prototype $p_j$ of class $k$, i.e., $p_j \in \bf P_k$, we perform the following update: $$p_j  \leftarrow argmin_{\bf{z} \in \mathcal{Z}_j}{||\bf{z} − p_j||_2}, \space \mbox{where} \space \mathcal{Z}_j = \{ \tilde z : \tilde z \in \mbox{patches}(f(x_i)) \forall i \space \mbox{s.t.}\space y_i = k \}.$$
+>Mathematically, for prototype $p_j$ of class $k$, i.e., $p_j \in \bf P_k$, we perform the following update: $$p_j  \leftarrow argmin_{\bf{z} \in \mathcal{Z}_j}{||\bf{z} − p_j||_2}, \space \mbox{where} \space \mathcal{Z}_j = \{ \tilde z : \tilde z \in \mbox{patches}(f(x_i)) \space \forall i \space \mbox{s.t.}\space y_i = k \}.$$
 
-References: [This Looks Like That: Deep Learning for Interpretable Image Recognition](https://arxiv.org/abs/1806.10574)
+The third stage is a convex optimization of the feedforward weight matrix. The convolutional layer and prototype layer stay fixed, thus keeping the latent representations constant.
+
+---
+Though ProtoPNet defines interpretability more loosely than proposed in Rudin et al, the architecture itself is remarkably similar to the one suggested in it. The process of generating prototypes (stage 1 of training), is essentially a process of generating a suitable feature basis. Furthermore, the criteria of fidelity, diversity, and grounding are built in to the clustering algorithm used to generate the prototypes. Technically, the feature basis ProtoPNet uses is the similarity scores generated during the inference process, as that is what is fed into the fully connected linear layer. And perhaps it is a little less clear that the similarity scores satisfy fidelity, diversity, and grounding. Nevertheless, the last fully connected layer is a linear model, and in fact, is less general than the one described Rudin et al as the relevance scores (weights) for each similarity score is a fixed number for all inputs.
+
+The biggest difference between ProtoPNet and the architecture proposed in Rudin et al is that in ProtoPNet, most of the modeling capacity is in the feature bases. The relevance scores, i.e. the weights of the fully connected layer, are fixed for all inputs while the feature basis, i.e. the similarity scores between the input and the prototypes, is a complex, high-capacity ConvNet architecture. It seems that Rudin et al opted to shift complexity to the relevance scores as to keep the feature basis simple and easily interpretable. However, they still use an autoencoder to develop their feature basis, so it really cannot be said that their version was substantially more interpretable.
+
+References: 
+- [This Looks Like That: Deep Learning for Interpretable Image Recognition](https://arxiv.org/abs/1806.10574)
+- [[Self-Explaining Neural Networks|Towards Robust Interpretability with Self-Explaining Neural Networks]]
+- [[Self-explaining AI|Self-explaining AI as an alternative to interpretable AI]].

@@ -14,3 +14,6 @@ tags:
 	- even if free will doesn't exist, as long as we cannot definitively show it doesn't exist, is it worth having blind faith that it does exist? are we being intellectually dishonest?
 - intellectual honesty and camus
 - wtf even is truth?
+- for me, authenticity is closely related to the desire to be different
+	- often, implicitly, to be oneself is to be different from others, to be your own person
+	- 

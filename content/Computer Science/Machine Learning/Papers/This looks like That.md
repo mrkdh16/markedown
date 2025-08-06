@@ -24,6 +24,7 @@ In the prototype layer $g_{\bf P}$, for every prototype $p_j$, the squared $L^2$
 Lastly, the fully connected layer $h$ takes the similarity scores and uses a softmax to yield predicted probabilities for each class.
 #### Training
 ![[Screenshot 2025-07-29 at 1.28.49 PM.png]]
+![[Screenshot 2025-08-05 at 12.33.36 PM.png]]
 The first stage is essentially a fancy clustering algorithm.
 >In the first training stage, we aim to learn a meaningful latent space, where the most important patches for classifying images are ==clustered (in ==$L^2$==-distance) around semantically similar prototypes== of the images’ true classes, and the clusters that are centered at ==prototypes from different classes are well-separated==. To achieve this goal, we jointly optimize the convolutional layers’ parameters $w_{conv}$ and the prototypes $\bf P = \{p_j\}^m_{j=1}$ in the prototype layer $g_{\bf P}$ using SGD, while keeping the last layer weight matrix $w_h$ fixed.
 
@@ -34,6 +35,20 @@ The authors accomplish this by projecting "*each prototype $p_j$ onto the neares
 >Mathematically, for prototype $p_j$ of class $k$, i.e., $p_j \in \bf P_k$, we perform the following update: $$p_j  \leftarrow argmin_{\bf{z} \in \mathcal{Z}_j}{||\bf{z} − p_j||_2}, \space \mbox{where} \space \mathcal{Z}_j = \{ \tilde z : \tilde z \in \mbox{patches}(f(x_i)) \space \forall i \space \mbox{s.t.}\space y_i = k \}.$$
 
 The third stage is a convex optimization of the feedforward weight matrix. The convolutional layer and prototype layer stay fixed, thus keeping the latent representations constant.
+## Probabilistic Interpretation
+![[NeurIPS-2019-this-looks-like-that-deep-learning-for-interpretable-image-recognition-Paper 2.pdf]]
+The authors show in the supplementary material that ProtoPNet is essentially an instantiation of the above predictive model derived from two reasonable assumptions.
+
+The first assumption is that
+>for any given image $x$, the probability of $X$ being of value $x$ given all of its closest latent patches to prototypes of class $k$ and the fact that the image is indeed of class k is the same for every single class $k \in \{1, ..., K\}$. We can roughly think of this assumption as: for any class, knowing an unknown image’s closest latent patches to prototypes of that class and the fact that unknown image actually belongs to that class gives us the same level of uncertainty about the true value of the image.
+
+The first assumption is essentially an assumption about the equitable quality of prototypes, i.e. no one class has a much better set of prototypes that more easily allows identification of $x$. This would be true if every set of prototypes along with information about the class of $x$ were sufficient to reconstruct $x$ at the same fidelity no matter the class. I'm actually not so sure that this is a reasonable assumption to make. It certainly depends highly on the data one is working with.
+
+The second assumption is that the random variables $\{f^k_l(X)\}$ are independent over the subspace $\{ (z^k_1, ...,z^k_{m_k}) \in \Omega^{m_k} : \exists x \in X \space s.t. \space z^k_1 = f^k_1(x), ..., z^k_{m_k} = f^k_{m_k} (x) \}$. This intuitively seems like more of a reasonable assumption than the first one.
+
+The authors assert that ProtoPNet does the following probability prediction:
+![[Screenshot 2025-08-05 at 1.43.14 PM.png]]![[Screenshot 2025-08-05 at 1.43.37 PM.png]]
+>Comparing Equations (10) and (11), we see that for our current model, we have: (1) $\Omega = [0, 1]^{H_1\times W_1\times D}$; (2) $P(Y = c) = \frac{1}{K}$, for all $c \in \{1, ..., K\}$; and (3) $d^k_l(r) = C^k_l \cdot \frac{r^2+1}{r^2+\epsilon}$. The constant $C^k_l$ ensures that the integration over the latent domain $\Omega$ gives value of 1. When the number of prototypes for every class is the same, the $\prod^{m_k}_{l=1} C^k_l$ will approximately cancel out in the numerator and denominator of Equation 10, leaving us with the current expression we use for our classification model.
 
 ---
 Though ProtoPNet defines interpretability more loosely than proposed in Jaakkola et al, the architecture itself is remarkably similar to the one suggested in it. The process of generating prototypes (stage 1 of training), is essentially a process of generating a suitable feature basis. Furthermore, the criteria of fidelity, diversity, and grounding are built in to the clustering algorithm used to generate the prototypes. Technically, the feature basis ProtoPNet uses is the similarity scores generated during the inference process, as that is what is fed into the fully connected linear layer. And perhaps it is a little less clear that the similarity scores satisfy fidelity, diversity, and grounding. Nevertheless, the last fully connected layer is a linear model, and in fact, is less general than the one described Jaakkola et al as the relevance scores (weights) for each similarity score is a fixed number for all inputs.
@@ -42,5 +57,6 @@ The biggest difference between ProtoPNet and the architecture proposed in Jaakko
 
 References: 
 - [This Looks Like That: Deep Learning for Interpretable Image Recognition](https://arxiv.org/abs/1806.10574)
+- [This Looks Like That: Deep Learning for Interpretable Image Recognition (Supplementary Material)](https://github.com/cfchen-duke/ProtoPNet/blob/master/supp_this_looks_like_that.pdf)
 - [[Self-Explaining Neural Networks|Towards Robust Interpretability with Self-Explaining Neural Networks]]
-- [[Self-explaining AI|Self-explaining AI as an alternative to interpretable AI]].
+- [[Self-explaining AI|Self-explaining AI as an alternative to interpretable AI]]

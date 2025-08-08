@@ -15,4 +15,6 @@ tags:
 ### Architecture
 ![[Screenshot 2025-08-05 at 10.10.24 AM.png]]
 
-References: [The shallowest transparent and interpretable deep neural network for image recognition](https://www.nature.com/articles/s41598-025-92945-2)
+References: 
+- [The shallowest transparent and interpretable deep neural network for image recognition](https://www.nature.com/articles/s41598-025-92945-2)
+- [[This looks like That|ProtoPNet]]

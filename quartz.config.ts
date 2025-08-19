@@ -19,39 +19,41 @@ const config: QuartzConfig = {
     baseUrl: "quartz.jzhao.xyz",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
+
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "Lora",
-        body: "Lora",
+        header: "Lato", // Use Lato for headers
+        body: "Lato",   // Use Lato for the body
         code: "IBM Plex Mono",
       },
       colors: {
         lightMode: {
-          light:      "#FCF5E5",   // airy background
-          lightgray:  "#ececec",   // barely‑there borders/cards
-          gray:       "#c4c8cf",   // soft metadata & outlines
-          darkgray:   "#565b66",   // body text (still AA compliant)
-          dark:       "#2e3138",   // headings/icons
-          secondary:  "#6d8da7",   // desaturated slate‑blue link
-          tertiary:   "#c4b07a",   // muted sand‑gold hover
-          highlight:  "#FCF5E5", // subtler block tint
-          textHighlight: "#c4b07a55",           // faint text mark
+          light: "#F2F0EF",      // Page background
+          lightgray: "#e5e5e5",   // Borders
+          gray: "#b8b8b8",       // Secondary text (e.g., dates)
+          darkgray: "#4e4e4e",   // Body text
+          dark: "#000000",       // Headings
+          secondary: "#1772d0",   // Link color from your personal site
+          tertiary: "#f09228",    // Link hover color from your personal site
+          highlight: "#F2F0EF", // A more subtle highlight
+          textHighlight: "#f0922855", 
         },
         darkMode: {
-          light:      "#1c1c1c",   // panel background
-          lightgray:  "#404349",   // gentle card edge
-          gray:       "#71757f",   // subdued labels
-          darkgray:   "#d6d9e1",   // body text
-          dark:       "#f4f5f7",   // headings
-          secondary:  "#a3bdd3",   // softened blue for dark bg
-          tertiary:   "#d1be86",   // mellow gold accent
-          textHighlight: "#d1be8655",           // faint text mark
-          highlight:  "1c1c1c", // subtle block tint
+          light: "#1c1c1c",
+          lightgray: "#393639",
+          gray: "#646464",
+          darkgray: "#d4d4d4",
+          dark: "#ebebec",
+          secondary: "#579cd9",   // Lighter blue for dark mode links
+          tertiary: "#ffb86c",    // Lighter orange for dark mode hover
+          highlight: "1c1c1c",
+          textHighlight: "#ffb86c55",
         },
-      }       
+      },
     },
+
   },
   plugins: {
     transformers: [

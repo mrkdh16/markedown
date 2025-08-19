@@ -22,7 +22,7 @@ $$
 A few key observations: 
 $$
 \varphi(v) = \varphi(\overline{\varphi(w)}w) = \overline{\varphi(w)}\varphi(w) = \lvert\varphi(w)\rvert^2
-$$$$
+\newline
 || v ||^2 = \langle v, v \rangle = \langle \overline{\varphi(w)}w, \overline{\varphi(w)}w \rangle =  \overline{\varphi(w)}\varphi(w) \langle w, w \rangle = \lvert\varphi(w)\rvert^2
 $$
 $$

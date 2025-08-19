@@ -1,7 +1,9 @@
 ---
-title: Discrete Fourier Transform
+title: Eckart-Young Theorem
 draft: true
 tags:
+  - math
+  - computer-science
 ---
  
 ### Definition. / Theorem. / Lemma.

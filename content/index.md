@@ -5,6 +5,7 @@ title: Contents
 A collection of structured notes from college courses and self-study across mathematics, physics, and computer science. This is where I work through ideas formally. I hope to establish connections across disciplines and build a rigorous understanding of how the world works.
 ### Mathematics
 - [[Linear Algebra]]
+- [[Applications]]
 ### Physics
 - [[Classical Mechanics]]
 - [[Special Relativity]]
@@ -16,4 +17,3 @@ Reflections that live outside formal study. This section holds my philosophical 
 - [[Philosophy]]
 - [[Musings]]
 - [[Books]]
-- [[Films]]

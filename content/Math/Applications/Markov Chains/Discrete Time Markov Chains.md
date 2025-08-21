@@ -1,5 +1,5 @@
 ---
-title: Markov Chains
+title: Discrete Time Markov Chains
 draft: false
 tags:
   - math

@@ -11,5 +11,5 @@ The [[Singular Value Decomposition]] (SVD) allows us to break apart matrices and
 
 Through [[Markov Chains]], we can effectively model sequential probabilistic phenomena.
 
-[[Regression and Kernel Methods]] are under-appreciated statistical learning algorithms that are quite powerful and contain fascinating math.
+[[Kernel Methods]] are under-appreciated statistical learning algorithms that are quite powerful and contain fascinating math.
 

@@ -5,6 +5,8 @@ tags:
   - computer-science
   - machine-learning
   - paper
+aliases:
+  - Self-explaining AI as an alternative to interpretable AI
 ---
 ## Lack of Interpretability
 The new paradigm of [[Deep Learning|deep learning]] is inherently black-box. By leaving feature engineering to the model, we lose insight into the decision-making processes of the models. Despite the efforts to combat our lack of understanding, all interpretability techniques have flaws. 

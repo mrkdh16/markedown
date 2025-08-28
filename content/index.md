@@ -6,11 +6,11 @@ A collection of structured notes from college courses and self-study across math
 ### Mathematics
 - [[Linear Algebra]]
 - [[Applications]]
-### Physics
-- [[Classical Mechanics]]
-- [[Special Relativity]]
 ### Computer Science
 - [[Machine Learning]]
+### Physics (under construction)
+- [[Classical Mechanics]]
+- [[Special Relativity]]
 ---
 # Margins
 Reflections that live outside formal study. This section holds my philosophical musings, commentary on disciplines like math and physics, and thoughts sparked by books, films, and everyday experiences.

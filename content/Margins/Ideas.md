@@ -20,6 +20,7 @@ tags:
 	- physics 5a
 - what exactly is fair?
 	- rawl's theory of justice
+- 
 
 Camus said that
 

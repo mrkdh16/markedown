@@ -5,4 +5,4 @@ tags:
   - computer-science
 ---
 ### The Out-of-Distribution Generalization Problem
-- many different environments
+- many different ne

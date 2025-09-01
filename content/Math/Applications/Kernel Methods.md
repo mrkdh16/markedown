@@ -14,7 +14,7 @@ Y_{m\times p} = \begin{bmatrix} \leftarrow & y_1^\intercal & \rightarrow \\ \lef
 X_{m \times (n+1)} = \begin{bmatrix} 1 &\leftarrow & x_1^\intercal & \rightarrow \\ 1& \leftarrow & x_2^\intercal & \rightarrow \\ & \vdots & \\ 1&\leftarrow & x_m^\intercal & \rightarrow \end{bmatrix},
 W_{(n+1) \times p} = \begin{bmatrix} b^\intercal \\ W\end{bmatrix}.
 $$
-Then, $\mathcal{L}(W) = ||Y-XW||^2_F = \sum^m_{i=0} ||y-(W^\intercal x+b)||^2_2$ where $|| \cdot ||_F$ is t. Observe that the bias term was "absorbed" into the weight matrix here.  
+Then, $\mathcal{L}(W) = ||Y-XW||^2_F = \sum^m_{i=0} ||y-(W^\intercal x+b)||^2_2$ where $|| \cdot ||_F$ is the Frobenius norm. Observe that the bias term was "absorbed" into the weight matrix here.  
 
 The optimization is usually done using an algorithm called 
 ## Feature Maps and Kernel Methods

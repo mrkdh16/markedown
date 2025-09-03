@@ -13,7 +13,7 @@ Training a machine learning model can also be thought of as extracting meaningfu
 
 I'm particularly interested in [[Deep Learning|deep neural networks]] due to their powerful yet not widely understood capabilities. It is thought that deep neural networks learn the low dimensional manifolds that high dimensional data often lies on. 
 
->The **manifold hypothesis** posits that many [high-dimensional](https://en.wikipedia.org/wiki/High-dimensional "High-dimensional") data sets that occur in the real world actually lie along low-dimensional [latent manifolds](https://en.wikipedia.org/wiki/Latent_manifold "Latent manifold") inside that high-dimensional space. 
+>*The **manifold hypothesis** posits that many [high-dimensional](https://en.wikipedia.org/wiki/High-dimensional "High-dimensional") data sets that occur in the real world actually lie along low-dimensional [latent manifolds](https://en.wikipedia.org/wiki/Latent_manifold "Latent manifold") inside that high-dimensional space.*
 >
 >-[Wikipedia Article on the Manifold Hypothesis](https://en.wikipedia.org/wiki/Manifold_hypothesis)
 

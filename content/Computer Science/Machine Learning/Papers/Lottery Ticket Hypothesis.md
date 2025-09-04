@@ -12,6 +12,8 @@ tags:
 >
 >More formally, consider a dense feed-forward neural network $f(x;\theta)$ with initial parameters $\theta = \theta_0 \sim \mathcal{D}_{\theta}$. When optimizing with stochastic gradient descent (SGD) on a training set, $f$ reaches minimum validation loss $l$ at iteration $j$ with test accuracy $a$ . In addition, consider training $f(x;m \odot \theta)$ with a mask $m \in \{ 0,1 \}^{|{\theta}|}$ on its parameters such that its initialization is $m \odot \theta_0$. When optimizing with SGD on the same training set (with $m$ fixed), $f$ reaches minimum validation loss $l'$ at iteration $j'$ with test accuracy $a'$. The lottery ticket hypothesis predicts that $\exists m$ for which $j' \leq j$ (commensurate training time), $a' \geq a$ (commensurate accuracy), and $\vert \vert m \vert \vert_0 \ll |\theta|$ (fewer parameters).
 ### Discussion (i.e. nuggets of wisdom)
+This paper rattles off a number of really interesting observations and theories related to their hypothesis.
+
 >Baldi & Sadowski (2013) ==characterize dropout as simultaneously training the ensemble of all subnetworks==. Since the lottery ticket hypothesis suggests that one of these subnetworks comprises a winning ticket, it is natural to ask whether dropout and our strategy for finding winning tickets interact.
 >
 >(...) our iterative pruning strategy interacts with dropout in a complementary way. Srivastava et al. (2014) observe that dropout induces sparse activations in the final network; it is possible that dropout-induced sparsity primes a network to be pruned. If so, dropout techniques that target weights (Wan et al., 2013) or learn per-weight dropout probabilities (Molchanov et al., 2017; Louizos et al., 2018) could make winning tickets even easier to find.
@@ -22,7 +24,7 @@ tags:
 >
 >When randomly reinitialized, a winning ticket learns more slowly and achieves lower test accuracy, suggesting that initialization is important to its success. One possible explanation for this behavior is these initial weights are close to their final values after training—that in the most extreme case, they are already trained. However, experiments in Appendix F show the opposite—that the ==winning ticket weights move further than other weights. This suggests that the benefit of the initialization is connected to the optimization algorithm, dataset, and model==. For example, the winning ticket initialization might land in a region of the loss landscape that is particularly amenable to optimization by the chosen optimization algorithm.
 
-Researchers have suggested a Strong Lottery Ticket Hypothesis that suggests that for sufficiently overparameterized network, there exist strong winning tickets that require no training at all. This could mean that in theory model training could consist entirely of pruning/dropping weights. The problem of figuring out which weights to prune/drop seems to be unsolved and perhaps unsolvable.
+Researchers have suggested a Strong Lottery Ticket Hypothesis that suggests that for sufficiently overparameterized network, there exist strong winning tickets that require no training at all. This could mean that in theory model training could consist entirely of pruning/dropping weights. The problem of figuring out which weights to prune/drop is still open but there is interesting work related to preserving "gradient flow."
 
 >The importance of winning ticket structure. 
 >

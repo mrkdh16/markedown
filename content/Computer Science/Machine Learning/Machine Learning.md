@@ -5,6 +5,7 @@ tags:
   - computer-science
   - machine-learning
 ---
+## Machine learning and the manifold hypothesis
 In recent decades, computer science has been remarkably successful at solving problems by casting them as [[Problem-Solving as a Search Problem|search problems in high dimensional solution spaces]]. And this effort has largely been spearheaded by machine learning. 
 
 At its core, training a supervised machine learning model is an optimization problem: a search for parameters that minimize some loss function. The trained model is then used to solve tasks like classification, planning, or control. These tasks can themselves be framed as search or decision problems. In this way, supervised machine learning solves one search problem in order to automate the solution of others. Unsupervised or self-supervised models also traverse solution spaces, but they employ different techniques for doing so.
@@ -18,17 +19,17 @@ I'm particularly interested in [[Deep Learning|deep neural networks]] due to the
 >-[Wikipedia Article on the Manifold Hypothesis](https://en.wikipedia.org/wiki/Manifold_hypothesis)
 
 It is not yet well understood how deep neural nets accomplish this. Though this theory somewhat explains why heavily overparameterized (many more parameters than training points) deep neural nets are able to "generalize" (this terminology requires care as it's not clear what this exactly means or if neural nets are actually capable of what we usually mean by generalization), it is not particularly scientific as it doesn't tell us *how* they do what they do. I hope to explore more about how exactly deep neural nets do what they do in the future.
-
----
+## Papers
 Below are (very) brief descriptions and links to slightly more thorough summaries of the machine learning papers I've read. I write about these papers because it helps *me* understand them better. This is also why a lot of them are not particularly well-written or easy to read (my apologies).
-### Deep Learning Theory
-- [[Lottery Ticket Hypothesis]]
-- [[Fine-Tuning with Very Large Dropout]]
-### Deep Learning Architecture
-- [[Batch Norm]]
-- [[ResNet]]
-- [[EfficientNet]]
-### Interpretable AI
+#### Deep Learning Architecture
+In the (not so distant) past, training deep neural nets was considered intractable. The widespread adoption of stochastic gradient descent (SGD) and various optimizers, the arrival of specialized hardware units and their effective utilization in training, and numerous research breakthroughs (so-called deep network training "tricks") such as batch norm and ResNet changed that and ushered in the era of deep learning.
+
+[[Batch Norm|Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift]] introduced a now standard tool for training deep neural nets. The authors propose to normalize, scale and shift the training data every batch where the level of scale and shift is learned from the data. Interestingly, while the original authors proposed batch norm to solve a problem they called "covariate shift," more recent research has shown that covariate shift is in fact not a big hurdle for training. However, the fact remains that batch norm definitively makes training easier. [[Batch Norm#Why Does it Work?|Batch Normalization Provably Avoids Rank Collapse for Randomly Initialised Deep Networks]] suggests that batch norm prevents "rank collapse" in the last hidden layer, thereby allowing for far richer representations of the data.
+
+[[ResNet|Deep residual learning for image recognition]] introduced another now standard tool for training deep neural nets. Before ResNet, it was often observed that very deep networks couldn't even match the performance of shallower ones. To solve this problem, researchers proposed "shortcut connections," allowing hidden layers to choose the exact same parameterization as earlier layers more easily. Similar to batch norm, it's not 100% clear why ResNet is so effective. [[ResNet#Why does it work?|The shattered gradients problem: If resnets are the answer, then what is the question?]] suggests that residual connections help solve the "shattered gradients problem." In a nutshell, the shattered gradients problem says that in vanilla deep networks, similar data points can produce wildly varying gradients which makes for unstable learning. The authors show that in residual networks, the spatial structure of the gradients is preserved better, allowing for easier training and more effective utilization of momentum-based optimizers.
+ 
+[[EfficientNet]] proposes a structured, rigorous method for scaling up convolutional networks to better utilize hardware resources.
+#### Interpretable AI
 Because we understand so little about deep neural nets, they are inherently uninterpretable. This is why many researchers advocate for [[Self-explaining AI|Self-explaining AI as an alternative to interpretable AI]]. I should note that this kind of "self-explaining AI" does not include so-called post-hoc interpretability techniques which seek to explain the behavior of black box models after they generate an output. Such post-hoc techniques have been criticized for a variety of reasons (see above paper for such criticisms).
 
 [[Self-Explaining Neural Networks|Towards Robust Interpretability with Self-Explaining Neural Networks]] defines the notoriously hard-to-define term that is interpretability and generalizes linear models which *are* inherently interpretable to create powerful, interpretable models with comparable performance to black box models on certain tasks. 
@@ -36,6 +37,9 @@ Because we understand so little about deep neural nets, they are inherently unin
 [[This looks like That|This Looks Like That: Deep Learning for Interpretable Image Recognition]] (ProtoPNet) tries to emulate what humans do (supposedly) when they classify images. ProtoPNet identifies parts of an image that look like what a prototypical image of some class looks like and uses such similarities to generate a prediction. For example, it might identify a certain image of a bird as a bluejay because of a distinctive blue crest and black markings. [[ProtoPool|Interpretable Image Classification with Differentiable Prototypes Assignment]] (ProtoPool) attempts to improve upon ProtoPNet by having a shared pool of prototypes and making the training process end-to-end. Both ProtoPool and ProtoPNet use deep convolutional neural networks to generate latent representations of its inputs.  [[Shallower, more transparent ProtoPNet|The shallowest transparent and interpretable deep neural network for image recognition]] attempts to get rid of the black box that is a deep CNN by not using latent representations at all. This results in a much shallower and arguably more interpretable, albeit less powerful model.
 
 Inherently interpretable models that use "concepts" to generate predictions and explanations are called concept-based models (CBMs). [[Debugging CBMs|Toward a Unified Framework for Debugging Concept-based Models]] develops a unified framework to debug such models.
-### Interesting Applications
-- [[AlphaEvolve]]
-- [[Modeling Structure in a Cell]]
+#### Subnetwork Structure
+[[Lottery Ticket Hypothesis|The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks]] is a classic paper that offers an interesting hypothesis about subnetwork structure: dense, fully connected networks trained from random initialization contain sparse subnetworks with much less parameters (10~20 times less parameters) that when retrained from the same initialization, match the test accuracy of the original dense network. Given the empirical observation that sparse networks such as lottery tickets seem to generalize better, researchers have suggested: [[Fine-Tuning with Very Large Dropout]]. They attempt to fine-tune large pre-trained models with very high dropout with hopes of enhanced generalization capabilities. This is related to the idea that dropout is equivalent to training an ensemble of subnetworks.
+#### Interesting Applications
+[[AlphaEvolve|AlphaEvolve: A coding agent for scientific and algorithmic discovery]] is a fascinating paper about a general coding agent for scientific and mathematical problem-solving called AlphaEvolve. The researchers utilize fast large language models (LLMs) and evolutionary algorithms to generate and iteratively improve programs.
+
+[[Modeling Structure in a Cell|Using deep learning to model the hierarchical structure and function of a cell]] creates a neural network that predicts the phenotype of a cell from its genotype. The interesting part is that they have specific parts of the neural network correspond to certain subsystems of a cell, effectively embedding a biological hierarchy directly into the network.

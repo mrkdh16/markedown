@@ -6,6 +6,7 @@ A collection of structured notes from college courses and self-study across math
 ### Mathematics
 - [[Linear Algebra]]
 - [[Applications]]
+- [[Deep Learning Math]]
 ### Computer Science
 - [[Machine Learning]]
 ### Physics (under construction)

@@ -1,6 +1,6 @@
 ---
 title: Khinchin Uniqueness Theorem
-draft: true
+draft: false
 tags:
   - math
   - computer-science

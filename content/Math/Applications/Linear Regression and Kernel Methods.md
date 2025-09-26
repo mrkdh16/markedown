@@ -45,10 +45,8 @@ Here, η is a small positive number called the **learning rate**, which controls
 - iterative algorithm w/ gradient descent / analytic solution using matrix algebra
 	- gradient descent is much more computationally feasible
 	- for convex loss functions, guaranteed to find optimal solution
-- linear regression is great because it is
-	- simple
-	- extrapolatable, generalizable
-	- interpretable
-	- -> we want to make this kind of model more powerful while keeping its good properties
-	- -> map the inputs into a feature space, then perform linear regression
+- linear regression 
+	- essentially restricts the types of functions the model can fit to (linear ones)
+		- 2 problems: underlying function may not be linear, increasing flexibility of class of functions representable risks overfitting
+	- kernel regression (linear regression in infinite-dimensional space) instead implicitly assigns probabilities to every possible function but has a bias for simple/nice/generalizable functions (likelier to actually represent the underlying function)
 ## Feature Maps and Kernel Methods

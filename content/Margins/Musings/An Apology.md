@@ -22,6 +22,8 @@ As G.H. Hardy justified his lifelong pursuit of abstract mathematics seemingly f
 >
 >G.H. Hardy
 
+This essay is called *An Apology* not only because it is a justification for what I intend to pursue (i.e. apology in the sense of apologetics as used by Hardy), but also because it serves as a sincere apology to a version of myself that wanted to pursue beauty. This version of myself that still exists within me cannot shake the feeling that I have succumb to societal pressure.
+
 Importantly, I am invested in *understanding* learning mechanics. There is not much practical or pragmatic motivation for this (although I'd be lying if I said there was none). I believe to understand is a virtue in its own right. 
 
 Foundational first-principles research on neural networks is at the intersection of many of my interests. 
@@ -42,7 +44,3 @@ Non-technical.
 - The idea of non-human intelligence is interesting. The idea that there is non-human intelligence that surpasses human intelligence in certain respects which we don’t necessarily understand is even more interesting.
 - I see neural networks and deep learning as an example of man-made phenomena that is not well understood (as opposed to the natural phenomena not well understood which was the topic of much study in the 20th century). Developing an understanding for such phenomena seems intrinsically valuable.
 - I would be lying if I said I didn’t take into consideration the future potential growth in this area and earning capability by throwing myself in this field.
-
-  
-
-Of course, it is impossible to know which desire/interest drives my motivation to pursue this field. In fact, it certainly changes constantly. Whatever the case, I don’t think I’ll regret pursuing this with everything I have. I believe I will have the flexibility to pivot if I really want to and I believe I have the potential for success if I choose to continue to pursue this.

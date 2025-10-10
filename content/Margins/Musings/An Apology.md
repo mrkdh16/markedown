@@ -7,9 +7,16 @@ tags:
 >
 >-F. Scott Fitzgerald
 
-To want agency over one's life is a common and perhaps even fundamental human desire. Agency in this sense implies that the decisions I make are entirely mine and not merely caused by overwhelming external influence. Of course, it is impossible to fully distinguish what is truly mine and what has been shaped by my environment. However, I am of the belief that the illusion of control and agency are sufficient. This illusion (or reality depending on how you see it) of control and agency comes at a high cost. If one does not proactively determine who one wants to become and what one wants to do, they will be pushed around by their environment. Although there is certainly value in accepting this powerlessness and giving into one's nature, the rebellious reaction is highly attractive. I choose to rebel.
+To want agency over one's life is a common and perhaps even fundamental human desire. Agency in this sense implies that the decisions I make are entirely mine and not merely caused by overwhelming external influence. Of course, it is impossible to fully distinguish what is truly mine and what has been shaped by my environment. Whatever control I may think I have, whatever decisions I may believe to be truly mine, are likely highly influenced by my environment. There is certainly value in accepting this powerlessness and giving into one's nature. And perhaps this kind of acceptance is necessary in a world where sometimes it really seems like there is so little in our control. However, it does seem to me that one can have varying degrees of control over one's life. And it does seem to me that trying your best to exert control over what you can is valuable.
 
-In his essay *A Mathematician's Apology*, G.H. Hardy justified his lifelong pursuit of abstract mathematics seemingly far removed from the realm of ordinary human affairs. To me, part of taking control over my life is justifying my pursuits as Hardy did. 
+In his essay *A Mathematician's Apology*, G.H. Hardy justified his lifelong pursuit of abstract mathematics seemingly far removed from the realm of ordinary human affairs. He argued that mathematical study is valuable not because it allows us to build better technology or even better understand the world, but because there is such awe-inspiring beauty to it. Mathematical structure seems so fundamental to our reality and that we can explore it with such precision is truly incredible. 
+>*The great mathematician fully, almost ruthlessly, exploits the domain of permissible reasoning and skirts the impermissible. That his recklessness does not lead him into a morass of contradictions is a miracle in itself.*
+>-Eugene Wigner, *The Unreasonable Effectiveness of Mathematics in the Natural Sciences*
+
+Indeed, this kind of justification is not how mathematicians will get funding for their work, but there is certainly a part of me that is moved by it. 
+>*If a ‘religion’ is defined to be a system of ideas that contains unprovable statements, then Gödel taught us that mathematics is not only a religion, it is the only religion that can prove itself to be one.
+>-John Barrow
+
 
 
 As I entered college, I pledged to find exactly what it is that I want to do and hold on to it as tight as I could. I first sought to explore as much as I could. I developed a passion for math that only seemed to grow the deeper I went. Having always had a vague interest in computer science, I took some time to actually learn it. I tried my hand at physics and dipped my toes in philosophy. My college experience so far has been one long revelation on who I am, what ignites a fire within me, and who I want to be. And I think I now have a decent answer to all three of these questions.

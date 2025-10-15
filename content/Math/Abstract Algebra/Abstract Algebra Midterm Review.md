@@ -118,7 +118,7 @@ tags:
 - **Claim/Fact (Index 2 Implies Normal)**: If $(G:H) = 2$, then **$H$ is normal in $G$**.
 ## VI. Direct Products and Finitely Generated Abelian Groups (Lecture 9)
 ### Definitions
-1. **Direct Product**: For groups $G_1, \dots, G_n$, the direct product $G_1 \times \dots \times G_n$ is a group under the operation $(a_1, \dots, a_n) * (b_1, \dots, b_n) = (a_1 b_1, \dots, a_n b_n)$.
+1. **Direct Pro duct**: For groups $G_1, \dots, G_n$, the direct product $G_1 \times \dots \times G_n$ is a group under the operation $(a_1, \dots, a_n) * (b_1, \dots, b_n) = (a_1 b_1, \dots, a_n b_n)$.
 ### Theorems
 - **Theorem (Order in Direct Product)**: Let $(a_1, \dots, a_n) \in G_1 \times \dots \times G_n$. If each $a_i$ has finite order $r_i$ in $G_i$, the element $(a_1, \dots, a_n)$ has order **$\text{lcm}(r_1, \dots, r_n)$** (the least common multiple of the individual orders).
 - **Theorem (Cyclic Direct Product)**: $\mathbb{Z}_m \times \mathbb{Z}_n$ is cyclic (and thus isomorphic to $\mathbb{Z}_{mn}$) if and only if $m$ and $n$ are **relatively prime** ($\text{gcd}(m, n) = 1$).

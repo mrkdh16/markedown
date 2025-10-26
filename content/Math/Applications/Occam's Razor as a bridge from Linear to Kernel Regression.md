@@ -8,7 +8,7 @@ tags:
   - statistics
 ---
 ## Linear Regression
-Suppose we are given $m$ data points of the form $(x,y)$ with inputs $x \in \mathbb{R}^n$ and outputs (values) $y \in \mathbb{R}^p$ ($p=1$ can be true for the simplest case). We want to find a weight matrix (vector if $p=1$) $W_{n \times p}$ and bias $b \in \mathbb{R}^p$ such that for all $y$, $y \approx W^{\intercal}x + b$. Here, the level of accuracy of the approximation is quantified by a loss function $\mathcal{L}(w,b) = \sum^m_{i=1} ||y-(W^\intercal x+b)||^2_2$. We frame the problem in terms of optimizing this loss function. 
+Suppose we are given $m$ data points of the form $(x,y)$ with inputs $x \in \mathbb{R}^n$ and outputs (values) $y \in \mathbb{R}^p$ ($p=1$ can be true for the simplest case). We want to find a weight matrix (vector if $p=1$) $W \in \mathbb{R}_{n\times p}$ and bias $b \in \mathbb{R}^p$ such that for all $y$, $y \approx W^{\intercal}x + b$. Here, the level of accuracy of the approximation is quantified by a loss function $\mathcal{L}(w,b) = \sum^m_{i=1} ||y-(W^\intercal x+b)||^2_2$. We frame the problem in terms of optimizing this loss function. Intuitively, the loss can only be small if it is actually the case that there exists some $W \in \mathbb{R}_{n\times p}$ and $b \in \mathbb{R}^p$ such that for all $y$, $y \approx W^{\intercal}x + b$, i.e. by using a linear model, we are assuming there exists an affine transformation from the inputs to the outputs.
 
 Note that we can get rid of the summation in the loss function by representing everything in terms of matrices. Suppose 
 $$
@@ -47,7 +47,7 @@ With linear regression, we forcefully integrate an Occam's Razor into the model 
 <img src="Screenshot 2025-10-25 at 10.53.43 PM.png" width="500">
 </center>
 
-While the data looks somewhat linear, intuitively, it seems unlikely that the function generating this data is actually linear. [Wilson et al.](https://arxiv.org/pdf/2002.08791) argue that we are being dishonest with respect to our *a priori* beliefs about the underlying data-generating function when we choose a linear model based on linear-looking data.
+Crucially, when we are modeling data, we are not simply concerned with finding *some* function that approximates the shape of the data. We want to find a function that accurately represents the *data-generating process*. In this example, while the data looks somewhat linear, intuitively, it seems unlikely that the function generating it is actually linear. [Wilson et al.](https://arxiv.org/pdf/2002.08791) argue that we are being dishonest with respect to our a priori beliefs about the underlying data-generating function when we choose a linear model based on linear-looking data.
 >[O]ur beliefs about the generative processes for our observations, which are often very sophisticated, typically ought to be independent of how many data points we happen to observe.
 
 At the very least, we must concede that the underlying data-generating function *could* be nonlinear. For example, it seems entirely possible that the data generating function is exponential (in fact, it seems more likely that this is the case) and that we happened to observe the early part of the exponential curve. The point is that we ought not to change the inductive biases (assumptions about the data generating function; linearity in the case of linear regression) of our models purely based on the amount of data we observe. Instead, we should encode inductive biases that accurately represent what we actually believe about the underlying data-generating process.

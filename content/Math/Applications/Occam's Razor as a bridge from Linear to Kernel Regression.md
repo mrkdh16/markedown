@@ -1,11 +1,13 @@
 ---
-title: Linear Regression and Kernel Methods
-draft: true
+title: Occam's Razor as a bridge from Linear to Kernel Regression
+draft: false
 tags:
   - math
   - computer-science
+  - machine-learning
+  - statistics
 ---
-## (Generalized) Linear Regression
+## Linear Regression
 Suppose we are given $m$ data points of the form $(x,y)$ with inputs $x \in \mathbb{R}^n$ and outputs (values) $y \in \mathbb{R}^p$ ($p=1$ can be true for the simplest case). We want to find a weight matrix (vector if $p=1$) $W_{n \times p}$ and bias $b \in \mathbb{R}^p$ such that for all $y$, $y \approx W^{\intercal}x + b$. Here, the level of accuracy of the approximation is quantified by a loss function $\mathcal{L}(w,b) = \sum^m_{i=1} ||y-(W^\intercal x+b)||^2_2$. We frame the problem in terms of optimizing this loss function. 
 
 Note that we can get rid of the summation in the loss function by representing everything in terms of matrices. Suppose 
@@ -39,14 +41,26 @@ $$
 \tilde{W}_{t+1}=\tilde{W}_{t} - \eta \nabla_{\tilde{W}}\mathcal{L}(\tilde{W}_{t})
 $$
 where $\eta$ is some small positive number called the learning rate. Because the loss function is convex, gradient descent is actually guaranteed to find the optimal solution in finite time.
-#### Occam's Razor
-With linear regression, we forcefully integrate an Occam's Razor into the model by heavily restricting the range of possible data it could fit to. We do this by having a small number of parameters, only a few for every input feature (dimension of the output multiplied by the dimension of the inputs plus one). 
+## Occam's Razor
+With linear regression, we forcefully integrate an Occam's Razor into the model by heavily restricting the range of possible data it could fit to. We do this by assuming the data is linearly generated, i.e. the relationship between the inputs $x$ and the outputs $y$ is linear (technically affine). We enforce simplicity by having a small, predetermined number of parameters ($p\times(n+1)$ parameters to be exact) regardless of what the data looks like. This type of aggressive Occam's Razor certainly has some advantages: it's [[Self-Explaining Neural Networks|interpretable]], computationally efficient and less prone to overfitting given that the assumption of linearity holds. However, clearly, the vast majority of data that we want to model is not going to be linearly generated. Even if the data looks somewhat linear, it's actually unlikely that a complex real-world data-generating function is linear. Consider the following airline passenger data (example courtesy of [Wilson et al.](https://arxiv.org/pdf/2002.08791)):
+<center>
+<img src="Screenshot 2025-10-25 at 10.53.43 PM.png" width="500">
+</center>
 
-- iterative algorithm w/ gradient descent / analytic solution using matrix algebra
-	- gradient descent is much more computationally feasible
-	- for convex loss functions, guaranteed to find optimal solution
-- linear regression 
-	- essentially restricts the types of functions the model can fit to (linear ones)
-		- 2 problems: underlying function may not be linear, increasing flexibility of class of functions representable risks overfitting
-	- kernel regression (linear regression in infinite-dimensional space) instead implicitly assigns probabilities to every possible function but has a bias for simple/nice/generalizable functions (likelier to actually represent the underlying function)
+While the data looks somewhat linear, intuitively, it seems unlikely that the function generating this data is actually linear. [Wilson et al.](https://arxiv.org/pdf/2002.08791) argue that we are being dishonest with respect to our *a priori* beliefs about the underlying data-generating function when we choose a linear model based on linear-looking data.
+>[O]ur beliefs about the generative processes for our observations, which are often very sophisticated, typically ought to be independent of how many data points we happen to observe.
+
+At the very least, we must concede that the underlying data-generating function *could* be nonlinear. For example, it seems entirely possible that the data generating function is exponential (in fact, it seems more likely that this is the case) and that we happened to observe the early part of the exponential curve. The point is that we ought not to change the inductive biases (assumptions about the data generating function; linearity in the case of linear regression) of our models purely based on the amount of data we observe. Instead, we should encode inductive biases that accurately represent what we actually believe about the underlying data-generating process.
+#### A Bayesian Perspective
+Assuming that we need exactly $X$ number of parameters to capture the underlying data-generating function seems to be too arbitrary of an assumption. How might we mathematically quantify this intuition? As is often the case in machine learning, a Bayesian perspective is helpful.
+<center>
+<img src="Screenshot 2025-10-26 at 12.05.09 AM.png" width="500">
+</center>
+![[Screenshot 2025-10-26 at 12.18.29 AM.png]]
 ## Feature Maps and Kernel Methods
+Kernel methods are a type of non-parametric model, meaning they have an infinite number of parameters. They are great examples of models that have reasonable inductive biases completely unrelated to the number of parameters. 
+## A note on neural networks
+Neural networks are more complex than Kernel methods. 
+
+Sources: 
+[Wilson, Andrew G., and Pavel Izmailov. "Bayesian deep learning and a probabilistic perspective of generalization." _Advances in neural information processing systems_ 33 (2020): 4697-4708.](https://arxiv.org/pdf/2002.08791)

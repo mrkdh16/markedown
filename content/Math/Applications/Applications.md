@@ -13,4 +13,4 @@ The [[Singular Value Decomposition]] (SVD) allows us to break apart matrices and
 
 Through [[Markov Chains]], we can effectively model sequential probabilistic phenomena.
 
-[[Occam's Razor as a bridge from Linear to Kernel Regression]] are under-appreciated statistical learning algorithms that are quite powerful and contain fascinating math.
+[[From Linear to Kernel Regression]] are under-appreciated statistical learning algorithms that are quite powerful and contain fascinating math.

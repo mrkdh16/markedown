@@ -1,0 +1,13 @@
+---
+title: Trash
+draft: true
+tags:
+---
+## My two cents
+So, we've explored Wilson et al.'s justification for preferring expressive models to simple models when dealing with complex data-generating processes. However, I'm not completely convinced. By virtue of being complex, these models must experience an "*Occam penalty.*" For a complex model $\mathcal{H}_{c}$, there are (relative to a simple model) more datasets for which $P(D|\mathcal{H}_{c})$, the evidence, is nonzero. So, for any single dataset, the assigned evidence cannot be very high. This means that, by Bayes' Theorem, $P(\mathcal{H_{c}}|D)$ will be lower than a simple model that fits the data just as well as the complex model. Consider astronomically overparameterized models such as modern deep neural nets. Let $\mathcal{H}_{nn}$ be the entire class of deep neural nets and let $\mathcal{H}_{simple}$ be the simplest class of models that could fit the data. $\mathcal{H}_{nn}$ suffers a huge Occam penalty for being highly expressive, so $\mathcal{H}_{simple}$ is much likelier to be true given the data, i.e. the data-generating function is much likelier to be in the class $\mathcal{H_{simple}}$ than $\mathcal{H_{nn}}$. Even if we give neural nets a better prior ($P(\mathcal{H}_{nn})>P(\mathcal{H}_{simple})$) for being expressive, because of the sheer size of the neural net's support, $P(\mathcal{H}_{nn}|D)=P(D|\mathcal{H}_{nn})P(\mathcal{H}_{nn})$ will likely be much lower than $P(\mathcal{H}_{simple}|D)=P(D|\mathcal{H}_{simple})P(\mathcal{H}_{simple})$ since $P(D|\mathcal{H}_{nn}) \ll P(D|\mathcal{H}_{simple})$.
+
+So, what's the deal with modern astronomically overparameterized models such as deep neural nets? Why do we use such seemingly complex models that will experience an Occam penalty? Answering this question requires a slight change in perspective. 
+
+With deep neural nets, it's not that the neural net itself is the simple solution with high evidence for the given dataset. The neural net is a [[Problem-Solving as a Search Problem|search]] tool for finding said simple solution. 
+
+However, finding $\mathcal{H}_{simple}$ directly can be very difficult. Finding such $\mathcal{H}_{simple}$ is the project of physics, not machine learning. Machine learning aims to create a model that finds $\mathcal{H}_{simple}$ for us. Empirical evidence suggests that neural nets are fairly good at finding $\mathcal{H}_{simple}$'s for us. Though, we don't yet have a definitive answer for how they do this. The architecture of the network, the lazy optimizer, the built in inductive bias, or something else that has yet to be elucidated are all likely all playing a role.

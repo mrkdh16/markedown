@@ -20,9 +20,9 @@ The first tool we borrow from probability is the binomial random variable. Let $
 $$
 P\left( \left|\frac{X}{n}-\mathbb{E}\left( \frac{X}{n} \right)\right| \geq l \sqrt{ \text{Var}\left( \frac{X}{n} \right) } \right)=P\left( \left|\frac{X}{n}-x\right| \geq l\sqrt{ \frac{x(1-x)}{n} } \right)\leq \frac{1}{l^2}.
 $$
-Chebyshev's Inequality is the second tool we borrow from probability and the other main engine of the proof.
+Chebyshev's Inequality is the second tool we borrow from probability and is the other main engine of the proof.
 
-Let us define the following polynomial: 
+Let us define the following polynomial (a.k.a. the Bernstein polynomial): 
 $$
 b_{n}(x) := \sum^n_{k=0}P(X=k)f(\frac{k}{n})=\sum^n_{k=0} \frac{n!}{k!(n-k)!}x^k(1-x)^{n-k}f(\frac{k}{n}).
 $$
@@ -34,8 +34,13 @@ $$
 $$
 where we used the fact that $\sum^n_{k=0}P(X=k)=1$ (since probabilities are normalized). Then, 
 $$
-\left |\sum^n_{k=0}P(X=k)f(\frac{k}{n})-f(x)\sum^n_{k=0}P(X=k)\right| = \sum^n_{k=0}P(X=k)\left|f(\frac{k}{n})-f(x)\right|.
+\left |\sum^n_{k=0}P(X=k)f(\frac{k}{n})-f(x)\sum^n_{k=0}P(X=k)\right| = \left|\sum^n_{k=0}P(X=k)f(\frac{k}{n})-f(x)\right|,
 $$
+and by $n$ applications of the Triangle Inequality,
+$$
+\left|\sum^n_{k=0}P(X=k)f(\frac{k}{n})-f(x)\right| \leq \sum^n_{k=0}P(X=k) \left|f(\frac{k}{n})-f(x)\right|.
+$$
+
 In order to use our two inequalities (one from uniform continuity and the other from Chebyshev), we split the sum into two. We do this by splitting the indices $\{0,1,\dots,n\}$ into two sets based on some parameter $\eta>0$ that we will set later: 
 $$
 S_{l}=\left\{ k\in\{0,1,\dots,n\}: \left|\frac{k}{n} - x\right|<\eta \right\}
@@ -75,3 +80,5 @@ We have successfully bounded both terms we had set out to bound. Thus, we have o
 $$
 \sum^n_{k=0}P(X=k)\left|f\left( \frac{k}{n} \right)-f(x)\right| < \frac{\varepsilon}{2}+\frac{\varepsilon}{2} = \varepsilon. \space \square
 $$
+
+References: [Koralov, L.; Sinai, Y. (2007). ""Probabilistic proof of the Weierstrass theorem"". _Theory of probability and random processes_ (2nd ed.). Springer. p. 29.](https://nzdr.ru/data/media/biblio/kolxoz/M/MV/Koralov%20L.,%20Sinai%20Ya.%20Theory%20of%20probability%20and%20random%20processes%20(2ed.,%20Springer,%202007)(ISBN%203540254846)(349s)_MV_.pdf)

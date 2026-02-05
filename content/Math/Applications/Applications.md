@@ -7,10 +7,7 @@ tags:
 I believe that every mathematical idea can and will eventually find an application in the real world, whether it's in physics, computer science, engineering, or even biology. Many great thinkers have alluded to [[The Unreasonable Effectiveness of Mathematics in the Natural Sciences]] and I believe that this is because much of the universe is fundamentally coherent and structured (for whatever reason). The level of abstraction that mathematics deals with is its greatest strength and is why abstract, seemingly useless math can find surprising applications.
 
 ---
-Much of the applied math that I am interested in is related in one way or another to [[Deep Learning|deep learning]]. I have a collection of notes related to [[Deep Learning Math]] which I think are pretty cool.
-
-The [[Singular Value Decomposition]] (SVD) allows us to break apart matrices and see what vectors matter (statistically) the most. If the SVD enables us to compress dense matrices, [[Compressed Sensing]] enables us to reconstruct dense matrices from sparse measurements.
-
-Through [[Markov Chains]], we can effectively model sequential probabilistic phenomena.
-
-[[From Linear to Kernel Regression]] are under-appreciated statistical learning algorithms that are quite powerful and contain fascinating math.
+- The [[Singular Value Decomposition]] (SVD) allows us to break apart matrices and see what directions matter (statistically) the most. If the SVD enables us to compress dense matrices, [[Compressed Sensing]] enables us to reconstruct dense matrices from sparse measurements.
+- Through [[Markov Chains]], we can effectively model sequential probabilistic phenomena.
+- [[From Linear to Kernel Regression]] are under-appreciated statistical learning algorithms that are quite powerful and contain fascinating math.
+- [[Information |Information Theory]] attempts to make mathematically rigorous the incredibly fuzzy notion of information. [[Entropy]] captures the amount of information that a random variable contains. [[Khinchin Uniqueness Theorem|The Khinchin Uniqueness Theorem]] provides a justification for the somewhat odd definition of Shannon information.

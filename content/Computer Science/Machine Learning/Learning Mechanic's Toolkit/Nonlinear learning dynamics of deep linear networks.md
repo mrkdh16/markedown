@@ -1,12 +1,17 @@
 ---
 title: Nonlinear learning dynamics of deep linear networks
-draft: true
+draft: false
 tags:
+  - computer-science
+  - machine-learning
+  - math
+  - physics
+  - linear-algebra
 ---
 ## Introduction.
-Understanding deep learning is a *very* hard problem. When tackling such hard problems, it can be extremely helpful to analyze simpler toy models. Ideally, the toy models would exhibit some of the same complex, nontrivial phenomena that we want to explain in the original system. By thoroughly understanding our toy models inside and out, we can gain insight into our hard problem. It turns out that deep linear networks are great toy models. They are mathematically tractable yet retain some of the mysterious phenomena that we observe in deep nonlinear networks (i.e. neural networks). 
+Understanding deep learning is a *very* hard problem. When tackling such hard problems with complicated interactions, it can be extremely helpful to analyze simpler toy models. Ideally, the toy models we choose to study will exhibit some of the same complex, nontrivial phenomena that we want to explain in the original system. By providing mathematically sound explanations for said phenomena in our toy models we can gain insight into our hard problem. It turns out that deep linear networks are great toy models. They are mathematically tractable yet retain some of the mysterious phenomena that we observe in deep nonlinear networks (i.e. neural networks). 
 
-At first glance, deep linear networks seem quite uninteresting. Indeed, we don't gain any expressiveness from adding layers in linear networks as the input-output map can always be rewritten as a single shallow layer:
+At first glance, deep linear networks seem quite uninteresting. Indeed, no expressiveness is gained from adding layers in linear networks as the input-output map can always be rewritten as a single shallow layer:
 $$
 \hat{y}= W^lW^{l-1} \ldots W^1x = W_{\text{total}}x.
 $$
@@ -112,22 +117,55 @@ $$
 $$
 $$
 \tau \frac{d}{dt} \overline{W}^{21} = \tau 
-\underbrace{\begin{bmatrix} | & & | \\ \frac{da^1}{dt} & \cdots & \frac{da^{N_1}}{dt} \\ | & & | \end{bmatrix} }_{N_{2} \times N_{1}}
+\underbrace{\begin{bmatrix} | & & | \\ \frac{da^1}{dt} & \cdots & \frac{da^{N_1}}{dt} \\ | & & | \end{bmatrix} }_{[N_{2} \times N_{1}]}
 
-= \underbrace{\begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix}}_{N_{2} \times N_{3}}
-\left( \begin{bmatrix} s_1 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & s_{N_1} \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix} - \begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix} \begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix} \right)
+= \underbrace{\begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix}}_{[N_{2} \times N_{3}]}
+\left( 
+\underbrace{\begin{bmatrix} s_1 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & s_{N_1} \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix}}_{[N_{3}\times N_{1}]}
+- 
+\underbrace{\begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix}}_{[N_{3}\times N_{2}]} 
+\underbrace{\begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix}}_{[N_{2}\times N_{1}]} \right)
 $$
 $$
 \begin{align*}
-\tau \begin{bmatrix} | \\ \frac{da^\alpha}{dt} \\ | \end{bmatrix} &= \underbrace{ \begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix} }_{\overline{W}^{32 T}} \left( \underbrace{ \begin{bmatrix} 0 \\ \vdots \\ s_\alpha \\ \vdots \\ 0 \end{bmatrix} }_{\text{Column } \alpha \text{ of } S} - \underbrace{ \begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix} \begin{bmatrix} | \\ a^\alpha \\ | \end{bmatrix} }_{\text{Column } \alpha \text{ of } \overline{W}^{32}\overline{W}^{21}} \right)
+\tau \frac{d}{dt}a^\alpha =
+
+\tau \underbrace{\begin{bmatrix} | \\ \frac{da^\alpha}{dt} \\ | \end{bmatrix}}_{[N_{2}\times 1]} &=  \begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix}  \left( \underbrace{ \begin{bmatrix} 0 \\ \vdots \\ s_\alpha \\ \vdots \\ 0 \end{bmatrix} }_{\text{Column } \alpha \text{ of } S} - \underbrace{ \begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix} \begin{bmatrix} | \\ a^\alpha \\ | \end{bmatrix} }_{\text{Column } \alpha \text{ of } \overline{W}^{32}\overline{W}^{21}} \right)
 \\\\
 &=
 \begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix} \left( \begin{bmatrix} 0 \\ \vdots \\ s_\alpha \\ \vdots \\ 0 \end{bmatrix} - \begin{bmatrix} b^1 \cdot a^\alpha \\ \vdots \\ b^\alpha \cdot a^\alpha \\ \vdots \\ b^{N_3} \cdot a^\alpha \end{bmatrix} \right)
 \\\\
 &=
-\begin{bmatrix} \vert & &\vert && | \\ b^1 & \cdots & b^\alpha & \cdots & b^{N_3} \\ | & &  | & & | \end{bmatrix} \begin{bmatrix} - (b^1 \cdot a^\alpha) \\ \vdots \\ (s_\alpha - b^\alpha \cdot a^\alpha) \\ \vdots \\ - (b^{N_3} \cdot a^\alpha) \end{bmatrix}
+\underbrace{\begin{bmatrix} \vert & &\vert && | \\ b^1 & \cdots & b^\alpha & \cdots & b^{N_3} \\ | & &  | & & | \end{bmatrix}}_{[N_{2} \times N_{3}]} \underbrace{\begin{bmatrix} - (b^1 \cdot a^\alpha) \\ \vdots \\ (s_\alpha - b^\alpha \cdot a^\alpha) \\ \vdots \\ - (b^{N_3} \cdot a^\alpha) \end{bmatrix}}_{[N_{3}\times 1]}
 \\\\
 &=
 b^\alpha (s_\alpha - b^\alpha \cdot a^\alpha) - \sum_{\gamma \neq \alpha} b^\gamma (b^\gamma \cdot a^\alpha)
+\end{align*}
+$$
+$$
+\tau \frac{d}{dt} \overline W^{32} =  \tau \underbrace{\begin{bmatrix} \text{---} & db^1/dt & \text{---} \\ & \vdots & \\ \text{---} & db^{N_3}/dt & \text{---} \end{bmatrix}}_{[N_{3}\times N_{2}]} = 
+\left( 
+\underbrace{\begin{bmatrix} s_1 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & s_{N_1} \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix}}_{[N_{3}\times N_{1}]}
+- \underbrace{ \begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix} }_{[N_3 \times N_2]} \underbrace{ \begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix} }_{[N_2 \times N_1]} \right) \underbrace{ \begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix} }_{[N_1 \times N_2]}
+$$
+$$
+\begin{align*}
+\tau \frac{d}{dt} b^\alpha=
+\tau\underbrace{ \begin{bmatrix} \text{---} \frac{db^\alpha}{dt} \text{---} \end{bmatrix} }_{[1 \times N_{{2}}]}
+&=    
+\left( \underbrace{ \begin{bmatrix} 0 & \cdots  & s_\alpha & \cdots & 0\end{bmatrix} }_{\text{Row } \alpha \text{ of } S} - 
+\underbrace{ \begin{bmatrix} \text{---} & b^\alpha & \text{---}  \end{bmatrix} \begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix} }_{\text{Row } \alpha \text{ of } \overline{W}^{32}\overline{W}^{21}} \right) 
+\begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix}
+\\\\
+&=
+\left( \begin{bmatrix} 0 & \cdots  & s_\alpha & \cdots & 0\end{bmatrix} - \begin{bmatrix} b^\alpha \cdot a^1 & \cdots  & b^\alpha \cdot a^\alpha & \cdots & b^\alpha \cdot a^{N_{1}}\end{bmatrix}
+\right)\begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix}
+\\\\
+&=
+\underbrace{\begin{bmatrix} -(b^\alpha \cdot a^1) & \cdots  & (s^\alpha-b^\alpha \cdot a^\alpha) & \cdots & -(b^\alpha \cdot a^{N_{1}})\end{bmatrix}}_{1 \times N_{1}} 
+\underbrace{\begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{\alpha} & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix}}_{[N_{1}\times N_{2}]}
+\\\\
+&=
+(s_\alpha - b^\alpha \cdot a^\alpha)a^{\alpha} - \sum_{\gamma \neq \alpha} (b^\alpha \cdot a^\gamma)a^\gamma
 \end{align*}
 $$

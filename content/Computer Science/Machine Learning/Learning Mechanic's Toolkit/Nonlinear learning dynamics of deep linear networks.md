@@ -15,8 +15,11 @@ At first glance, deep linear networks seem quite uninteresting. Indeed, no expre
 $$
 \hat{y}= W^lW^{l-1} \ldots W^1x = W_{\text{total}}x.
 $$
-However, deep linear networks have nonlinear training dynamics which arise from nonlinear gradients. Analyzing these training dynamics gives us an idea of the role of depth in deep learning in general.
+However, deep linear networks exhibit nonlinear training dynamics which arise from nonlinear gradients. From these dynamics emerge long plateaus and rapid transitions in the loss---a prime example of mysterious deep learning phenomena that we want to explain. 
 ## Setup.
+#### A toy task for a toy model.
+It will prove useful to keep in mind an example task 
+#### The toy model.
 Consider a simple 3-layer linear network $\hat{y} = W^{32}W^{21}x$ with training data $\{ x^{\mu},y^\mu\}$ ($\mu=1,\dots,P$) and mean squared error $\mathcal{E} = \sum^P_{i=1}||y^\mu-W^{32}W^{21}x^\mu||^2_2$. Let's say that the input has dimension $N_1$, the hidden layer has dimension $N_{2}$ and the output has dimension $N_{3}$. So, $x^\mu \in \mathbb{R}^{N_{1}}$, $y^\mu \in \mathbb{R}^{N_{3}}$, $W^{21}$ is an $N_{2}\times N_{1}$ matrix and $W^{32}$ is an $N_{3}\times N_{2}$ matrix.
 
 <center>
@@ -45,9 +48,9 @@ $$
 
 \end{align*}
 $$
-where we defined the input-output correlation matrix $\Sigma^{31}\equiv \sum^P_{\mu=1}y^\mu {x^\mu}^\top$ and the input correlation matrix $\Sigma^{11} = \sum^P_{\mu=1} x^\mu {x^\mu}^\top$. Observe that $\Sigma^{31}$ and $\Sigma^{11}$ contain all the information from the dataset used in training.  
+where we defined the input-output correlation matrix as $\Sigma^{31}\equiv \sum^P_{\mu=1}y^\mu {x^\mu}^\top \propto \mathbb{E}[yx^\top]$ and the input correlation matrix as $\Sigma^{11} \equiv \sum^P_{\mu=1} x^\mu {x^\mu}^\top \propto \mathbb{E}[x x^\top]$. Observe that $\Sigma^{31}$ and $\Sigma^{11}$ contain all the information from the dataset used in training.  
 
-To use tools from differential equations, we will have to find the 'gradient flow' of the weights. We start by examining how the weight matrices get updated:
+To use tools from differential equations, we'll have to find the 'gradient flow' of the weights. We start by examining how the weight matrices get updated:
 $$
 \begin{align*}
 \Delta W^{21} = W^{21}_{\text{update}} &= \lambda{W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11})
@@ -62,8 +65,8 @@ $$
 \tau \frac{dW^{32}}{dt} &=  (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top \\
 \end{align}
 $$
-where we defined $\tau \equiv \frac{1}{\lambda}$.
-
+where we defined $\tau \equiv \frac{1}{P\lambda}$. Here, $t$ measures time in units of learning epochs---meaning that as $t$ goes from $n$ to $n+1$, the network goes through the entire dataset (so, $P$ examples) 1 time.
+## The good stuff.
 Before we proceed, let's take a closer look at the input-output correlation matrix $\Sigma^{31}$. It's defined as the sum of $P$ rank-1 matrices each of the form $y^\mu {x^\mu}^\top$ (an outer product):
 $$
 \begin{bmatrix}
@@ -105,16 +108,22 @@ $$
  & \vdots & \\
 \text{---} &  \sum_{\mu=1}^{P} y_{N_3}^\mu {\vec{x}^\mu}^\top & \text{---}
 \end{bmatrix}
-\end{align*}.
+\end{align*}
 $$
 In the second and third forms of $\Sigma^{31}$, I tried to show that the columns of $\Sigma^{31}$ are weighted sums of the output vectors while the rows of $\Sigma^{31}$ are weighted sums of the input vectors (transposed). 
 
+Solving equations (1) and (2) as is is difficult. So, let's make a simplifying assumption: that the input vectors $x^\mu$ are orthonormal, i.e. $\Sigma^{11} = I$. This is a reasonable assumption since training data is often whitened in practice. Once we assume that $\Sigma^{11}=I$, the input-output correlation matrix $\Sigma^{31}$ becomes the sole source of information about the training data that can be used in learning. 
 $$
-\begin{align*} \tau \frac{d W^{21}}{dt} &= \overline{W}^{32 T} U^{33 T} \left( U^{33} S^{31} V^{11 T} - U^{33} \overline{W}^{32} \overline{W}^{21} V^{11 T} \right) \\ &= \overline{W}^{32 T} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) V^{11 T} \\ \\ \implies \tau \frac{d W^{21}}{dt} V^{11} &= \overline{W}^{32 T} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) \\ &= \tau \frac{d \overline{W}^{21}}{dt} \end{align*}
+\begin{align*} \tau \frac{d W^{21}}{dt} &= {\overline{W}^{32}}^\top {U^{33}}^\top \left( U^{33} S^{31} {V^{11}}^\top - U^{33} \overline{W}^{32} \overline{W}^{21} {V^{11}}^\top \right) \\ 
+&= {\overline{W}^{32}}^\top \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {V^{11}}^\top \\ \\ 
+\implies \tau \frac{d W^{21}}{dt} V^{11} &= \overline{W}^{32 T} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) \\ &= \tau \frac{d \overline{W}^{21}}{dt} \end{align*}
 $$
 $$
-\begin{align*} \tau \frac{d\overline{W}^{32}}{dt} &= \left( U^{33} S^{31} V^{11 T} - U^{33} \overline{W}^{32} \overline{W}^{21} V^{11 T} \right) V^{11} \overline{W}^{21 T} \\ &= U^{33} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) \overline{W}^{21 T} \\ \\ \implies \tau U^{33 T} \frac{d W^{32}}{dt} &= \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) \overline{W}^{21 T} \\ &= \tau \frac{d \overline{W}^{32}}{dt} \end{align*}
+\begin{align*} \tau \frac{d\overline{W}^{32}}{dt} &= \left( U^{33} S^{31} {V^{11}}^\top - U^{33} \overline{W}^{32} \overline{W}^{21} {V^{11}}^\top \right) V^{11} {\overline{W}^{21}}^\top \\ 
+&= U^{33} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {\overline{W}^{21}}^\top \\ \\ \implies \tau {U^{33}}^\top \frac{d W^{32}}{dt} 
+&= \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {\overline{W}^{21}}^\top \\ &= \tau \frac{d \overline{W}^{32}}{dt} \end{align*}
 $$
+in terms of connectivity modes ...
 $$
 \tau \frac{d}{dt} \overline{W}^{21} = \tau 
 \underbrace{\begin{bmatrix} | & & | \\ \frac{da^1}{dt} & \cdots & \frac{da^{N_1}}{dt} \\ | & & | \end{bmatrix} }_{[N_{2} \times N_{1}]}
@@ -169,3 +178,21 @@ $$
 (s_\alpha - b^\alpha \cdot a^\alpha)a^{\alpha} - \sum_{\gamma \neq \alpha} (b^\alpha \cdot a^\gamma)a^\gamma
 \end{align*}
 $$
+
+<center>
+<img src="Screenshot 2026-02-11 at 12.29.19 AM.png" width="400">
+<figcaption>Figure 1 (from the original Saxe et al. paper)</figcaption>
+</center>
+
+Let's take a moment to take stock of the simplifying assumptions we made to get to this point. 
+
+- First, we assumed that our input vectors were orthonormal, i.e. $\Sigma^{11}=I$.
+- Second, we assumed that our initial weight matrices were chosen from a special class of "decoupled" initial conditions. Specifically, we assumed that the connectivity modes $a^\alpha$ and $b^\alpha$ (the weights into and out of the hidden layer) point in the same direction for each mode and are orthogonal to all other modes.
+- Third, we assumed that the scalars $a = a^\alpha \cdot r^\alpha$ and $b = b^\alpha \cdot r^\alpha$ started off with the same value.
+
+The first assumption is reasonable as data whitening is often done in practice. The third assumption is reasonable given that we start with small random initial conditions. We can make a similar small init argument for the second assumption, but ultimately, all our assumptions are vindicated by the fact that the results we ended up with approximate the real thing well (see figure 1). And they are of course also justified by the fact that they make the math easier and arguably more elegant.
+
+Recall why we sought to analyze deep linear networks in the first place: by analyzing the simple toy model in deep linear networks, we wanted to elucidate mysterious nonlinear learning phenomena typically seen in deep neural networks. So, what kind of phenomena were we able to elucidate?
+- Plateaus and Rapid Transitions: It explains the "stage-like" transitions in learning, where a network experiences long periods of little improvement (plateaus) followed by sudden, rapid drops in error. This is the main 
+- Depth-Independent Learning Times ...
+- dynamical isometry (?)

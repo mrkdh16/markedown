@@ -18,15 +18,25 @@ $$
 However, deep linear networks exhibit nonlinear training dynamics which arise from nonlinear gradients. From these dynamics emerge long plateaus and rapid transitions in the loss---a prime example of mysterious deep learning phenomena that we want to explain. 
 ## Setup.
 #### A toy task for a toy model.
-It will prove useful to keep in mind an example task 
+It will prove useful to keep in mind a simple example task. Imagine the network is presented with an item $i$ (e.g. a "Canary") represented as a one-hot input vector $x^\mu$. The network's objective is to predict a vector of features $y^\mu$, such as "Can Fly," "Has Wings," or "Is Yellow".
+
+Throughout training, the network experiences many such examples $\{x^\mu, y^\mu\}$. The statistical structure of this environment is captured by the input-output correlation matrix $\Sigma^{31} \equiv \sum_{\mu}y^\mu {x^\mu}^\top \propto \mathbb{E}[y^\mu {x^\mu}^\top]$:
+
+<center>
+<img src="Screenshot 2026-02-12 at 9.48.02 PM.png" width="200">
+<figcaption>Figure 1: Example of an input-output correlation matrix</figcaption>
+</center>
+
+This matrix represents how strongly specific items correlate with specific properties across the entire dataset and is critical to our analysis.
 #### The toy model.
-Consider a simple 3-layer linear network $\hat{y} = W^{32}W^{21}x$ with training data $\{ x^{\mu},y^\mu\}$ ($\mu=1,\dots,P$) and mean squared error $\mathcal{E} = \sum^P_{i=1}||y^\mu-W^{32}W^{21}x^\mu||^2_2$. Let's say that the input has dimension $N_1$, the hidden layer has dimension $N_{2}$ and the output has dimension $N_{3}$. So, $x^\mu \in \mathbb{R}^{N_{1}}$, $y^\mu \in \mathbb{R}^{N_{3}}$, $W^{21}$ is an $N_{2}\times N_{1}$ matrix and $W^{32}$ is an $N_{3}\times N_{2}$ matrix.
+Consider a simple 3-layer linear network $\hat{y} = W^{32}W^{21}x$ with training data $\{ x^{\mu},y^\mu\}$ ($\mu=1,\dots,P$) and mean squared error $\mathcal{E} = \sum^P_{i=1}||y^\mu-W^{32}W^{21}x^\mu||^2_2$. Let's say that the input has dimension $N_1$, the hidden layer has dimension $N_{2}$ and the output has dimension $N_{3}$. So, $x^\mu \in \mathbb{R}^{N_{1}}$, $y^\mu \in \mathbb{R}^{N_{3}}$, $W^{21}$ is an $N_{2}\times N_{1}$ matrix and $W^{32}$ is an $N_{3}\times N_{2}$ matrix. In terms of our toy task, this means that we have $N_1$ items, $N_3$ possible features that the items can have and $P$ examples of items having features.
 
 <center>
 <img src="Nonlinear Learning Dynamics in DLNs.png" width="200">
+<figcaption>Figure 2: A 3-layer network</figcaption>
 </center>
 
-To run gradient descent on $\mathcal{E}$, we need to compute the gradients for each of the weight matrices. The simplest way to do this is how a computer does it: with backpropagation (see [[3-layer linear network backprop]] for derivation). We get the following gradients from backprop:
+To run gradient descent on $\mathcal{E}$, we need to compute the partial derivatives for each of the weight matrices. The simplest way to do this is how a computer does it: with backpropagation (see [[3-layer linear network backprop]] for derivation). We get the following partial derivatives from backprop:
 $$
 \begin{align*}
 \frac{\partial \mathcal{E}}{\partial W^{21}} &= \sum^P_{\mu=1} \frac{\partial}{\partial W^{21}} ||y^\mu - W^{32}W^{21}x^\mu||^2_{2}  \\
@@ -67,6 +77,8 @@ $$
 $$
 where we defined $\tau \equiv \frac{1}{P\lambda}$. Here, $t$ measures time in units of learning epochs---meaning that as $t$ goes from $n$ to $n+1$, the network goes through the entire dataset (so, $P$ examples) 1 time.
 ## The good stuff.
+Solving equations (1) and (2) as is is difficult. So, let's make a simplifying assumption: that the input vectors $x^\mu$ are orthonormal, i.e. $\Sigma^{11} = I$. This is a reasonable assumption since training data is often whitened in practice. Once we assume that $\Sigma^{11}=I$, the input-output correlation matrix $\Sigma^{31}$ becomes the sole source of information about the training data that can be used in learning. 
+
 Before we proceed, let's take a closer look at the input-output correlation matrix $\Sigma^{31}$. It's defined as the sum of $P$ rank-1 matrices each of the form $y^\mu {x^\mu}^\top$ (an outer product):
 $$
 \begin{bmatrix}
@@ -112,16 +124,35 @@ $$
 $$
 In the second and third forms of $\Sigma^{31}$, I tried to show that the columns of $\Sigma^{31}$ are weighted sums of the output vectors while the rows of $\Sigma^{31}$ are weighted sums of the input vectors (transposed). 
 
-Solving equations (1) and (2) as is is difficult. So, let's make a simplifying assumption: that the input vectors $x^\mu$ are orthonormal, i.e. $\Sigma^{11} = I$. This is a reasonable assumption since training data is often whitened in practice. Once we assume that $\Sigma^{11}=I$, the input-output correlation matrix $\Sigma^{31}$ becomes the sole source of information about the training data that can be used in learning. 
+In order to effectively explore the statistical structure in the data, we consider the (compact) [singular value decomposition (SVD)](https://www.cs.cmu.edu/~venkatg/teaching/CStheory-infoage/book-chapter-4.pdf) of $\Sigma^{31}$:
+$$
+\Sigma^{31} = U^{33}S^{31}{V^{11}}^\top = \sum_{\alpha=1}^{N_1} s_\alpha u^\alpha {v^{\alpha}}^\top.
+$$
+
+<center>
+<img src="Screenshot 2026-02-12 at 10.04.20 PM.png" width=700>
+<figcaption>Figure 3: Modes link a set of coherently covarying properties with a set of coherently covarying items</figcaption>
+</center>
+
+Using the SVD allows us to probe the data in terms of independent "modes." We refer to the columns of ${V^{11}}$ (i.e. the rows of ${V^{11}}^\top$) as *input-analyzing* vectors, or *input modes*. These vectors $v^\alpha$ reflect independent modes of variation in the inputs, effectively defining a *[canonical](https://math.stackexchange.com/questions/2152059/what-do-people-mean-by-canonical) coordinate system* for the input domain. As a concrete example, consider the second row vector of $V^\top$ in figure 3. This vector ${v^2}^\top$ acts as an "animal-plant" axis. Along this axis, animals (Canary, Salmon) have positive values while plants (Oak, Rose) have negative values. This animal-plant axis is a way of categorizing the data determined by mathematical structure.
+
+We refer to the columns of $U^{33}$ as *output-analyzing* vectors, or *output modes*. Similar to input modes, these vectors $u^\alpha$ define a canonical coordinate system for the output domain. Observe that in figure 3, unlike the input modes, the output modes do not form a complete basis for the feature space. This is essentially because four categorical directions are enough to completely characterize the structure of the data. 
+
+The second column vector of $U$ ($u^2$) pairs with the second row vector of $V^\top$ (${v^2}^\top$) to create a unified animal-plant axis. While $v^2$ determines which items belong to the category (animals v.s. plants in this case), $u^2$ determines which properties belong to the category. Along $u^2$, more animal-like properties will have higher values, while more plant-like properties will have lower values (roots < leaves, petals < fly, swim < move). The "categorizing power" of any given axis is quantified by its singular value $s_\alpha$. Larger singular values correspond to more important distinctions, while smaller singular values correspond to finer subordinate details.
+
+Using the input and output modes, we can perform a change of variables:
+$$
+W^{21} = 
+$$
 $$
 \begin{align*} \tau \frac{d W^{21}}{dt} &= {\overline{W}^{32}}^\top {U^{33}}^\top \left( U^{33} S^{31} {V^{11}}^\top - U^{33} \overline{W}^{32} \overline{W}^{21} {V^{11}}^\top \right) \\ 
 &= {\overline{W}^{32}}^\top \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {V^{11}}^\top \\ \\ 
-\implies \tau \frac{d W^{21}}{dt} V^{11} &= \overline{W}^{32 T} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) \\ &= \tau \frac{d \overline{W}^{21}}{dt} \end{align*}
+\implies \tau \frac{d W^{21}}{dt} V^{11} = \tau \frac{d \overline{W}^{21}}{dt} &=\overline{W}^{32 T} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) \\  \end{align*}
 $$
 $$
 \begin{align*} \tau \frac{d\overline{W}^{32}}{dt} &= \left( U^{33} S^{31} {V^{11}}^\top - U^{33} \overline{W}^{32} \overline{W}^{21} {V^{11}}^\top \right) V^{11} {\overline{W}^{21}}^\top \\ 
 &= U^{33} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {\overline{W}^{21}}^\top \\ \\ \implies \tau {U^{33}}^\top \frac{d W^{32}}{dt} 
-&= \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {\overline{W}^{21}}^\top \\ &= \tau \frac{d \overline{W}^{32}}{dt} \end{align*}
+= \tau \frac{d \overline{W}^{32}}{dt} &= \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {\overline{W}^{21}}^\top \end{align*}
 $$
 in terms of connectivity modes ...
 $$
@@ -135,6 +166,7 @@ $$
 \underbrace{\begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix}}_{[N_{3}\times N_{2}]} 
 \underbrace{\begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix}}_{[N_{2}\times N_{1}]} \right)
 $$
+Looking at a single column of Wbar21 ...
 $$
 \begin{align*}
 \tau \frac{d}{dt}a^\alpha =
@@ -157,6 +189,7 @@ $$
 \underbrace{\begin{bmatrix} s_1 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & s_{N_1} \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix}}_{[N_{3}\times N_{1}]}
 - \underbrace{ \begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix} }_{[N_3 \times N_2]} \underbrace{ \begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix} }_{[N_2 \times N_1]} \right) \underbrace{ \begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix} }_{[N_1 \times N_2]}
 $$
+looking at a single row...
 $$
 \begin{align*}
 \tau \frac{d}{dt} b^\alpha=
@@ -178,6 +211,7 @@ $$
 (s_\alpha - b^\alpha \cdot a^\alpha)a^{\alpha} - \sum_{\gamma \neq \alpha} (b^\alpha \cdot a^\gamma)a^\gamma
 \end{align*}
 $$
+
 
 <center>
 <img src="Screenshot 2026-02-11 at 12.29.19 AM.png" width="400">

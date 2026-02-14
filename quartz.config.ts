@@ -24,20 +24,20 @@ const config: QuartzConfig = {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "Lato", // Use Lato for headers
-        body: "Lato",   // Use Lato for the body
+        header: "EB Garamond", // Use Lato for headers
+        body: "EB Garamond",   // Use Lato for the body
         code: "IBM Plex Mono",
       },
       colors: {
         lightMode: {
-          light: "#F2F0EF",      // Page background
+          light: "#FFFFFF",      // Page background
           lightgray: "#e5e5e5",   // Borders
           gray: "#b8b8b8",       // Secondary text (e.g., dates)
-          darkgray: "#4e4e4e",   // Body text
+          darkgray: "#000000",   // Body text
           dark: "#000000",       // Headings
           secondary: "#1772d0",   // Link color from your personal site
           tertiary: "#f09228",    // Link hover color from your personal site
-          highlight: "#F2F0EF", // A more subtle highlight
+          highlight: "#FFFFFF", // A more subtle highlight
           textHighlight: "#f0922855", 
         },
         darkMode: {

@@ -1,15 +1,26 @@
 ---
-title: Contents
+title: Mark's Notes
 ---
-# Notes
-A collection of structured notes from college courses and self-study across mathematics, physics, and computer science. This is where I work through ideas formally. I hope to establish connections across disciplines and build a rigorous understanding of how the world works.
-### Learning Mechanic's Toolkit
-- [[Nonlinear learning dynamics of deep linear networks]]
-### Mathematics
+<center>
+<img src="tree.jpg" width="400">
+</center>
+
+A collection of structured notes from college courses and self-study across mathematics, physics, and computer science. This is where I work through ideas, establish connections across disciplines and build a rigorous understanding of how the world works.
+## 📝 Polished Posts
+*More complete write-ups and refined explorations*
+#### A Learning Mechanic's Toolkit
+- [[Linear Models, Nonlinear Dynamics; A Toy Model for Deep Learning (Saxe et al.)]]
+#### Mathematics Proofs
+- [[Weierstrass Approximation Theorem]]
+- [[Riesz Representation Theorem]]
+## 🌱 Messy Learning
+*Raw notes, incomplete thoughts, and ongoing learning*
+#### Mathematics
 - [[Linear Algebra]]
 - [[Applications]]
-### Computer Science
+#### Computer Science
 - [[Machine Learning]]
-### Physics (under construction)
-- [[Classical Mechanics]]
-- [[Special Relativity]]
+#### Philosophy
+- [[AI, Values, and Alignment]]
+- [[A reasonable argument against reason]]
+- [[All actions are selfish]]

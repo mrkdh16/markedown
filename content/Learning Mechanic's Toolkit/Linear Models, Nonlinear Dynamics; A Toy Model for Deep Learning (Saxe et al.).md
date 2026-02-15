@@ -1,13 +1,12 @@
 ---
-title: Nonlinear learning dynamics of deep linear networks
+title: "Linear Models, Nonlinear Dynamics: A Toy Model for Deep Learning (Saxe et al.)"
 draft: false
 tags:
-  - computer-science
-  - machine-learning
-  - math
-  - physics
-  - linear-algebra
 ---
+<center>
+<img src="Screenshot 2026-02-14 at 12.23.24 AM.png" width="600">
+</center>
+
 ## Introduction.
 Understanding deep learning is a *very* hard problem. When tackling such hard problems with complicated interactions, it can be extremely helpful to analyze simpler toy models. Ideally, the toy models we choose to study will exhibit some of the same complex, nontrivial phenomena that we want to explain in the original system. By providing mathematically sound explanations for said phenomena in our toy models we can gain insight into our hard problem. It turns out that deep linear networks are great toy models. They are mathematically tractable yet retain some of the mysterious phenomena that we observe in deep nonlinear networks (i.e. neural networks). 
 
@@ -32,7 +31,7 @@ This matrix represents how strongly specific items correlate with specific prope
 Consider a simple 3-layer linear network $\hat{y} = W^{32}W^{21}x$ with training data $\{ x^{\mu},y^\mu\}$ ($\mu=1,\dots,P$) and mean squared error $\mathcal{E} = \sum^P_{i=1}||y^\mu-W^{32}W^{21}x^\mu||^2_2$. Let's say that the input has dimension $N_1$, the hidden layer has dimension $N_{2}$ and the output has dimension $N_{3}$. So, $x^\mu \in \mathbb{R}^{N_{1}}$, $y^\mu \in \mathbb{R}^{N_{3}}$, $W^{21}$ is an $N_{2}\times N_{1}$ matrix and $W^{32}$ is an $N_{3}\times N_{2}$ matrix. In terms of our toy task, this means that we have $N_1$ items, $N_3$ possible features that the items can have and $P$ examples of items having features.
 
 <center>
-<img src="Nonlinear Learning Dynamics in DLNs.png" width="200">
+<img src="Screenshot 2026-02-14 at 12.39.03 AM.png" width="350">
 <figcaption>Figure 2: A 3-layer network</figcaption>
 </center>
 

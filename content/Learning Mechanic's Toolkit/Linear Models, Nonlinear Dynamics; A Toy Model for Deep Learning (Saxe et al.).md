@@ -68,7 +68,7 @@ $$
 \Delta W^{32}=W^{32}_{\text{update}} &= \lambda (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top
 \end{align*}
 $$
-where $\lambda$ is some small positive number, i.e. the learning rate. Then, for sufficiently small $\lambda$, we can make the following approximation:
+where $\lambda$ is some small positive number, i.e. the learning rate. Then, for sufficiently small $\lambda$, we can make the following approximation[^1]:
 $$
 \begin{align}
 \tau \frac{dW^{21}}{dt} &= {W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}) \\
@@ -248,7 +248,7 @@ Because our toy model is so simple, we can analytically derive exactly what the 
 $$
 E = \frac{1}{2\tau}\sum_{\alpha}(s_{\alpha}-a^\alpha \cdot b^\alpha)^2+\frac{1}{2\tau}\sum_{\alpha \neq \beta}(a^\alpha \cdot b^\beta)^2,
 $$
-i.e. $\frac{da^\alpha}{dt}=-\frac{\partial E}{\partial a^\alpha}, \space \frac{db^\alpha}{dt}=-\frac{\partial E}{\partial b^\alpha}$. To minimize $E$, the input and output modes $a^\alpha$ and $b^\alpha$ of the same index 
+i.e. $\frac{da^\alpha}{dt}=-\frac{\partial E}{\partial a^\alpha}, \space \frac{db^\alpha}{dt}=-\frac{\partial E}{\partial b^\alpha}$. To minimize $E$, we need $a^\alpha \cdot b^\alpha \approx s_{\alpha} \delta_{\alpha \beta}$[^2]
 ## How the network learns.
 We've figured out exactly what the network will learn, but there is yet more information that we can extract from our equations. 
 #### More simplifying assumptions: from vectors to scalar equations.
@@ -301,3 +301,7 @@ Recall why we sought to analyze deep linear networks in the first place: by anal
 - Plateaus and Rapid Transitions: It explains the "stage-like" transitions in learning, where a network experiences long periods of little improvement (plateaus) followed by sudden, rapid drops in error. This is the main 
 - Depth-Independent Learning Times ...
 - dynamical isometry (?)
+
+[^1]: From equations (1) and (2) follow a conservation law. 
+
+[^2]: 

@@ -8,7 +8,7 @@ tags:
 </center>
 
 ## Introduction.
-Understanding deep learning is a *very* hard problem. When tackling such hard problems with complicated interactions, it can be extremely helpful to analyze simpler toy models. Ideally, the toy models we choose to study will exhibit some of the same complex, nontrivial phenomena that we want to explain in the original system. By providing mathematically sound explanations for said phenomena in our toy models we can gain insight into our hard problem. It turns out that deep linear networks are great toy models. They are mathematically tractable yet retain some of the mysterious phenomena that we observe in deep nonlinear networks (i.e. neural networks). 
+Understanding deep learning is a *very* hard problem. When tackling such hard problems with countless complicated interactions, it can be extremely helpful to analyze simpler toy models. Ideally, the toy models we choose to study will exhibit some of the same complex, nontrivial phenomena that we want to explain in the original system. By providing mathematically sound explanations for said phenomena in our toy models we can gain insight into our hard problem. It turns out that deep linear networks are great toy models. They are mathematically tractable yet retain some of the mysterious phenomena that we observe in deep nonlinear networks (i.e. neural networks). 
 
 At first glance, deep linear networks seem quite uninteresting. Indeed, no expressiveness is gained from adding layers in linear networks as the input-output map can always be rewritten as a single shallow layer:
 $$
@@ -35,6 +35,7 @@ Consider a simple 3-layer linear network $\hat{y} = W^{32}W^{21}x$ with training
 <figcaption>Figure 2: A 3-layer network</figcaption>
 </center>
 
+#### Taking derivatives.
 To run gradient descent on $\mathcal{E}$, we need to compute the partial derivatives for each of the weight matrices. The simplest way to do this is how a computer does it: with backpropagation (see [[3-layer linear network backprop]] for derivation). We get the following partial derivatives from backprop:
 $$
 \begin{align*}
@@ -75,10 +76,17 @@ $$
 \end{align}
 $$
 where we defined $\tau \equiv \frac{1}{P\lambda}$. Here, $t$ measures time in units of learning epochs---meaning that as $t$ goes from $n$ to $n+1$, the network goes through the entire dataset (so, $P$ examples) 1 time.
-## The good stuff.
-Solving equations (1) and (2) as is is difficult. So, let's make a simplifying assumption: that the input vectors $x^\mu$ are orthonormal, i.e. $\Sigma^{11} = I$. This is a reasonable assumption since training data is often whitened in practice. Once we assume that $\Sigma^{11}=I$, the input-output correlation matrix $\Sigma^{31}$ becomes the sole source of information about the training data that can be used in learning. 
-
-Before we proceed, let's take a closer look at the input-output correlation matrix $\Sigma^{31}$. It's defined as the sum of $P$ rank-1 matrices each of the form $y^\mu {x^\mu}^\top$ (an outer product):
+#### The first simplifying assumption.
+Solving equations (1) and (2) as is is difficult. So, let's make a simplifying assumption: that the input vectors $x^\mu$ are orthonormal, i.e. $\Sigma^{11} = I$. This is a reasonable assumption since training data is often whitened in practice. Once we assume that $\Sigma^{11}=I$, the input-output correlation matrix $\Sigma^{31}$ becomes the sole source of information about the training data that can be used in learning. This assumption simplifies equations (1) and (2):
+$$
+\begin{align}
+\tau \frac{dW^{21}}{dt} &= {W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}) \\
+\tau \frac{dW^{32}}{dt} &=  (\Sigma^{31}-W^{32}W^{21}){W^{21}}^\top. \\
+\end{align}
+$$
+However, it is still the case that we have to deal with matrix equations. Might there be a way to get vector, or perhaps even scalar, equations that represent the same thing? It turns out the answer is yes (with some more simplifying assumptions), but to get there, we first need to take a closer look at the input-output correlation matrix.
+#### The input-output correlation matrix.
+The input-output correlation matrix $\Sigma^{31}$ is defined as the sum of $P$ rank-1 matrices each of the form $y^\mu {x^\mu}^\top$ (an outer product):
 $$
 \begin{bmatrix}
 y_1^\mu \\
@@ -138,22 +146,23 @@ Using the SVD allows us to probe the data in terms of independent "modes." We re
 We refer to the columns of $U^{33}$ as *output-analyzing* vectors, or *output modes*. Similar to input modes, these vectors $u^\alpha$ define a canonical coordinate system for the output domain. Observe that in figure 3, unlike the input modes, the output modes do not form a complete basis for the feature space. This is essentially because four categorical directions are enough to completely characterize the structure of the data. 
 
 The second column vector of $U$ ($u^2$) pairs with the second row vector of $V^\top$ (${v^2}^\top$) to create a unified animal-plant axis. While $v^2$ determines which items belong to the category (animals v.s. plants in this case), $u^2$ determines which properties belong to the category. Along $u^2$, more animal-like properties will have higher values, while more plant-like properties will have lower values (roots < leaves, petals < fly, swim < move). The "categorizing power" of any given axis is quantified by its singular value $s_\alpha$. Larger singular values correspond to more important distinctions, while smaller singular values correspond to finer subordinate details.
-
+#### From matrix to vector equations.
 Using the input and output modes, we can perform a change of variables:
 $$
-W^{21} = 
+\overline{W}^{21} \equiv W^{21}{V^{11}}, \space \overline{W}^{32} \equiv {U^{33}}^{\top}W^{32}.
 $$
+By rearranging, we can gain some intuition as to what these new matrices represent: $W^{21} = \overline{W}^{21} {V^{11}}^\top, \space W^{32}={U^{33}} \overline{W}^{32}$. The matrix $W^{21}$ takes inputs to the hidden layer. Since ${V^{11}}^\top$ ($={V^{11}}^{-1}$) can be thought of as a change of basis from input space to the space of input modes, $\overline{W}^{21}$ can be thought of as taking input modes to hidden neurons. Similarly, $W^{32}$ takes hidden neurons to outputs. Since $U^{33}$ can be thought of as a change of basis from the space of output modes to output space, $\overline{W}^{32}$ can be thought of as taking hidden neurons to output modes. We call the $\alpha$th column vector of $\overline{W}^{21}$, $a^\alpha$ and the $\alpha$th row vector of $\overline{W}^{32}$, $b^\alpha$.
+
+Inserting our new matrices into equations (3) and (4),
 $$
 \begin{align*} \tau \frac{d W^{21}}{dt} &= {\overline{W}^{32}}^\top {U^{33}}^\top \left( U^{33} S^{31} {V^{11}}^\top - U^{33} \overline{W}^{32} \overline{W}^{21} {V^{11}}^\top \right) \\ 
 &= {\overline{W}^{32}}^\top \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {V^{11}}^\top \\ \\ 
-\implies \tau \frac{d W^{21}}{dt} V^{11} = \tau \frac{d \overline{W}^{21}}{dt} &=\overline{W}^{32 T} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) \\  \end{align*}
-$$
-$$
-\begin{align*} \tau \frac{d\overline{W}^{32}}{dt} &= \left( U^{33} S^{31} {V^{11}}^\top - U^{33} \overline{W}^{32} \overline{W}^{21} {V^{11}}^\top \right) V^{11} {\overline{W}^{21}}^\top \\ 
+\implies \tau \frac{d W^{21}}{dt} V^{11} = \tau \frac{d \overline{W}^{21}}{dt} &={\overline{W}^{32}}^\top \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) \\\\
+\tau \frac{d\overline{W}^{32}}{dt} &= \left( U^{33} S^{31} {V^{11}}^\top - U^{33} \overline{W}^{32} \overline{W}^{21} {V^{11}}^\top \right) V^{11} {\overline{W}^{21}}^\top \\ 
 &= U^{33} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {\overline{W}^{21}}^\top \\ \\ \implies \tau {U^{33}}^\top \frac{d W^{32}}{dt} 
 = \tau \frac{d \overline{W}^{32}}{dt} &= \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {\overline{W}^{21}}^\top \end{align*}
 $$
-in terms of connectivity modes ...
+we get new equations that can be thought of in terms of vector equations. Let's first examine the time derivative of $\overline{W}^{21}$:
 $$
 \tau \frac{d}{dt} \overline{W}^{21} = \tau 
 \underbrace{\begin{bmatrix} | & & | \\ \frac{da^1}{dt} & \cdots & \frac{da^{N_1}}{dt} \\ | & & | \end{bmatrix} }_{[N_{2} \times N_{1}]}
@@ -163,41 +172,54 @@ $$
 \underbrace{\begin{bmatrix} s_1 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & s_{N_1} \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix}}_{[N_{3}\times N_{1}]}
 - 
 \underbrace{\begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix}}_{[N_{3}\times N_{2}]} 
-\underbrace{\begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix}}_{[N_{2}\times N_{1}]} \right)
+\underbrace{\begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix}}_{[N_{2}\times N_{1}]} \right).
 $$
-Looking at a single column of Wbar21 ...
+Looking at a single column vector $a^\alpha$ of $\overline{W}^{21}$,
 $$
-\begin{align*}
 \tau \frac{d}{dt}a^\alpha =
 
-\tau \underbrace{\begin{bmatrix} | \\ \frac{da^\alpha}{dt} \\ | \end{bmatrix}}_{[N_{2}\times 1]} &=  \begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix}  \left( \underbrace{ \begin{bmatrix} 0 \\ \vdots \\ s_\alpha \\ \vdots \\ 0 \end{bmatrix} }_{\text{Column } \alpha \text{ of } S} - \underbrace{ \begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix} \begin{bmatrix} | \\ a^\alpha \\ | \end{bmatrix} }_{\text{Column } \alpha \text{ of } \overline{W}^{32}\overline{W}^{21}} \right)
-\\\\
+\tau \underbrace{\begin{bmatrix} | \\ \frac{da^\alpha}{dt} \\ | \end{bmatrix}}_{[N_{2}\times 1]} =  
+\underbrace{\begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix}}_{{\overline{W}^{32}}^\top}
+\left( \underbrace{ \begin{bmatrix} 0 \\ \vdots \\ s_\alpha \\ \vdots \\ 0 \end{bmatrix} }_{\text{Column } \alpha \text{ of } S} - \underbrace{ \begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix} \begin{bmatrix} | \\ a^\alpha \\ | \end{bmatrix} }_{\text{Column } \alpha \text{ of } \overline{W}^{32}\overline{W}^{21}} \right)
+$$
+<details markdown="1"> <summary> Detailed derivation  </summary> 
+
+$$
+\begin{align*}
 &=
 \begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix} \left( \begin{bmatrix} 0 \\ \vdots \\ s_\alpha \\ \vdots \\ 0 \end{bmatrix} - \begin{bmatrix} b^1 \cdot a^\alpha \\ \vdots \\ b^\alpha \cdot a^\alpha \\ \vdots \\ b^{N_3} \cdot a^\alpha \end{bmatrix} \right)
 \\\\
 &=
 \underbrace{\begin{bmatrix} \vert & &\vert && | \\ b^1 & \cdots & b^\alpha & \cdots & b^{N_3} \\ | & &  | & & | \end{bmatrix}}_{[N_{2} \times N_{3}]} \underbrace{\begin{bmatrix} - (b^1 \cdot a^\alpha) \\ \vdots \\ (s_\alpha - b^\alpha \cdot a^\alpha) \\ \vdots \\ - (b^{N_3} \cdot a^\alpha) \end{bmatrix}}_{[N_{3}\times 1]}
-\\\\
-&=
-b^\alpha (s_\alpha - b^\alpha \cdot a^\alpha) - \sum_{\gamma \neq \alpha} b^\gamma (b^\gamma \cdot a^\alpha)
 \end{align*}
 $$
+</details>
+
+$$
+=
+b^\alpha (s_\alpha - b^\alpha \cdot a^\alpha) - \sum_{\gamma \neq \alpha} b^\gamma (b^\gamma \cdot a^\alpha).
+$$
+
+Now turning to the time derivative of $\overline{W}^{32}$,
 $$
 \tau \frac{d}{dt} \overline W^{32} =  \tau \underbrace{\begin{bmatrix} \text{---} & db^1/dt & \text{---} \\ & \vdots & \\ \text{---} & db^{N_3}/dt & \text{---} \end{bmatrix}}_{[N_{3}\times N_{2}]} = 
 \left( 
 \underbrace{\begin{bmatrix} s_1 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & s_{N_1} \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix}}_{[N_{3}\times N_{1}]}
 - \underbrace{ \begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix} }_{[N_3 \times N_2]} \underbrace{ \begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix} }_{[N_2 \times N_1]} \right) \underbrace{ \begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix} }_{[N_1 \times N_2]}
 $$
-looking at a single row...
+This time looking at a single row vector $b^\alpha$ of $\overline{W}^{32}$,
 $$
-\begin{align*}
 \tau \frac{d}{dt} b^\alpha=
 \tau\underbrace{ \begin{bmatrix} \text{---} \frac{db^\alpha}{dt} \text{---} \end{bmatrix} }_{[1 \times N_{{2}}]}
-&=    
+=    
 \left( \underbrace{ \begin{bmatrix} 0 & \cdots  & s_\alpha & \cdots & 0\end{bmatrix} }_{\text{Row } \alpha \text{ of } S} - 
 \underbrace{ \begin{bmatrix} \text{---} & b^\alpha & \text{---}  \end{bmatrix} \begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix} }_{\text{Row } \alpha \text{ of } \overline{W}^{32}\overline{W}^{21}} \right) 
-\begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix}
-\\\\
+\underbrace{ \begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix}}_{{\overline{W}^{21}}^\top}
+$$
+<details markdown="1"> <summary>Detailed derivation</summary>
+
+$$
+\begin{align*}
 &=
 \left( \begin{bmatrix} 0 & \cdots  & s_\alpha & \cdots & 0\end{bmatrix} - \begin{bmatrix} b^\alpha \cdot a^1 & \cdots  & b^\alpha \cdot a^\alpha & \cdots & b^\alpha \cdot a^{N_{1}}\end{bmatrix}
 \right)\begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix}
@@ -205,25 +227,75 @@ $$
 &=
 \underbrace{\begin{bmatrix} -(b^\alpha \cdot a^1) & \cdots  & (s^\alpha-b^\alpha \cdot a^\alpha) & \cdots & -(b^\alpha \cdot a^{N_{1}})\end{bmatrix}}_{1 \times N_{1}} 
 \underbrace{\begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{\alpha} & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix}}_{[N_{1}\times N_{2}]}
-\\\\
-&=
-(s_\alpha - b^\alpha \cdot a^\alpha)a^{\alpha} - \sum_{\gamma \neq \alpha} (b^\alpha \cdot a^\gamma)a^\gamma
 \end{align*}
 $$
 
+</details>
+
+$$
+=
+(s_\alpha - b^\alpha \cdot a^\alpha)a^{\alpha} - \sum_{\gamma \neq \alpha} (b^\alpha \cdot a^\gamma)a^\gamma.
+$$
+Thus, we have successfully turned our matrix equations (3) and (4) into vector equations:
+$$
+\begin{align}
+\tau \frac{d}{dt}a^\alpha &= b^\alpha (s_\alpha - b^\alpha \cdot a^\alpha) - \sum_{\gamma \neq \alpha} b^\gamma (b^\gamma \cdot a^\alpha) \\ 
+\tau \frac{d}{dt} b^\alpha &= (s_\alpha - b^\alpha \cdot a^\alpha)a^{\alpha} - \sum_{\gamma \neq \alpha} (b^\alpha \cdot a^\gamma)a^\gamma.
+\end{align}
+$$
+## What the network learns.
+Because our toy model is so simple, we can analytically derive exactly what the model will end up learning. We first observe that equations (5) and (6) would result from gradient descent on the following loss:
+$$
+E = \frac{1}{2\tau}\sum_{\alpha}(s_{\alpha}-a^\alpha \cdot b^\alpha)^2+\frac{1}{2\tau}\sum_{\alpha \neq \beta}(a^\alpha \cdot b^\beta)^2,
+$$
+i.e. $\frac{da^\alpha}{dt}=-\frac{\partial E}{\partial a^\alpha}, \space \frac{db^\alpha}{dt}=-\frac{\partial E}{\partial b^\alpha}$. To minimize $E$, the input and output modes $a^\alpha$ and $b^\alpha$ of the same index 
+## How the network learns.
+We've figured out exactly what the network will learn, but there is yet more information that we can extract from our equations. 
+#### More simplifying assumptions: from vectors to scalar equations.
+
+#### A differential equation we can solve.
+$$
+\begin{align*}
+\tau \frac{d a^\alpha}{dt} = (s^\alpha - a^\alpha b^\alpha) b^\alpha &\implies \tau \frac{d}{dt} (a(t) r^\alpha) = (s - a(t)b(t))b(t)r^\alpha \\
+
+&\implies \tau \frac{d}{dt} a = b(s - ab)
+\end{align*}
+$$
+$$
+\begin{align*}
+\tau \frac{d b^\alpha}{dt} = (s^\alpha - a^\alpha b^\alpha) a^\alpha &\implies \tau \frac{d}{dt} (b(t) r^\alpha) = (s - a(t)b(t))a(t)r^\alpha \\
+
+&\implies \tau \frac{d}{dt} b = a(s - ab)
+\end{align*}
+$$
+$$
+\begin{align*}
+\tau \frac{du}{dt} = \tau \left( b \frac{da}{dt} + a \frac{db}{dt} \right) &= b^2(s-ab) + a^2(s-ab) \\ 
+&= (s-ab)(a^2+b^2) \\
+&= 2ab(s-ab) \\
+&= 2u(s-u)
+\end{align*}
+$$
+where we used the assumption that $a=b$ to get $a^2+b^2=2ab$. Now,
+$$
+\tau \frac{du}{dt} = 2u(s-u)
+$$
+is a differential equation that we can solve as it is separable:
+$$
+\begin{align*}
+\int_{u_0}^{u_f} \frac{\tau}{2u(s-u)} du &= \int_{t_0}^{t_f} dt \\\\
+
+\implies \Delta t &= \tau \int_{u_0}^{u_f} \frac{1}{-2u^2 + 2us} du \\\\
+&= \frac{\tau}{s} \ln \frac{u_f(s-u_0)}{u_0(s-u_f)}
+\end{align*}
+$$
 
 <center>
 <img src="Screenshot 2026-02-11 at 12.29.19 AM.png" width="400">
 <figcaption>Figure 1 (from the original Saxe et al. paper)</figcaption>
 </center>
 
-Let's take a moment to take stock of the simplifying assumptions we made to get to this point. 
-
-- First, we assumed that our input vectors were orthonormal, i.e. $\Sigma^{11}=I$.
-- Second, we assumed that our initial weight matrices were chosen from a special class of "decoupled" initial conditions. Specifically, we assumed that the connectivity modes $a^\alpha$ and $b^\alpha$ (the weights into and out of the hidden layer) point in the same direction for each mode and are orthogonal to all other modes.
-- Third, we assumed that the scalars $a = a^\alpha \cdot r^\alpha$ and $b = b^\alpha \cdot r^\alpha$ started off with the same value.
-
-The first assumption is reasonable as data whitening is often done in practice. The third assumption is reasonable given that we start with small random initial conditions. We can make a similar small init argument for the second assumption, but ultimately, all our assumptions are vindicated by the fact that the results we ended up with approximate the real thing well (see figure 1). And they are of course also justified by the fact that they make the math easier and arguably more elegant.
+Recall the assumptions we made to get to this point: that $\Sigma^{11}=I$, that the initial conditions were decoupled and that $a = a^\alpha \cdot r^\alpha = b = b^\alpha \cdot r^\alpha$ initially. We justified these assumptions as we made them in various ways. However, ultimately, all our assumptions are vindicated by the fact that the results we ended up with approximate the real thing well (see figure 1). And they are of course also justified by the fact that they make the math easier and arguably more elegant.
 
 Recall why we sought to analyze deep linear networks in the first place: by analyzing the simple toy model in deep linear networks, we wanted to elucidate mysterious nonlinear learning phenomena typically seen in deep neural networks. So, what kind of phenomena were we able to elucidate?
 - Plateaus and Rapid Transitions: It explains the "stage-like" transitions in learning, where a network experiences long periods of little improvement (plateaus) followed by sudden, rapid drops in error. This is the main 

@@ -9,7 +9,7 @@ A collection of structured notes from college courses and self-study across math
 ## 📝 Refined Expositions
 *More complete and polished write-ups*
 #### A Learning Mechanic's Toolkit
-- [[Linear Models, Nonlinear Dynamics; A Toy Model for Deep Learning (Saxe et al.)]]
+- [[A deep dive into Saxe et al; nonlinear dynamics in linear models]]
 #### Mathematics Proofs
 - [[Weierstrass Approximation Theorem]]
 - [[Riesz Representation Theorem]]

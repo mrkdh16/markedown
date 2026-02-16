@@ -1,5 +1,5 @@
 ---
-title: "A deep dive into Saxe et al: nonlinear dynamics in linear models"
+title: "Deep Linear Networks: A deep dive into Saxe et al. and the role of depth in learning"
 draft: false
 tags:
 ---
@@ -15,6 +15,8 @@ $$
 \hat{y}= W^lW^{l-1} \ldots W^1x = W_{\text{total}}x.
 $$
 However, deep linear networks exhibit nonlinear training dynamics which arise from nonlinear gradients. From these dynamics emerge long plateaus and rapid transitions in the loss---a prime example of mysterious deep learning phenomena that we want to explain. 
+
+We follow the work of [Saxe et al. (2014)](https://arxiv.org/pdf/1312.6120) and [Saxe et al. (2018)](https://arxiv.org/pdf/1810.10531). The first paper, titled "Exact solutions to the nonlinear dynamics of learning in deep linear neural networks," is the more 'canonical text' within the deep learning community. It focuses on the derivation of the theory and various implications related to machine learning. The second paper, titled "A mathematical theory of semantic development in deep neural networks," seems to aim for a broader audience with a focus on 'semantic cognition.' Figures are pulled from both papers: figure 1 and 3 from the latter, and figure 4 from the former. Figure 2 was generate from [this](https://alexlenail.me/NN-SVG/) website.
 ## Setup.
 #### A toy task for a toy model.
 It will prove useful to keep in mind a simple toy task. Imagine the network is presented with an item $i$ (e.g. a "Canary") represented as a one-hot input vector $x^\mu$. The network's objective is to predict a vector of features $y^\mu$, such as "Can Fly," "Has Wings," or "Is Yellow".
@@ -270,13 +272,15 @@ We know that eventually distinct connectivity modes must become orthogonal. What
 $$
 a^\alpha(t) = a_{\alpha}(t) r^\alpha, \space b^\alpha(t) = b_{\alpha}(t)r^\alpha
 $$
-where $a_{\alpha}(t),b_{\alpha}(t)$ are scalar variables with a time dependence and $r^\alpha$ are vector constants such that $r^\alpha \cdot r^\beta = \delta_{\alpha \beta}$[^6]. This means that $a^\alpha \cdot b^\alpha = a_{\alpha}b_{\alpha}\cdot\delta_{{\alpha \beta}}$. If we change variables back, then throughout training, 
+where $a_{\alpha}(t),b_{\alpha}(t)$ are scalar variables with a time dependence and $r^\alpha$ are vector constants such that $r^\alpha \cdot r^\beta = \delta_{\alpha \beta}$[^6]. This means that $a^\alpha \cdot b^\alpha = a_{\alpha}b_{\alpha}\cdot\delta_{{\alpha \beta}}$. Here, we are assuming something slightly stronger than simple orthogonality of the connectivity modes: we are assuming that connectivity modes of the same index start out perfectly aligned. Orthogonality of distinct connectivity modes is likely to be satisfied simply by the fact that [high dimensional random vectors are approximately orthogonal](https://math.stackexchange.com/questions/995623/why-are-randomly-drawn-vectors-nearly-perpendicular-in-high-dimensions). 
+
+If we change variables back, then throughout training, 
 $$
 \begin{align}
 W^{32}W^{21} = U^{33} \text{diag}(u_{1}(t),\dots,u_{N_{2}}(t)){V^{11}}^\top  = U^{33} A(t){V^{11}}^\top
 \end{align}
 $$
-where $A(t)$ is a diagonal matrix with the values $a_{\alpha}b_{\alpha}$ on the diagonal. We define $u_{\alpha}(t) \equiv a_{\alpha}(t)b_{\alpha}(t)$ as the 'effective singular value' (equivalently, the 'effective mode strength') of the network at time $t$. In this decoupled (orthogonal connectivity modes) regime, gradient descent on the network reduces to growing the effective singular values $u_{\alpha}$ toward $s_{\alpha}$ assuming we start with small $a_{\alpha}$ and $b_{\alpha}$.
+where $A(t)$ is a diagonal matrix with the values $a_{\alpha}b_{\alpha}$ on the diagonal. We define $u_{\alpha}(t) \equiv a_{\alpha}(t)b_{\alpha}(t)$ as the 'effective singular value' (equivalently, the 'effective mode strength') of the network at time $t$. In this decoupled regime, gradient descent on the network reduces to growing the effective singular values $u_{\alpha}$ toward $s_{\alpha}$ assuming we start with small $a_{\alpha}$ and $b_{\alpha}$.
 
 Inserting our new variables into equations (5) and (6),
 $$
@@ -323,6 +327,8 @@ $$
 &= \frac{\tau}{2s_{\alpha}} \ln \frac{u_{\alpha}(t)(s_{\alpha}-{u_{\alpha}}^0)}{{u_{\alpha}}^0(s_{\alpha}-u_\alpha(t))}.
 \end{align*}
 $$
+Where we can use partial fraction decomposition to solve the integral. 
+
 Suppose $u_{\alpha}$ starts at a small value i.e. $u_{\alpha}^0 = u_{\alpha}(t_{0}) =\varepsilon$ and $t_{0}=0$ . How long does it take for $u_{\alpha}(t)$ to equal $s_{\alpha}-\varepsilon$? 
 $$
 \begin{align*}
@@ -343,16 +349,22 @@ $$
 &=\frac{s_{\alpha}}{1+\left( \frac{s_{\alpha}}{{u_{\alpha}}^0}-1 \right){e^{-2s_{\alpha}t/\tau}}}.
 \end{align*}
 $$
-Thus, we have found an expression for how the effective singular values will evolve throughout training. This is a significant result since through equation (7), we were able to characterize the evolution of all the parameters of the network $W^{32}W^{21}$ using only the effective singular values $u_{\alpha}(t)$ (this characterization was derived from the assumption of initially decoupled connectivity modes).
+Thus, we have found an expression for how the effective singular values will evolve throughout training. This is a significant result since through equation (7), we are able to characterize the evolution of all the parameters of the network $W^{32}W^{21}$ using only the effective singular values $u_{\alpha}(t)$ (this characterization was derived from the assumption of initially decoupled connectivity modes).
 ## Findings.
-The form of the expression for $u_{\alpha}(t)$ suggests that the effective singular values, or effective mode strengths, should follow a sigmoidal trajectory[^8]. These sigmoidal trajectories can be sharp and represent rapid transitions from unlearned to learned.
+The form of the expression for $u_{\alpha}(t)$ suggests that the effective singular values, or effective mode strengths, should follow a sigmoidal trajectory[^8]. These sigmoidal trajectories can be arbitrarily sharp and represent rapid transitions from unlearned to learned. In a standard 1-layer regression, the error drops exponentially. The 'S-curve' (slow start, rapid transition, plateau) is a unique signature of depth, even without non-linearities.
 
 <center>
 <img src="Screenshot 2026-02-11 at 12.29.19 AM.png" width="400">
-<figcaption>Figure 4 Red represents analytical curves, blue represents linear curves and green represents nonlinear curves</figcaption>
+<figcaption>Figure 4: Red represents analytical curves, blue represents linear curves and green represents nonlinear curves</figcaption>
 </center>
 
-We made a few assumptions to get to this point; the main one being that initially the connectivity modes were decoupled. These assumptions allowed us to simplify the problem from many intertwined matrix equations all the way down to decoupled scalar equations. Ultimately, all our assumptions are vindicated by the fact that the results we ended up with approximate the real thing well (see figure 4). And they are of course also justified by the fact that they make the math easier and arguably more elegant.
+Some notable facts that we derived with theory:
+- The time it takes for the network to learn a specific input-output mode is inversely proportional to that mode's singular value strength $s_\alpha$. This explains why neural networks exhibit "progressive sharpening": they grasp the dominant, broad structure of the data (large $s$) very quickly, but take much longer to fine-tune the subtle details (small $s$).
+- In deep linear networks, though the mapping is linear, the gradient descent dynamics are coupled and nonlinear. The derivation shows that the learning trajectory of a mode follows a sigmoid function. This proves that plateaus (periods of little apparent improvement) and sudden phase transitions (rapid learning) are inherent to gradient descent in deep architectures, not just a side effect of activation functions like ReLU or Tanh.
+
+We made a few assumptions to get to this point; the main one being that initially the connectivity modes were decoupled. These assumptions allowed us to simplify the problem from many intertwined matrix equations all the way down to decoupled scalar equations. Ultimately, all our assumptions are vindicated by the fact that the results we ended up with approximate the real thing well (see figure 4). And they are of course also justified by the fact that they make the math easier and arguably more elegant. Recall our decoupled connectivity modes assumption. I remarked that the orthogonality of high dimensional random vectors was quite reasonable and that the stronger assumption was that connectivity modes of the same index were perfectly aligned, i.e. $a^\alpha, b^\alpha \propto r^\alpha$. The fact that equations which follow from that assumption line up well with reality suggests that aligning connectivity modes of the same index is easy and/or happens quickly.
+
+Sources: [Exact solutions to the nonlinear dynamics of learning in deep linear neural networks](https://arxiv.org/pdf/1312.6120), [A mathematical theory of semantic development in deep neural networks](https://arxiv.org/pdf/1810.10531)
 
 [^1]: From equations (1) and (2) follows a conservation law. Observe that $\tau \frac{dW^{21}}{dt}{W^{21}}^\top = {W^{32}}^\top \tau \frac{dW^{32}}{dt}$. This implies that $\frac{dW^{21}}{dt}{W^{21}}^\top - {W^{32}}^\top \frac{dW^{32}}{dt} = {W^{21}}\frac{dW^{21}}{dt}^\top - \frac{dW^{32}}{dt}^\top{W^{32}}  = 0$ where for the second equality we took the transpose of both sides. From this and the product rule, it follows that $\frac{d}{dt}(W^{21}{W^{21}}^\top - {W^{32}}^\top W^{32}) = 0$. So, the quantity $W^{21}{W^{21}}^\top - {W^{32}}^\top W^{32}$ is conserved throughout time.
 

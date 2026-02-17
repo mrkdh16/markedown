@@ -20,7 +20,7 @@ export default ((opts?: Options) => {
         <ul>
           {Object.entries(links).map(([text, link]) => (
             <li>
-              <a href={link} target={link.includes("mrkdh16.github.io") ? "_top" : undefined}>{text}</a>
+              <a href={link} target="_self">{text}</a>
             </li>
           ))}
         </ul>

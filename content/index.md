@@ -10,7 +10,7 @@ A collection of structured notes from college courses and self-study across math
 *More complete and polished write-ups*
 #### A Learning Mechanic's Toolkit
 - [[Deep Linear Networks; A deep dive into Saxe et al. and the role of depth in learning]]
-	- Deep linear networks are mathematically tractable yet retain the mysterious phenomena of deep learning. We derive the exact training dynamics of these toy models to prove that long plateaus and rapid learning transitions are inherent to depth.
+	- Deep linear networks are mathematically tractable yet retain some of the mysterious phenomena of deep learning. We derive the exact training dynamics of these toy models to prove that long plateaus and rapid learning transitions are inherent to depth.
 #### Mathematics Proofs
 - [[Weierstrass Approximation Theorem]]
 	- Polynomials approximate continuous functions very well.

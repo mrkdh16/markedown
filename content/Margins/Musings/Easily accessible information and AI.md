@@ -1,6 +1,6 @@
 ---
 title: Easily accessible information and AI
-draft: false
+draft: true
 tags:
 ---
 I’m not the first person nor will I be the last to suggest that easily accessible information is not supremely good. I’ve noticed that it allows me to gain broad strokes of information much faster than I’m able to digest. The speed at which the information flows in does not leave time for my brain to deeply think about the matter and ponder the implications. It’s hard to imagine 2nd, 3rd, Nth degree implications at the speed that ChatGPT types. This has the obvious issue of reduced retention. In addition it messes with the depth at which I’m able to engage with ideas.

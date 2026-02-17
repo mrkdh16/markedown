@@ -27,3 +27,10 @@ A collection of structured notes from college courses and self-study across math
 - [[AI, Values, and Alignment]]
 - [[A reasonable argument against reason]]
 - [[All actions are selfish]]
+---
+<center>
+<img src="IMG_8555.jpg" width="400">
+</center>
+
+## Margins
+- [[overwhelmed]]

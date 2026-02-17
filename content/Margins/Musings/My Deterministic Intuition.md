@@ -1,6 +1,6 @@
 ---
 title: My Deterministic Intuition
-draft: false
+draft: true
 tags:
   - philosophy
 ---

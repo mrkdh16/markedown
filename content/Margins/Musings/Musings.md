@@ -1,6 +1,6 @@
 ---
 title: Musings
-draft: false
+draft: true
 tags:
 ---
 overthinking...

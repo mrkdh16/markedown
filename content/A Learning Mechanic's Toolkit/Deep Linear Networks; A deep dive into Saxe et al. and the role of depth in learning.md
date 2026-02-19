@@ -2,6 +2,12 @@
 title: "Deep Linear Networks: A deep dive into Saxe et al. and the role of depth in learning"
 draft: false
 tags:
+  - computer-science
+  - linear-algebra
+  - machine-learning
+  - math
+  - paper
+  - learning-mechanics
 ---
 <center>
 <img src="Screenshot 2026-02-14 at 12.23.24 AM.png" width="600">

@@ -8,8 +8,9 @@ title: Mark's Notes
 A collection of structured notes from college courses and self-study across mathematics, physics, and computer science. This is where I work through ideas, establish connections across disciplines and build a rigorous understanding of how the world works.
 ## 📝 Refined Expositions
 *More complete and polished write-ups*
-#### A Learning Mechanic's Toolkit
+#### A Learning Mechanic's Toolkit ([[A Learning Mechanic's Toolkit|🔗]])
 - [[Deep Linear Networks; A deep dive into Saxe et al. and the role of depth in learning]]
+	- *dynamics · linear algebra · exact solutions*
 	- Deep linear networks are mathematically tractable yet retain some of the mysterious phenomena of deep learning. We derive the exact training dynamics of these toy models to prove that long plateaus and rapid learning transitions are inherent to depth.
 #### Mathematics Proofs
 - [[Weierstrass Approximation Theorem]]

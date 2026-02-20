@@ -1,6 +1,6 @@
 ---
 title: A Learning Mechanic's Toolkit 🛠️
-draft: false
+draft: true
 tags:
 ---
 A *learning mechanic* studies [learning mechanics](link here)—the precise mechanisms by which deep networks acquire, compress, and represent knowledge. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning.

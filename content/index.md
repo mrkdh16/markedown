@@ -1,18 +1,32 @@
 ---
 title: Mark's Notes
 ---
+A collection of structured notes from college courses, self-study and research. Domains span mathematics, physics, computer science and occasionally philosophy. I hope to rigorously work through ideas, establish connections across disciplines and build a deep understanding of how the world works.
+
 <center>
-<img src="tree.jpg" width="400">
+<img src="tree.jpg" width="450">
+<figcaption>Figure 1: Stars</figcaption>
 </center>
 
-A collection of structured notes from college courses and self-study across mathematics, physics, and computer science. This is where I work through ideas, establish connections across disciplines and build a rigorous understanding of how the world works.
-## 📝 Refined Expositions
-*More complete and polished write-ups*
-#### A Learning Mechanic's Toolkit ([[A Learning Mechanic's Toolkit|🔗]])
+## 🛠️ A Learning Mechanic's Toolkit
+*A learning mechanic studies [learning mechanics](https://learningmechanics.org/)—the precise mechanisms by which deep networks acquire, compress, and represent knowledge. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning.*
+
+#### 🔧 Deep Dives
+*Step-by-step derivations, refined expositions*
 - [[Deep Linear Networks; A deep dive into Saxe et al. and the role of depth in learning]]
-	- *dynamics · linear algebra · exact solutions*
-	- Deep linear networks are mathematically tractable yet retain some of the mysterious phenomena of deep learning. We derive the exact training dynamics of these toy models to prove that long plateaus and rapid learning transitions are inherent to depth.
-#### Mathematics Proofs
+	- *matrix factorization · dynamics · exact solutions*
+	- Deep linear networks are mathematically tractable yet retain some of the mysterious phenomena of deep learning. We derive the exact training dynamics of these toy models and prove that long plateaus and rapid transitions are inherent to depth.
+#### 🔨 Field Notes
+*Quick insights, summaries of important phenomena and models*
+
+- [[Maximal learning rate derivation]]
+	- *edge of stability*
+	- Given a well-behaved loss (constant Hessian), we analytically derive the maximal stable learning rate under gradient descent.
+- [[Quadratic word embedding model (QWEM)]]
+	- *word embeddings · matrix factorization · exact solutions*
+	- The second-order approximation of the Word2Vec loss yields an equivalent supervised matrix factorization loss.
+## 🧮 Math Proofs
+*Proving cool math theorems*
 - [[Weierstrass Approximation Theorem]]
 	- Polynomials approximate continuous functions very well.
 - [[Riesz Representation Theorem]]

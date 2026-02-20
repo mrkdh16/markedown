@@ -29,29 +29,55 @@ $$
 $$
 #### backpropagation derivation
 Gradient w.r.t output ($\hat{y}$): combining Equations (1) and (2) via the chain rule,
-$$\frac{\partial \mathcal{L}}{\partial \hat{y}} = \frac{\partial \mathcal{L}}{\partial e} \cdot \frac{\partial e}{\partial \hat{y}} = 2e \cdot (-1) = -2e = -2(y - \hat{y})$$
+$$
+\frac{\partial \mathcal{L}}{\partial \hat{y}} = \frac{\partial \mathcal{L}}{\partial e} \cdot \frac{\partial e}{\partial \hat{y}} = 2e \cdot (-1) = -2e = -2(y - \hat{y})
+$$
 Gradient w.r.t Hidden Layer ($h$): combining the previous result with Equation (3),
-$$\frac{\partial \mathcal{L}}{\partial h} = \left( \frac{\partial \hat{y}}{\partial h} \right)^T \left( \frac{\partial \mathcal{L}}{\partial \hat{y}} \right)$$
+$$
+\frac{\partial \mathcal{L}}{\partial h} = \left( \frac{\partial \hat{y}}{\partial h} \right)^T \left( \frac{\partial \mathcal{L}}{\partial \hat{y}} \right)
+$$
 Substituting the known terms:
-$$\frac{\partial \mathcal{L}}{\partial h} = (W^{32})^T (-2e) = -2(W^{32})^T(y - W^{32}h)$$
+$$
+\frac{\partial \mathcal{L}}{\partial h} = (W^{32})^T (-2e) = -2(W^{32})^T(y - W^{32}h)
+$$
 #### parameter gradients
-Gradient w.r.t Inner Weights ($W^{21}$): the gradient for the first layer weights is derived using the gradient of the hidden layer and the input $x$:
-$$\frac{\partial \mathcal{L}}{\partial W^{21}} = \frac{\partial \mathcal{L}}{\partial h} \cdot x^T$$
+(a) Gradient w.r.t Inner Weights ($W^{21}$)
+
+The gradient for the first layer weights is derived using the gradient of the hidden layer and the input $x$:
+$$
+\frac{\partial \mathcal{L}}{\partial W^{21}} = \frac{\partial \mathcal{L}}{\partial h} \cdot x^T
+$$
 Substitute $\frac{\partial \mathcal{L}}{\partial h}$:
-$$\frac{\partial \mathcal{L}}{\partial W^{21}} = \left[ -2(W^{32})^T (y - \hat{y}) \right] x^T$$
+$$
+\frac{\partial \mathcal{L}}{\partial W^{21}} = \left[ -2(W^{32})^T (y - \hat{y}) \right] x^T
+$$
 Expand $\hat{y} = W^{32}W^{21}x$:
-$$= -2 (W^{32})^T (y - W^{32}W^{21}x) x^T$$
+$$
+= -2 (W^{32})^T (y - W^{32}W^{21}x) x^T
+$$
 Distribute $x^T$:
-$$= -2 (W^{32})^T (yx^T - W^{32}W^{21}xx^T)$$
-#### B. Gradient w.r.t Outer Weights ($W^{32}$)
+$$
+= -2 (W^{32})^T (yx^T - W^{32}W^{21}xx^T)
+$$
+
+(b) Gradient w.r.t Outer Weights ($W^{32}$)
+
 The gradient for the second layer weights is derived using the gradient of the output and the hidden state $h$:
-$$\frac{\partial \mathcal{L}}{\partial W^{32}} = \frac{\partial \mathcal{L}}{\partial \hat{y}} \cdot h^T$$
+$$
+\frac{\partial \mathcal{L}}{\partial W^{32}} = \frac{\partial \mathcal{L}}{\partial \hat{y}} \cdot h^T
+$$
 Substitute $\frac{\partial \mathcal{L}}{\partial \hat{y}} = -2(y - \hat{y})$ and $h = W^{21}x$:
-$$\frac{\partial \mathcal{L}}{\partial W^{32}} = -2(y - W^{32}W^{21}x) (W^{21}x)^T$$
+$$
+\frac{\partial \mathcal{L}}{\partial W^{32}} = -2(y - W^{32}W^{21}x) (W^{21}x)^T
+$$
 Apply transpose rule $(AB)^T = B^T A^T$:
-$$= -2(y - W^{32}W^{21}x) x^T (W^{21})^T$$
+$$
+= -2(y - W^{32}W^{21}x) x^T (W^{21})^T
+$$
 Distribute $x^T$ and factor out $(W^{21})^T$:
-$$= -2(yx^T - W^{32}W^{21}xx^T) (W^{21})^T$$
+$$
+= -2(yx^T - W^{32}W^{21}xx^T) (W^{21})^T
+$$
 
 *disclaimer: this note was mostly transcribed by Gemini*
 ![[Nonlinear Learning Dynamics in DLNs 2.png]]

@@ -70,15 +70,10 @@ $$
 $\blacksquare$
 #### extensions & dynamics
 - Relaxing Assumptions.
-	- If we drop the constant $G_{ij}$ assumption, the loss becomes a weighted matrix factorization:
-
-$$
-L(w) = \frac{1}{4} \sum_{i,j} G_{ij} \left( (WW^T)_{ij} - M_{ij}^* \right)^2 + \text{const}
-$$
-
-	- We can still find $\arg\min_w L(w)$ if $\Psi^+, \Psi^-$ are symmetric and $G$ is a rank-1 matrix.
+	- If we relax the constant $G_{ij}$ assumption, the loss becomes a weighted matrix factorization: $L(w) = \frac{1}{4} \sum_{i,j} G_{ij} \left( (WW^T)_{ij} - M_{ij}^* \right)^2 + \text{const}$
+	- We can still find $\arg\min_w L(w)$ if $\Psi^+, \Psi^-$ are symmetric and $G$ is a rank-1 matrix
 - Optimization Dynamics.
-	- Minimizing $L_{\text{QWEM}}(w)$ under Gradient Descent follows [[Deep Linear Networks; A deep dive into Saxe et al. and the role of depth in learning|Saxe et al. dynamics]]. For an aligned initialization, the optimization problem reduces to growing the effective singular values.
+	- Minimizing $L_{\text{QWEM}}(w)$ under Gradient Descent follows [[Deep Linear Networks; A deep dive into Saxe et al. and the role of depth in learning|Saxe et al. dynamics]]. For an aligned initialization, the optimization problem reduces to growing the effective singular values
 #### conclusions
 - **Linguistic Punchline:** Natural language contains linear semantic structure within its co-occurrence statistics.
 - **ML Punchline:** $\exists$ an explicit mathematical equivalence between self-supervised contrastive learning and supervised matrix factorization.

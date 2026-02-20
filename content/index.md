@@ -5,7 +5,7 @@ A collection of structured notes from college courses, self-study and research. 
 
 <center>
 <img src="tree.jpg" width="450">
-<figcaption>Figure 1: Stars</figcaption>
+<figcaption>Figure 1: Stars (Yosemite)</figcaption>
 </center>
 
 ## 🛠️ A Learning Mechanic's Toolkit
@@ -45,6 +45,7 @@ A collection of structured notes from college courses, self-study and research. 
 ---
 <center>
 <img src="IMG_8555.jpg" width="400">
+<figcaption>Figure 2: Sunset (Mt. Tam)</figcaption>
 </center>
 
 ## Margins

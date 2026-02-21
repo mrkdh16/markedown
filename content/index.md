@@ -1,7 +1,7 @@
 ---
 title: Mark's Notes
 ---
-A collection of structured notes from college courses, self-study and research. Domains span mathematics, physics, computer science and occasionally philosophy. I hope to rigorously work through ideas, establish connections across disciplines and build a deep understanding of how the world works.
+A collection of notes from college courses, self-study and research. Domains span mathematics, physics, computer science and occasionally philosophy. I hope to rigorously work through ideas, establish connections across disciplines and build a deep understanding of how the world works.
 
 <center>
 <img src="tree.jpg" width="450">
@@ -50,4 +50,4 @@ A collection of structured notes from college courses, self-study and research. 
 
 ## Margins
 - [[overwhelmed]]
-- [[great movies & tv shows]]
+- [[movies & tv shows]]

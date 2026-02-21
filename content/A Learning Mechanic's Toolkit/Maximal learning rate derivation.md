@@ -57,13 +57,19 @@ Extracting the $U$ and $U^T$ terms,
 $$
 \theta \to U(I - \eta \Sigma)U^T \theta
 $$
-The matrices $U$ and $U^T$ are isometries (orthogonal matrices), meaning they only rotate the space and do not change the norm of $\theta$. Therefore, the change in the norm of $\theta$ during the update depends entirely on the diagonal matrix $(I - \eta \Sigma)$.
+Under this update, we have that 
+$$
+\theta_{t} = U(I-\eta \Sigma)^tU^T \theta_{0}
+$$
+where the inner $U$'s and $U^T$'s cancel by orthogonality.
 
-For the model to converge, the scaling factor applied to each eigen-direction must not expand the magnitude of the vector. Thus, for every eigenvalue $\sigma_i$:
+Clearly, if $|1-\eta \sigma_{i}|>1$, the norm of $\theta_{t}$ will blow up and not be able to converge. So, for convergence, we need
 $$
 |1 - \eta \sigma_i| \le 1
 $$
-Solving this inequality for $\eta$:
+Observe that under this constraint, $\theta_{t}$ will go to $0$ as $t\to \infty$. For our contrived loss $\frac{1}{2}\theta^T H \theta$, this is exactly what we want as the global minimum for this loss happens to be $\theta = 0$. In a more general setting, this $\theta$ might be more like the error in the parameters, i.e. $\theta_{\text{current}}-\theta_{\text{target}}$, and we might look at the quadratic approximation for the loss near the minima.
+
+Solving the inequality for $\eta$:
 $$
 -1 \le 1 - \eta \sigma_i \le 1
 \implies 0 \le \eta \le \frac{2}{\sigma_i}
@@ -72,7 +78,7 @@ To ensure stability across all dimensions, the learning rate $\eta$ is bounded b
 $$
 \eta_{max} = \frac{2}{\sigma_{max}}
 $$
-The maximal eigenvalue of $H$, which is the Hessian of the loss, is equivalent to the sharpness of the loss. So, the punchline here is that the maximal stable learning rate is inversely proportional to the sharpness of the loss. This punchline holds as long as the Hessian of the loss is constant. However, clearly, for complex nonlinear models, this will not be the case. For neural networks, the ["Edge of Stability" (EoS)](https://arxiv.org/pdf/2103.00065) phenomena in deep learning suggests that during training, the sharpness of the loss hovers just around the value $\frac{2}{\eta_{\text{max}}}$, the largest it can get without causing instability in training. This can be thought of as a kind of self-correcting, self-regulating behavior in neural nets.
+The maximal eigenvalue of $H$, which is the Hessian of the loss, is equivalent to the sharpness of the loss. So, the punchline here is that the maximal stable learning rate is inversely proportional to the sharpness of the loss. This punchline holds as long as the Hessian of the loss is constant. However, clearly, for complex nonlinear models, this will not be the case. For neural networks, the ["Edge of Stability" (EoS)](https://arxiv.org/pdf/2103.00065) phenomena suggests that during training, the sharpness of the loss progressively increases (progressive sharpening) until it saturates and hovers just around the value $\frac{2}{\eta}$, the largest it can get without causing instability in training. This can be thought of as a kind of self-correcting, self-regulating behavior in neural nets.
 
 *disclaimer: this note was mostly transcribed by Gemini*
 ![[Maximal LR.png]]

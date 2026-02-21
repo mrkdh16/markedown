@@ -1,6 +1,6 @@
 ---
 title: A Learning Mechanic's Toolkit 🛠️
-draft: true
+draft: false
 tags:
 ---
 A *learning mechanic* studies [learning mechanics](link here)—the precise mechanisms by which deep networks acquire, compress, and represent knowledge. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning.
@@ -21,6 +21,8 @@ A *learning mechanic* studies [learning mechanics](link here)—the precise mech
 	- *word embeddings · matrix factorization · exact solutions*
 	- The second-order approximation of the Word2Vec loss yields an equivalent supervised matrix factorization loss.
 
-to-do.
-- Rich vs. lazy feature learning: initialization scale and the gear ratio analogy 
-- Muon derivation (Bernstein)
+## 🪚 Scraps
+*Small proofs, useful bounds, and mathematical gap-fillers*
+
+- [[Singular values under perturbation]]
+	- $\sigma_{\text{max}}(A+B) \leq \sigma_{max}(A)+\sigma_{max}(B)$

@@ -8,5 +8,7 @@ tags:
 - KRR Eigenframework
 
 - RF regression
-- max learning rate derivation for simple models
+- ~~max learning rate derivation for simple models~~
+- ~~QWEM~~
+- dhruva triangle
 - lazy vs. rich feature learning

@@ -9,14 +9,14 @@ A collection of structured notes from college courses, self-study and research. 
 </center>
 
 ## 🛠️ A Learning Mechanic's Toolkit
-*A learning mechanic studies [learning mechanics](https://learningmechanics.org/)—the precise mechanisms by which deep networks acquire, compress, and represent knowledge. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning.*
+*A learning mechanic studies [learning mechanics](https://learningmechanics.org/)—the precise mechanisms by which deep networks acquire, compress, and represent knowledge. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning. [[A Learning Mechanic's Toolkit|Link]] to full page.*
 
-#### 🔧 Deep Dives
+#### Deep Dives
 *Step-by-step derivations, refined expositions*
 - [[Deep Linear Networks; A deep dive into Saxe et al. and the role of depth in learning]]
 	- *matrix factorization · dynamics · exact solutions*
 	- Deep linear networks are mathematically tractable yet retain some of the mysterious phenomena of deep learning. We derive the exact training dynamics of these toy models and prove that long plateaus and rapid transitions are inherent to depth.
-#### 🔨 Field Notes
+#### Field Notes
 *Quick insights, summaries of important phenomena and models*
 
 - [[Maximal learning rate derivation]]

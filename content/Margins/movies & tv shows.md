@@ -11,7 +11,7 @@ tags:
 <img src="Pasted image 20260221005247.png" width="300">
 </center>
 
-**Rating:** 9.9/10
+**Rating:** 9.6/10
 - A quiet masterpiece about meaning, beauty, love, loss, grief and one's place in the world
 ### Andor (2022)
 "*I yearned to be a savior against injustice without contemplating the cost and by the time I looked down there was no longer any ground beneath my feet. [...] I’m condemned to use the tools of my enemy to defeat them. I burn my decency for someone else’s future. I burn my life to make a sunrise that I know I’ll never see. And the ego that started this fight will never have a mirror or an audience or the light of gratitude.*"
@@ -23,7 +23,7 @@ tags:
 </center>
 
 **Rating**: 9.5/10
-- Arguably the best piece of Star Wars media; a gritty TV show about the grim realities about revolution and rebellion against tyranny
+- Arguably the best piece of Star Wars media; a gritty TV show about the grim realities of revolution and rebellion against tyranny
 ## not top tier but still good
 ### Dead Poets Society (1989)
 "*We don't read and write poetry because it's cute. We read and write poetry because we are members of the human race. And the human race is filled with passion. And medicine, law, business, engineering, these are noble pursuits and necessary to sustain life. But poetry, beauty, romance, love, these are what we stay alive for.*"

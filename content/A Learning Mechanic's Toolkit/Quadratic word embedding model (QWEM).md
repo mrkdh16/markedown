@@ -38,7 +38,7 @@ Let the equivalence class under orthogonal transformation be:
 $$
 \text{REquiv}(W) := \{ WU \mid U \text{ is orthogonal} \}
 $$
-#### thm. QWEM as matrix factorization
+#### Thm. QWEM as matrix factorization
 Define the weighting term $G_{ij} := \Psi_{ij}^+ P_{ij} + \Psi_{ij}^- P_i P_j$.
 Assume:
 1. Symmetry: $\Psi_{ij}^+ = \Psi_{ji}^+$ and $\Psi_{ij}^- = \Psi_{ji}^-$, which implies $M^{*T} = M^*$. Consequently, $M^*$ is diagonalizable: $M^* = V^* \Lambda V^{*T}$.
@@ -49,7 +49,7 @@ Under these assumptions, QWEM is equivalent to unweighted matrix factorization:
 $$
 L_w \equiv \frac{g}{4} \| WW^T - M^* \|_F^2 + \text{const}
 $$
-Furthermore, if the truncated eigenvalue matrix $\Lambda_{[:d, :d]}$ is positive semi-definite (psd), then by the Eckart-Young-Mirsky Theorem:
+Furthermore, if the truncated eigenvalue matrix $\Lambda_{[:d, :d]}$ is positive semi-definite (psd), then by the Eckart-Young-Minsky Theorem:
 
 $$
 \arg\min_w L(w) = \text{REquiv}\left( V_{[:, :d]}^* \Lambda_{[:d, :d]}^{1/2} \right)

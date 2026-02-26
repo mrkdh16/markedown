@@ -3,7 +3,7 @@ title: A Learning Mechanic's Toolkit 🛠️
 draft: false
 tags:
 ---
-A *learning mechanic* studies [learning mechanics](link here)—the precise mechanisms by which deep networks acquire, compress, and represent knowledge. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning.
+A *learning mechanic* studies [learning mechanics](learningmechanics.org)—the precise mechanisms by which deep networks acquire, compress, and represent knowledge. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning.
 ## 🔧 Deep Dives
 *Step-by-step derivations, refined expositions*
 
@@ -22,7 +22,7 @@ A *learning mechanic* studies [learning mechanics](link here)—the precise mech
 	- The second-order approximation of the Word2Vec loss yields an equivalent supervised matrix factorization loss.
 
 ## 🪚 Scraps
-*Small proofs, useful bounds, and mathematical gap-fillers*
+*Small proofs, useful intuitions*
 
 - [[Singular values under perturbation]]
 	- $\sigma_{\text{max}}(A+B) \leq \sigma_{max}(A)+\sigma_{max}(B)$

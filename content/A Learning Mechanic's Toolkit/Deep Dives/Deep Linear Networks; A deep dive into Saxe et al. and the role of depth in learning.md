@@ -14,13 +14,15 @@ tags:
 </center>
 
 ## Introduction.
-Understanding deep learning is a *very* hard problem. When tackling such hard problems with countless complicated interactions, it can be extremely helpful to analyze simpler toy models. Ideally, the toy models we choose to study will exhibit some of the same complex, nontrivial phenomena that we want to explain in the original system. By providing mathematically sound explanations for said phenomena in our toy models we can gain insight into our hard problem. It turns out that deep linear networks are great toy models. They are mathematically tractable yet retain some of the mysterious phenomena that we observe in deep nonlinear networks (i.e. neural networks). 
+Understanding deep learning is a *very* hard problem. Despite the rapid increase in AI capabilities, we have yet to create a cohesive mathematical framework that explains *what* and *how* these powerful models learn. When tackling a problem this monumental—specifically, the task of erecting a rigorous mathematical framework for an opaque system—it helps to think like a physicist. Likely, a physicist's first instinct would be to conjure up a toy model. By studying a simplified system that still exhibits the complex, non-trivial phenomena of the original, we can find mathematical solid ground.
+
+Through deep linear networks, we will attack both the *what* and *how* part of the deep learning problem. Deep linear networks are a rare breed of highly mathematically tractable models that also retain some of the mysterious phenomena that we observe in their more complex, non linear cousins. With deep linear networks we get a golden opportunity to probe both the *what* and *how*; this is not something we can take for granted.
 
 At first glance, deep linear networks seem quite uninteresting. Indeed, no expressiveness is gained from adding layers in linear networks as the input-output map can always be rewritten as a single shallow layer:
 $$
 \hat{y}= W^lW^{l-1} \ldots W^1x = W_{\text{total}}x.
 $$
-However, deep linear networks exhibit nonlinear training dynamics which arise from nonlinear gradients. From these dynamics emerge long plateaus and rapid transitions in the loss---a prime example of mysterious deep learning phenomena that we want to explain. 
+However, deep linear networks exhibit nonlinear training dynamics which arise from nonlinear gradients. From these dynamics emerge long plateaus and rapid transitions in the loss—a prime example of mysterious deep learning phenomena that we want to explain. 
 
 We follow the work of [Saxe et al. (2014)](https://arxiv.org/pdf/1312.6120) and [Saxe et al. (2018)](https://arxiv.org/pdf/1810.10531). The first paper, titled "Exact solutions to the nonlinear dynamics of learning in deep linear neural networks," is the more 'canonical text' within the deep learning community. It focuses on the derivation of the theory and various implications related to machine learning. The second paper, titled "A mathematical theory of semantic development in deep neural networks," seems to aim for a broader audience with a focus on 'semantic cognition.' Figures are pulled from both papers: figure 1 and 3 from the latter, and figure 4 from the former. Figure 2 was generated from [this](https://alexlenail.me/NN-SVG/) website.
 ## Setup.
@@ -83,9 +85,19 @@ $$
 \tau \frac{dW^{32}}{dt} &=  (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top \\
 \end{align}
 $$
-where we defined $\tau \equiv \frac{1}{P\lambda}$. Here, $t$ measures time in units of learning epochs---meaning that as $t$ goes from $n$ to $n+1$, the network goes through the entire dataset (so, $P$ examples) 1 time.
+where we defined $\tau \equiv \frac{1}{P\lambda}$. Here, $t$ measures time in units of learning epochs—meaning that as $t$ goes from $n$ to $n+1$, the network goes through the entire dataset (so, $P$ examples) 1 time.
+#### Plan of Attack.
+Equations (1) and (2) are quite complex and contain multiple dimensions of interactions. We are dealing with a coupled system in the sense that a change in one weight (an entry in $W^{21}$ or $W^{32}$) will affect every other weight. This kind of coupling is the main reason why studying deep networks is usually intractable. An exception to this intractability occurs when we are able to find a *decoupled* regime. 
+
+What does it mean for a regime to be decoupled? In this case, we want to find a *coordinate system* in which the interdependent matrix dynamics decouple into simpler independent one-dimensional dynamics. Mathematically, this means that the change in a specific weight depends only on itself and the relevant statistical mode of the data, rather than the state of the entire weight matrix. By identifying these independent "modes" of learning, we can reduce a complex system of intertwined differential equations into a collection of parallel scalar equations. Once we have parallel, decoupled scalar differential equations, we will be able to *solve* for the dynamics, i.e. the learning trajectory.
+
+The concrete steps we will take are as follows:
+1. Make simplifying assumptions to get closer to a decoupled regime. Specifically, we will assume that $\Sigma^{11}=I$.
+2. Extract the coordinate system. We will use the Singular Value Decomposition (SVD) of $\Sigma^{31}$ to identify the "natural" axes of the data. Intuitively, we leverage the SVD because of its capacity to capture the statistical structure in the data. In this natural coordinate system, it will become clear that the learning task reduces to matrix factorization, i.e. learning $W^{32}$ and $W^{21}$ such that they satisfy $W^{32}W^{21} \approx \Sigma^{31}$.
+3. Reducing to a growth-only picture. Thinking in terms of the SVD coordinate system, matrix factorization splits into two subtasks: aligning the network's principal directions with those of $\Sigma^{31}$, and growing the effective singular values to match the data's. We will assume alignment holds and focus on growth, which reduces the coupled matrix dynamics to independent scalar equations—one per singular value.
+It turns out that this growth-only picture is both a simple way to view learning and a good approximation of what happens empirically.
 #### The first simplifying assumption.
-Solving equations (1) and (2) as is is difficult. So, let's make a simplifying assumption: that the input vectors $x^\mu$ are orthonormal, i.e. $\Sigma^{11} = I$. This is a reasonable assumption since training data is often whitened in practice. Once we assume that $\Sigma^{11}=I$, the input-output correlation matrix $\Sigma^{31}$ becomes the sole source of information about the training data that can be used in learning. This assumption simplifies equations (1) and (2):
+Let's make a simplifying assumption: that the covariance of the input vectors $x^\mu$ is whitened, i.e. that $\Sigma^{11}=I$. This is a reasonable assumption since training data is often whitened in practice. Once we assume that $\Sigma^{11}=I$, the input-output correlation matrix $\Sigma^{31}$ becomes the sole source of information about the training data that can be used in learning. This assumption simplifies equations (1) and (2):
 $$
 \begin{align}
 \tau \frac{dW^{21}}{dt} &= {W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}) \\
@@ -269,12 +281,12 @@ $$
 $$
 Thus, we have discovered exactly what our 3-layer linear network will learn through gradient descent: the input-output correlation matrix. The problem has been reduced to matrix factorization[^5].
 
-That distinct connectivity modes must become orthogonal (in order for gradient descent on $E$ to settle on a solution) is a crucial observation. Once distinct connectivity modes are orthogonal, equations (5) and (6) become much easier to analyze since the second term in both equations go to 0. Then, the dependence between distinct connectivity modes completely dissolves and we are left with decoupled, independent differential equations. We can exploit this to extract even more information from our equations; namely, the time course of learning.
+That distinct connectivity modes must become orthogonal (in order for gradient descent on $E$ to settle on a solution) is a crucial observation. This is the "alignment" mentioned in the Plan of Attack. Once distinct connectivity modes are orthogonal, equations (5) and (6) become much easier to analyze since the second term in both equations go to 0. Then, the dependence between distinct connectivity modes completely dissolves and we are left with decoupled, independent differential equations. Intuitively, this means the model can allocate entirely separate, non-interfering sub-networks within the hidden layer to process distinct modes. We can exploit this to extract even more information from our equations; namely, the time course of learning.
 ## How the network learns.
 #### More simplifying assumptions: from vector to scalar equations.
 Although we inferred what the network will look like after it has reached a solution in the previous section, we failed to derive any expression with a time dependence. This is unfortunate since we want to understand how the model will evolve throughout training. However, solving equations (5) and (6) from scratch is difficult because all the differential equations are intertwined. This is where an orthogonality assumption can be useful. 
 
-We know that eventually distinct connectivity modes must become orthogonal. What if we assumed that they were orthogonal from the start? Specifically, we will assume that 
+We know that eventually distinct connectivity modes must become orthogonal. What if we assumed that they were orthogonal from the start, i.e. assume alignment? Specifically, we will assume that 
 $$
 a^\alpha(t) = a_{\alpha}(t) r^\alpha, \space b^\alpha(t) = b_{\alpha}(t)r^\alpha
 $$
@@ -365,10 +377,10 @@ The form of the expression for $u_{\alpha}(t)$ suggests that the effective singu
 </center>
 
 Some notable facts that we derived with theory:
-- The time it takes for the network to learn a specific input-output mode is inversely proportional to that mode's singular value strength $s_\alpha$. This explains why neural networks exhibit "progressive sharpening": they grasp the dominant, broad structure of the data (large $s$) very quickly, but take much longer to fine-tune the subtle details (small $s$).
+- The time it takes for the network to learn a specific input-output mode is inversely proportional to that mode's singular value strength $s_\alpha$. We see this phenomenon in non-linear neural networks as well: they grasp the dominant, broad structure of the data (large $s$) very quickly, but take much longer to fine-tune the subtle details (small $s$).
 - In deep linear networks, though the mapping is linear, the gradient descent dynamics are coupled and nonlinear. The derivation shows that the learning trajectory of a mode follows a sigmoid function. This proves that plateaus (periods of little apparent improvement) and sudden phase transitions (rapid learning) are inherent to gradient descent in deep architectures, not just a side effect of activation functions like ReLU or Tanh.
 
-We made a few assumptions to get to this point; the main ones being that the input data was whitened and that initially the connectivity modes were decoupled. The assumption of whitened input data is reasonable as it's often done in practice. However, somewhat surprisingly, the problem [becomes NP-hard](https://arxiv.org/pdf/2506.06489) if this assumption is relaxed. These assumptions allowed us to simplify the problem from many intertwined matrix equations all the way down to decoupled scalar equations. Ultimately, all our assumptions are vindicated by the fact that the results we ended up with approximate the real thing well (see figure 4). And they are of course also justified by the fact that they make the math easier and arguably more elegant. Recall our decoupled connectivity modes assumption. The fact that equations which follow from that assumption line up well with reality suggests that aligning connectivity modes of the same index is easy and/or happens quickly.
+We made a few assumptions to get to this point; the main ones being that the input data was whitened and that initially the connectivity modes were decoupled and aligned. The assumption of whitened input data is reasonable as it's often done in practice. However, somewhat surprisingly, the problem [becomes NP-hard](https://arxiv.org/pdf/2506.06489) if this assumption is relaxed. These assumptions allowed us to simplify the problem from many intertwined matrix equations all the way down to decoupled scalar equations. Ultimately, all our assumptions are vindicated by the fact that the results we ended up with approximate the real thing well (see figure 4). And they are of course also justified by the fact that they make the math easier and arguably more elegant. Recall our decoupled and aligned connectivity modes assumption. The fact that equations which follow from that assumption line up well with reality suggests that aligning connectivity modes of the same index is easy and/or happens quickly.
 
 Sources: [Exact solutions to the nonlinear dynamics of learning in deep linear neural networks](https://arxiv.org/pdf/1312.6120), [A mathematical theory of semantic development in deep neural networks](https://arxiv.org/pdf/1810.10531)
 

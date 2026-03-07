@@ -64,10 +64,9 @@ L_w &= \sum_{i,j} \left\{ P_{ij}\Psi_{ij}^+\left( \frac{(w_{i}^Tw_{j})^2}{4}- w_
 &= \sum_{i,j} \left\{ \frac{(w_i^T w_j)^2}{4} g - w_i^T w_j (\Psi_{ij}^+ P_{ij} - \Psi_{ij}^- P_i P_j) \right\} \\\\
  &= \frac{g}{4} \sum_{i,j} \left( w_i^T w_j - \frac{\Psi_{ij}^+ P_{ij} - \Psi_{ij}^- P_i P_j}{\frac{1}{2}g} \right)^2 + \text{const}\\\\
  &= \frac{g}{4} \sum_{i,j} \left( (WW^T)_{ij} - M_{ij}^* \right)^2 + \text{const} \\\\
- &= \frac{g}{4} \| WW^T - M^* \|_F^2 + \text{const}
+ &= \frac{g}{4} \| WW^T - M^* \|_F^2 + \text{const} \space \blacksquare
 \end{align*}
 $$
-$\blacksquare$
 #### extensions & dynamics
 - Relaxing Assumptions.
 	- If we relax the constant $G_{ij}$ assumption, the loss becomes a weighted matrix factorization: $L(w) = \frac{1}{4} \sum_{i,j} G_{ij} \left( (WW^T)_{ij} - M_{ij}^* \right)^2 + \text{const}$

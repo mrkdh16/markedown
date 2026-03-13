@@ -1,5 +1,5 @@
 ---
-title: Maximal learning rate derivation
+title: Maximal stable learning rate derivation
 draft: false
 tags:
   - computer-science

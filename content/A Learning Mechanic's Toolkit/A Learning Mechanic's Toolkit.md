@@ -15,12 +15,15 @@ A *learning mechanic* studies [learning mechanics](learningmechanics.org)—the 
 ## 🔨 Field Notes
 *Quick insights, summaries of important phenomena and models*
 
-- [[Maximal learning rate derivation]]
+- [[Maximal stable learning rate derivation]]
 	- *edge of stability · optimization*
 	- Given a well-behaved loss (constant Hessian), we analytically derive the maximal stable learning rate under gradient descent.
 - [[Quadratic word embedding model (QWEM)]]
 	- *word embeddings · exact solutions*
 	- The second-order approximation of the Word2Vec loss yields an equivalent supervised matrix factorization loss.
+- [[When (wide) neural networks become linear]]
+	- *infinite limits · neural tangent kernel*
+	- As the widths of the layers in a neural network become large, the network becomes approximately equal to its first-order (linear) approximation.
 
 ## 🪚 Scraps
 *Small proofs, useful intuitions*

@@ -19,12 +19,15 @@ A collection of notes from college courses, self-study and research. Domains spa
 #### Field Notes
 *Quick insights, summaries of important phenomena and models*
 
-- [[Maximal learning rate derivation]]
+- [[Maximal stable learning rate derivation]]
 	- *edge of stability*
 	- Given a well-behaved loss (constant Hessian), we analytically derive the maximal stable learning rate under gradient descent.
 - [[Quadratic word embedding model (QWEM)]]
 	- *word embeddings · matrix factorization · exact solutions*
 	- The second-order approximation of the Word2Vec loss yields an equivalent supervised matrix factorization loss.
+- [[When (wide) neural networks become linear]]
+	- *infinite limits · neural tangent kernel*
+	- As the widths of the layers in a neural network become large, the network becomes approximately equal to its first-order (linear) approximation.
 ## 🧮 Math Proofs
 *Proving cool math theorems*
 - [[Weierstrass Approximation Theorem]]

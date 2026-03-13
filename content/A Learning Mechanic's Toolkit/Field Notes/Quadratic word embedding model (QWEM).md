@@ -9,7 +9,7 @@ tags:
   - math
   - physics
 ---
-Paper: [Closed-Form Training Dynamics Reveal Learned Features and Linear Structure in Word2Vec-like Models](https://arxiv.org/pdf/2502.09863)
+Karkada et al. (2025) [Closed-Form Training Dynamics Reveal Learned Features and Linear Structure in Word2Vec-like Models](https://arxiv.org/pdf/2502.09863)
 #### definitions & setup
 Let $P(i, j) := P(j|i)P(i)$ denote the co-occurrence probability of words $i$ and $j$. Let $W \in \mathbb{R}^{V \times d}$ (where vocabulary size $V \gg d$) be the embedding matrix composed of row vectors $w_i$.
 

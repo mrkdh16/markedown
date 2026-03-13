@@ -93,15 +93,17 @@ export async function fetchTtf(
     `https://fonts.googleapis.com/css2?family=${fontName}:wght@${weight}`,
     {
       headers: {
+        // Use an old Chrome UA so Google Fonts returns TTF instead of WOFF2,
+        // since satori only supports TTF/OTF. WOFF2 support landed in Chrome 36.
         "User-Agent":
-          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36",
       },
     },
   )
   const css = await cssResponse.text()
 
-  // Extract font url from css file (ttf or woff2 depending on user-agent)
-  const urlRegex = /url\((https:\/\/fonts.gstatic.com\/s\/.*?\.(ttf|woff2))\)/g
+  // Extract .ttf url from css file
+  const urlRegex = /url\((https:\/\/fonts.gstatic.com\/s\/.*?.ttf)\)/g
   const match = urlRegex.exec(css)
 
   if (!match) {

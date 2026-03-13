@@ -1,4 +1,5 @@
 import { promises as fs } from "fs"
+import https from "https"
 import { FontWeight, SatoriOptions } from "satori/wasm"
 import { GlobalConfiguration } from "../cfg"
 import { QuartzPluginData } from "../plugins/vfile"
@@ -10,6 +11,41 @@ import { formatDate, getDate } from "../components/Date"
 import readingTime from "reading-time"
 import { i18n } from "../i18n"
 import { styleText } from "util"
+
+// Use native https module instead of undici fetch to avoid TLS compatibility issues
+// with fonts.googleapis.com on some environments (e.g. GitHub Actions + Node 22)
+function httpsGetText(url: string, headers: Record<string, string>): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const parsed = new URL(url)
+    const req = https.get({ host: parsed.host, path: parsed.pathname + parsed.search, headers }, (res) => {
+      if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        httpsGetText(res.headers.location, headers).then(resolve, reject)
+        return
+      }
+      let data = ""
+      res.on("data", (chunk) => (data += chunk))
+      res.on("end", () => resolve(data))
+      res.on("error", reject)
+    })
+    req.on("error", reject)
+  })
+}
+
+function httpsGetBuffer(url: string): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, (res) => {
+      if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        httpsGetBuffer(res.headers.location).then(resolve, reject)
+        return
+      }
+      const chunks: Buffer[] = []
+      res.on("data", (chunk) => chunks.push(chunk))
+      res.on("end", () => resolve(Buffer.concat(chunks)))
+      res.on("error", reject)
+    })
+    req.on("error", reject)
+  })
+}
 
 const defaultHeaderWeight = [700]
 const defaultBodyWeight = [400]
@@ -88,19 +124,15 @@ export async function fetchTtf(
     // ignore errors and fetch font
   }
 
-  // Get css file from google fonts
-  const cssResponse = await fetch(
+  // Get css file from google fonts using native https to avoid undici TLS issues
+  // Use an old Chrome UA so Google Fonts returns TTF/WOFF instead of WOFF2
+  const css = await httpsGetText(
     `https://fonts.googleapis.com/css2?family=${fontName}:wght@${weight}`,
     {
-      headers: {
-        // Use an old Chrome UA so Google Fonts returns TTF instead of WOFF2,
-        // since satori only supports TTF/OTF. WOFF2 support landed in Chrome 36.
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36",
-      },
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36",
     },
   )
-  const css = await cssResponse.text()
 
   // Extract font url from css file (.ttf or .woff depending on user-agent)
   const urlRegex = /url\((https:\/\/fonts.gstatic.com\/s\/.*?\.(ttf|woff))\)/g
@@ -108,17 +140,13 @@ export async function fetchTtf(
 
   if (!match) {
     console.log(
-      styleText(
-        "yellow",
-        `\nWarning: Failed to fetch font ${rawFontName} with weight ${weight}, got ${cssResponse.statusText}`,
-      ),
+      styleText("yellow", `\nWarning: Failed to fetch font ${rawFontName} with weight ${weight}`),
     )
     return
   }
 
-  // fontData is an ArrayBuffer containing the .ttf file data
-  const fontResponse = await fetch(match[1])
-  const fontData = Buffer.from(await fontResponse.arrayBuffer())
+  // fontData is a Buffer containing the font file data
+  const fontData = await httpsGetBuffer(match[1])
   await fs.mkdir(cacheDir, { recursive: true })
   await fs.writeFile(cachePath, fontData)
 

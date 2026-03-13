@@ -1,0 +1,35 @@
+---
+title: Learning Mechanics DeCal
+draft: true
+tags:
+---
+- week 1 (first week: no class)
+- week 2 (intro to learn mech)
+	- read the white paper
+	- big idea: physicist's approach to studying deep learning
+- week 3 (analytically solvable settings 1: DLNs)
+	- read saxe et al (+mark's blog post)
+	- big idea: analyzing models that are linear in the data; f is a linear function of x
+		- gain insight into the role of depth
+- week 4 (analytically solvable settings 2: the NTK and kernel regression)
+	- read lee et al or jacot et al (+lil log blog post)
+	- big idea: analyzing models that are linear in the parameters: f_lin is a linear function of the parameters of f; f_lin \approx f for large width
+		- kernel regression as a tractable model for wide neural nets
+- week 5 (analytically solvable settings 3: eigenlearning and the HEA) (jamie / joey guest lecture (?))
+	- read simon et al (eigenlearning) and karkada et al (HEA)
+	- big idea(s): predict expected generalization error of KRR by accounting for input data structure and apply the eigenframework to realistic data distributions with the HEA
+		- real data distribution -> (eigenframework) -> predict generalization error
+- week 6 (insightful limits: lazy vs. rich dichotomy and muP)
+	- read karkada et al and yang et al
+	- big idea(s): when/why does feature learning happen? 
+- week 7 (macroscopic regularities: neural collapse & the neural feature ansatz)
+- week 8 (Universality: the platonic representation hypothesis, fourier features in representations) (dhruva guest lecture (?))
+- week 9 (learning mechanics <-> mech interp)
+	- watch welch labs video on grokking (how does this connect to dhruva's translational symmetry => fourier features idea?)
+- week 10 (EoS and optimization phenomena)
+- week 11 (nonlinear toy models)
+- week 12 (neural scaling laws)
+- week 13 (implicit regularization, simplicity bias)
+- week 14 (final project hypothesis presentations)
+- week 15 (final project OH) (maybe FLAB members could come and help out)
+- week 16 (RRR week: no class)

@@ -26,6 +26,12 @@ jobs:
           node-version: 22
       - name: Install Dependencies
         run: npm ci
+      - name: Cache Quartz fonts
+        uses: actions/cache@v4
+        with:
+          path: .quartz-cache/fonts
+          key: quartz-fonts-${{ hashFiles('quartz.config.ts') }}
+          restore-keys: quartz-fonts-
       - name: Build Quartz
         run: npx quartz build
       - name: Upload artifact

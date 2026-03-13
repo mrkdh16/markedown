@@ -4,7 +4,7 @@ draft: false
 tags:
   - learning-mechanics
 ---
-A *learning mechanic* studies [learning mechanics](learningmechanics.org)—the precise mechanisms by which deep networks acquire, compress, and represent knowledge. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning.
+A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dynamical and mechanistic perspective on traditional deep learning theory. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning.
 ## 🔧 Deep Dives
 *Step-by-step derivations, refined expositions*
 

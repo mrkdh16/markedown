@@ -1,5 +1,5 @@
 ---
-title: 3-layer linear network backprop
+title: 2-layer linear network backprop
 draft: false
 tags:
 ---

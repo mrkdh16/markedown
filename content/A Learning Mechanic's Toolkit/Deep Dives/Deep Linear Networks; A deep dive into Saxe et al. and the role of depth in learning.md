@@ -14,22 +14,22 @@ tags:
 </center>
 
 ## Introduction.
-Understanding deep learning is a *very* hard problem. Despite the rapid increase in AI capabilities, we have yet to create a cohesive mathematical framework that explains *what* and *how* these powerful models learn. When tackling a problem this monumental—specifically, the task of erecting a rigorous mathematical framework for an opaque system—it helps to think like a physicist. Likely, a physicist's first instinct would be to conjure up a toy model. By studying a simplified system that still exhibits the complex, non-trivial phenomena of the original, we can find mathematically solid ground.
-
-Through deep linear networks, we will attack both the *what* and *how* part of the deep learning problem. Deep linear networks are a rare breed of highly mathematically tractable models that also retain some of the mysterious phenomena that we observe in their more complex, non-linear cousins. With deep linear networks we get a golden opportunity to probe both the *what* and *how*; this is not something we should take for granted.
+Understanding deep learning is a *very* hard problem. Despite the rapid increase in AI capabilities, we have yet to create a cohesive mathematical framework that explains *what* and *how* these powerful models learn. When tackling a problem this monumental—specifically, the task of erecting a rigorous mathematical framework that describes a complex system—it helps to think like a physicist. Likely, a physicist's first instinct would be to conjure up a toy model. By studying a simplified system that still exhibits the complex, non-trivial phenomena of the original, we can find mathematically solid ground.
 
 At first glance, deep linear networks seem quite uninteresting. Indeed, no expressiveness is gained from adding layers in linear networks as the input-output map can always be rewritten as a single shallow layer:
 $$
 \hat{y}= W^lW^{l-1} \ldots W^1x = W_{\text{total}}x.
 $$
-However, deep linear networks exhibit nonlinear training dynamics which arise from nonlinear gradients. From these dynamics emerge long plateaus and rapid transitions in the loss—a prime example of mysterious deep learning phenomena that we want to explain. 
+However, their training dynamics are nonlinear and thus capture some of the mysterious phenomena that we observe in their nonlinear cousins. Such phenomena include long plateaus at saddle points, rapid drops in the loss and low-rank bias for solutions. 
+
+Deep linear networks are a rare breed of highly mathematically tractable models that still retain interesting phenomena. They offer a golden opportunity to probe both the what and how in an analytically tractable setting. We should not take this for granted.
 
 We shall follow the work of [Saxe et al. (2014)](https://arxiv.org/pdf/1312.6120) and [Saxe et al. (2018)](https://arxiv.org/pdf/1810.10531). The first paper, titled "Exact solutions to the nonlinear dynamics of learning in deep linear neural networks," is the more 'canonical text' within the deep learning community. It focuses on the derivation of the theory and various implications related to machine learning. The second paper, titled "A mathematical theory of semantic development in deep neural networks," seems to aim for a broader audience with a focus on 'semantic cognition.' Figures are pulled from both papers: figure 1 and 3 from the latter, and figure 4 from the former. Figure 2 was generated from [this](https://alexlenail.me/NN-SVG/) website.
 ## Setup.
 #### A toy task for a toy model.
 It will prove useful to keep in mind a simple toy task. Imagine the network is presented with an item $i$ (e.g. a "Canary") represented as a one-hot input vector $x^\mu$. The network's objective is to predict a vector of features $y^\mu$, such as "Can Fly," "Has Wings," or "Is Yellow".
 
-Throughout training, the network experiences many such examples $\{x^\mu, y^\mu\}$. The statistical structure of this environment is captured by the input-output correlation matrix $\Sigma^{31} \equiv \sum_{\mu}y^\mu {x^\mu}^\top \propto \mathbb{E}[y^\mu {x^\mu}^\top]$:
+Throughout training, the network experiences many such examples $\{x^\mu, y^\mu\}$. The statistical structure of this environment is captured by the input-output correlation matrix $\Sigma^{31} \equiv \sum_{\mu}y^\mu {x^\mu}^\top$:
 
 <center>
 <img src="Screenshot 2026-02-12 at 9.48.02 PM.png" width="200">
@@ -38,119 +38,80 @@ Throughout training, the network experiences many such examples $\{x^\mu, y^\mu\
 
 This matrix represents how strongly specific items correlate with specific properties across the entire dataset and is a key component of our analysis.
 #### The toy model.
-Consider a simple 3-layer linear network $\hat{y} = W^{32}W^{21}x$ with training data $\{ x^{\mu},y^\mu\}$ ($\mu=1,\dots,P$) and mean squared error $\mathcal{E} = \sum^P_{i=1}||y^\mu-W^{32}W^{21}x^\mu||^2_2$. Let's say that the input has dimension $N_1$, the hidden layer has dimension $N_{2}$ and the output has dimension $N_{3}$. So, $x^\mu \in \mathbb{R}^{N_{1}}$, $y^\mu \in \mathbb{R}^{N_{3}}$, $W^{21}$ is an $N_{2}\times N_{1}$ matrix and $W^{32}$ is an $N_{3}\times N_{2}$ matrix. In terms of our toy task, this means that we have $N_1$ items, $N_3$ possible features that the items can have and $P$ examples of items having features.
+Consider a simple 2-layer linear network $\hat{y} = W^{32}W^{21}x$ with training data $\{ x^{\mu},y^\mu\}$ ($\mu=1,\dots,P$) and mean squared error $\mathcal{E} = \sum^P_{i=1}\frac{1}{2}||y^\mu-W^{32}W^{21}x^\mu||^2_2$. Let's say that the input has dimension $N_1$, the hidden layer has dimension $N_{2}$ and the output has dimension $N_{3}$. So, $x^\mu \in \mathbb{R}^{N_{1}}$, $y^\mu \in \mathbb{R}^{N_{3}}$, $W^{21}$ is an $N_{2}\times N_{1}$ matrix and $W^{32}$ is an $N_{3}\times N_{2}$ matrix. In terms of our toy task, this means that we have $N_1$ items, $N_3$ possible features that the items can have and $P$ examples of items having features.
 
 <center>
 <img src="Screenshot 2026-02-14 at 12.39.03 AM.png" width="350">
-<figcaption>Figure 2: A 3-layer network</figcaption>
+<figcaption>Figure 2: A 2-layer network</figcaption>
 </center>
 
 #### Taking derivatives.
-To run gradient descent on $\mathcal{E}$, we need to compute the partial derivatives for each of the weight matrices. The simplest way to do this is how a computer does it: with backpropagation (see [[3-layer linear network backprop]] for derivation). We get the following partial derivatives from backprop:
+To run gradient descent on $\mathcal{E}$, we need to compute the partial derivatives for each of the weight matrices. The simplest way to do this is how a computer does it: with backpropagation (see [[2-layer linear network backprop]] for derivation). We get the following partial derivatives from backprop:
 $$
 \begin{align*}
-\frac{\partial \mathcal{E}}{\partial W^{21}} &= \sum^P_{\mu=1} \frac{\partial}{\partial W^{21}} ||y^\mu - W^{32}W^{21}x^\mu||^2_{2}  \\
-&= \sum^P_{\mu=1} -2{W^{32}}^\top (y^\mu {x^\mu}^\top - W^{32}W^{21}x^\mu {x^\mu}^\top) \\
-&= -2{W^{32}}^\top \left( \sum^P_{\mu=1}y^\mu {x^\mu}^\top-W^{32}W^{21}\sum^P_{\mu=1}x^\mu {x^\mu}^\top \right) \\
-&= -2{W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11})
+\frac{\partial \mathcal{E}}{\partial W^{21}} &= \sum^P_{\mu=1} \frac{\partial}{\partial W^{21}} \frac{1}{2}||y^\mu - W^{32}W^{21}x^\mu||^2_{2}  \\
+&= \sum^P_{\mu=1} -{W^{32}}^\top (y^\mu {x^\mu}^\top - W^{32}W^{21}x^\mu {x^\mu}^\top) \\
+&= -{W^{32}}^\top \left( \sum^P_{\mu=1}y^\mu {x^\mu}^\top-W^{32}W^{21}\sum^P_{\mu=1}x^\mu {x^\mu}^\top \right) \\
+&= -{W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11})
 \end{align*}
 $$
 $$
 \begin{align*}
 
-\frac{\partial \mathcal{E}}{\partial W^{32}} &= \sum^P_{\mu=1} \frac{\partial}{\partial W^{32}} ||y^\mu - W^{32}W^{21}x^\mu||^2_{2} \\
+\frac{\partial \mathcal{E}}{\partial W^{32}} &= \sum^P_{\mu=1} \frac{\partial}{\partial W^{32}} \frac{1}{2}||y^\mu - W^{32}W^{21}x^\mu||^2_{2} \\
 
-&= \sum^P_{\mu=1} -2 (y^\mu {x^\mu}^\top - W^{32}W^{21}x^\mu {x^\mu}^\top){W^{21}}^\top \\
+&= \sum^P_{\mu=1} -(y^\mu {x^\mu}^\top - W^{32}W^{21}x^\mu {x^\mu}^\top){W^{21}}^\top \\
 
-&= -2 \left( \sum^P_{\mu=1}y^\mu {x^\mu}^\top  - W^{32}W^{21}\sum^P_{\mu=1}x^\mu {x^\mu}^\top  \right){W^{21}}^\top \\
+&= -\left( \sum^P_{\mu=1}y^\mu {x^\mu}^\top  - W^{32}W^{21}\sum^P_{\mu=1}x^\mu {x^\mu}^\top  \right){W^{21}}^\top \\
 
-&= -2 (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top
+&= -(\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top
 
 \end{align*}
 $$
-where we defined the input-output correlation matrix as $\Sigma^{31}\equiv \sum^P_{\mu=1}y^\mu {x^\mu}^\top \propto \mathbb{E}[yx^\top]$ and the input correlation matrix as $\Sigma^{11} \equiv \sum^P_{\mu=1} x^\mu {x^\mu}^\top \propto \mathbb{E}[x x^\top]$. Observe that $\Sigma^{31}$ and $\Sigma^{11}$ contain all the information from the dataset used in training.  
+where we defined the input-output correlation matrix as $\Sigma^{31}\equiv \sum^P_{\mu=1}y^\mu {x^\mu}^\top$ and the input correlation matrix as $\Sigma^{11} \equiv \sum^P_{\mu=1} x^\mu {x^\mu}^\top$. Observe that the matrices $\Sigma^{31}$ and $\Sigma^{11}$ contain all the information from the dataset used in training.  
 
 To use tools from differential equations, we'll have to find the 'gradient flow' of the weights. We start by examining how the weight matrices get updated:
 $$
 \begin{align*}
-\Delta W^{21} = W^{21}_{\text{update}} &= \lambda{W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11})
+\Delta W^{21} &= -\lambda\frac{\partial \mathcal{E}}{\partial W^{21}}=  \lambda{W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11})
 \\
-\Delta W^{32}=W^{32}_{\text{update}} &= \lambda (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top
+\Delta W^{32} &= -\lambda\frac{\partial \mathcal{E}}{\partial W^{32}}= \lambda (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top
 \end{align*}
 $$
 where $\lambda$ is some small positive number, i.e. the learning rate. Then, for sufficiently small $\lambda$, we can make the following approximation[^1]:
 $$
-\begin{align}
-\tau \frac{dW^{21}}{dt} &= {W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}) \\
-\tau \frac{dW^{32}}{dt} &=  (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top \\
-\end{align}
-$$
-where we defined $\tau \equiv \frac{1}{P\lambda}$. Here, $t$ measures time in units of learning epochs—meaning that as $t$ goes from $n$ to $n+1$, the network goes through the entire dataset (so, $P$ examples) 1 time.
-#### Plan of Attack.
-Equations (1) and (2) are quite complex and contain multiple dimensions of interactions. We are dealing with a coupled system in the sense that a change in one weight (an entry in $W^{21}$ or $W^{32}$) will affect every other weight. This kind of coupling is the main reason why studying deep networks is usually intractable. An exception to this intractability occurs when we are able to find a *decoupled* regime. 
-
-What does it mean for a regime to be decoupled? In this case, we want to find a *coordinate system* in which the interdependent matrix dynamics decouple into simpler independent one-dimensional dynamics. Mathematically, this means that the change in a specific weight depends only on itself and the relevant statistical mode of the data, rather than the state of the entire weight matrix. By identifying these independent "modes" of learning, we can reduce a complex system of intertwined differential equations into a collection of parallel scalar equations. Once we have parallel, decoupled scalar differential equations, we will be able to *solve* for the dynamics, i.e. the learning trajectory.
-
-The concrete steps we will take are as follows:
-1. Make simplifying assumptions to get closer to a decoupled regime. Specifically, we will assume that $\Sigma^{11}=I$.
-2. Extract the coordinate system. We will use the Singular Value Decomposition (SVD) of $\Sigma^{31}$ to identify the "natural" axes of the data. Intuitively, we leverage the SVD because of its capacity to capture the statistical structure in the data. In this natural coordinate system, it will become clear that the learning task reduces to matrix factorization, i.e. learning $W^{32}$ and $W^{21}$ such that they satisfy $W^{32}W^{21} \approx \Sigma^{31}$.
-3. Reducing to a growth-only picture. Thinking in terms of the SVD coordinate system, matrix factorization splits into two subtasks: aligning the network's principal directions with those of $\Sigma^{31}$, and growing the effective singular values to match the data's. We will assume alignment holds and focus on growth, which reduces the coupled matrix dynamics to independent scalar equations—one per singular value.
-It turns out that this growth-only picture is both a simple way to view learning and a good approximation of what happens empirically.
-#### The first simplifying assumption.
-Let's make a simplifying assumption: that the covariance of the input vectors $x^\mu$ is whitened, i.e. that $\Sigma^{11}=I$. This is a reasonable assumption since training data is often whitened in practice. Once we assume that $\Sigma^{11}=I$, the input-output correlation matrix $\Sigma^{31}$ becomes the sole source of information about the training data that can be used in learning. This assumption simplifies equations (1) and (2):
-$$
-\begin{align}
-\tau \frac{dW^{21}}{dt} &= {W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}) \\
-\tau \frac{dW^{32}}{dt} &=  (\Sigma^{31}-W^{32}W^{21}){W^{21}}^\top. \\
-\end{align}
-$$
-However, even after this simplifying assumption, we are left with matrix expressions. Might there be a way to get vector, or perhaps even scalar equations that represent the same thing? It turns out the answer is yes (with some more simplifying assumptions), but to get there, we first need to take a closer look at the input-output correlation matrix.
-#### The input-output correlation matrix.
-The input-output correlation matrix $\Sigma^{31}$ is defined as the sum of $P$ rank-1 matrices each of the form $y^\mu {x^\mu}^\top$ (an outer product):
-$$
-\begin{bmatrix}
-y_1^\mu \\
-\vdots \\
-y_{N_3}^\mu
-\end{bmatrix}
-\begin{bmatrix}
-x_1^\mu & \cdots & x_{N_1}^\mu
-\end{bmatrix}
-=
-\begin{bmatrix}
-y_1^\mu x_1^\mu & y_1^\mu x_2^\mu & \cdots & y_1^\mu x_{N_1}^\mu \\
-y_2^\mu x_1^\mu & y_2^\mu x_2^\mu & \cdots & y_2^\mu x_{N_1}^\mu \\
-\vdots & \vdots & \ddots & \vdots \\
-y_{N_3}^\mu x_1^\mu & y_{N_3}^\mu x_2^\mu & \cdots & y_{N_3}^\mu x_{N_1}^\mu
-\end{bmatrix}
-$$
-$$
 \begin{align*}
-\implies \Sigma^{31} &= 
-\begin{bmatrix}
-\sum^P_{\mu=1} y_1^\mu x_1^\mu & \sum^P_{\mu=1}y_1^\mu x_2^\mu & \cdots & \sum^P_{\mu=1}y_1^\mu x_{N_1}^\mu \\
-\sum^P_{\mu=1}y_2^\mu x_1^\mu & \sum^P_{\mu=1}y_2^\mu x_2^\mu & \cdots & \sum^P_{\mu=1}y_2^\mu x_{N_1}^\mu \\
-\vdots & \vdots & \ddots & \vdots \\
-\sum^P_{\mu=1}y_{N_3}^\mu x_1^\mu & \sum^P_{\mu=1}y_{N_3}^\mu x_2^\mu & \cdots & \sum^P_{\mu=1}y_{N_3}^\mu x_{N_1}^\mu
-\end{bmatrix} 
-\\\\
-&= 
-\begin{bmatrix}
-\vert & & \vert \\
-\sum_{\mu=1}^{P} x_1^\mu \vec{y}^\mu & \cdots & \sum_{\mu=1}^{P} x_{N_1}^\mu \vec{y}^\mu \\
-\vert & & \vert
-\end{bmatrix}
-\\\\
-&=
-\begin{bmatrix}
-\text{---} & \sum_{\mu=1}^{P} y_1^\mu {\vec{x}^\mu}^\top & \text{---}\\
- & \vdots & \\
-\text{---} &  \sum_{\mu=1}^{P} y_{N_3}^\mu {\vec{x}^\mu}^\top & \text{---}
-\end{bmatrix}
+\frac{dW^{21}}{dt} = \lim_{ \lambda \to 0 } \frac{\Delta W^{21}}{\lambda} = {W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}) \\
+\frac{dW^{32}}{dt} = \lim_{ \lambda \to 0 } \frac{\Delta W^{32}}{\lambda} = (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top. \\
 \end{align*}
 $$
-In the second and third forms of $\Sigma^{31}$, I tried to show that the columns of $\Sigma^{31}$ are weighted sums of the output vectors while the rows of $\Sigma^{31}$ are weighted sums of the input vectors (transposed). 
+#### What the network learns.
+Looking at equations (1) and (2), we can already discern what the network will learn. The weights will stop changing and will have reached a minima of the loss when $\frac{dW^{21}}{dt}$, $\frac{dW^{32}}{dt} \approx 0$, i.e. when $W^{32}W^{21}\Sigma^{11} \approx \Sigma^{31}$. So, the network will learn weight matrices $W^{32}$ and $W^{21}$ such that $W^{32}W^{21}\Sigma^{11} \approx \Sigma^{31}$. Intuitively, the deviation of $W^{32}W^{21}\Sigma^{11}$ from $\Sigma^{31}$ is what generates the learning signal. In this sense, $\Sigma^{31}$ is the 'target' the network is chasing. On the other hand, $\Sigma^{11}$  multiplicatively modifies the model matrix $W^{32}W^{21}$, but it doesn't directly drive the gradient. This is most apparent when the weight matrices $W^{32}$ and $W^{21}$ are small. Then, the entire $W^{32}W^{21}\Sigma^{11}$ term is approximately equal to 0, so the gradient is almost entirely dictated by $\Sigma^{31}$. 
 
+That the input-output correlation matrix $\Sigma^{31}$ is what generates the learning signal is an important intuition to have in mind. This matrix is what captures the important structure in the data and will dictate the coordinate system we work in.
+#### Plan of Attack.
+Equations (1) and (2) are quite complex, containing interconnected, nonlinear interactions. We are dealing with a coupled system in the sense that a change in one weight (an entry in $W^{21}$ or $W^{32}$) will affect every other weight. This kind of coupling is the main reason why studying deep networks is usually intractable. An exception to this intractability occurs when we are able to find a *decoupled* regime. 
+
+What does it mean for a regime to be decoupled? In this case, we want to find a *coordinate system* in which the interdependent matrix dynamics separate into simpler independent one-dimensional dynamics. Mathematically, this means that the change in a specific weight depends only on itself and the relevant statistical mode of the data, rather than the state of the entire weight matrix. By identifying these independent "modes" of learning, we can reduce a complex system of intertwined differential equations into a collection of parallel scalar equations. Once we have parallel, decoupled scalar differential equations, we will be able to *solve* for the dynamics, i.e. extract the full learning trajectory.
+
+The concrete steps we will take are as follows:
+1. **Identify the simplifying coordinate system**. We want to work in a fixed basis that reflects the structure of the data. The two natural potential candidates are the principal components of the input-output correlation matrix ($\Sigma^{31}=\Sigma_{\mu}y^\mu {x^\mu}^\top$) and of the input-input correlation matrix ($\Sigma^{11}=\Sigma_{\mu}x^\mu {x^\mu}^\top$). Recall that $\Sigma^{31}$ is what generates the learning signal. $\Sigma^{11}$ is more of a '[preconditioner](https://rkube.github.io/jekyll/update/2021/03/02/neural-networks-and-iterative-solvers.html)' for the network matrix. This is intuitively why the principal components of $\Sigma^{31}$ are the natural coordinate axes. To eliminate the competition between the two natural bases, we will assume $\Sigma^{11} = I$. Notice that once $\Sigma^{11} = I$, the gradient flow equations (1) and (2) immediately reveal that the learning task is matrix factorization: the network must find $W^{32}$ and $W^{21}$ such that $W^{32}W^{21} \approx \Sigma^{31}$.
+2. **Reduce to a growth-only picture**. Matrix factorization in principle involves two subtasks: *aligning* the network's principal directions with the singular vectors of $\Sigma^{31}$, and *growing* the effective singular values to match the data's. We re-express the dynamics in the SVD basis of $\Sigma^{31}$ to make this decomposition explicit, then assume that alignment happens extremely quickly and focus on the dynamics after this alignment phase. This reduces the coupled matrix dynamics to independent scalar equations—one per singular value.
+It turns out that this growth-only picture is both a simple way to view learning and a good approximation of what happens empirically. We will also show why quick alignment is actually quite reasonable.
+#### The first simplifying assumption.
+Let us make our first simplifying assumption: that the covariance of the input vectors $x^\mu$ is whitened, i.e. that $\Sigma^{11}=I$. Back when the original Saxe et al. (2014) paper was published, this was seen as a reasonable assumption as it was often done in practice. This is no longer the case and that $\Sigma^{11}=I$ is more of an assumption born out of the desire for an analytically tractable system. In fact, without this assumption, [the problem is NP-hard](https://arxiv.org/abs/1012.0197).  
+
+Once we assume that $\Sigma^{11}=I$, the input-output correlation matrix $\Sigma^{31}$ becomes the sole source of information about the training data that can be used in learning. This assumption simplifies equations (1) and (2):
+$$
+\begin{align}
+\frac{dW^{21}}{dt} &= {W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}) \\
+\frac{dW^{32}}{dt} &=  (\Sigma^{31}-W^{32}W^{21}){W^{21}}^\top. \\
+\end{align}
+$$
+The problem has been reduced to matrix factorization; the network will learn weight matrices $W^{32}$ and $W^{21}$ such that $W^{32}W^{21} \approx \Sigma^{31}$.
+
+Even after this simplifying assumption, we are left with complicated matrix expressions. Might there be a way to get vector, or perhaps even scalar equations that represent the same thing? It turns out the answer is yes (with some more simplifying assumptions), but to get there, we first need to take a closer look at the input-output correlation matrix.
+#### The input-output correlation matrix.
 In order to effectively explore the statistical structure in the data, we consider the (compact) [singular value decomposition (SVD)](https://www.cs.cmu.edu/~venkatg/teaching/CStheory-infoage/book-chapter-4.pdf) of $\Sigma^{31}$:
 $$
 \Sigma^{31} = U^{33}S^{31}{V^{11}}^\top = \sum_{\alpha=1}^{N_1} s_\alpha u^\alpha {v^{\alpha}}^\top.
@@ -279,7 +240,7 @@ $$
 \implies W^{32}W^{21} &\approx U^{33}S^{31}{V^{11}}^\top = \Sigma^{31}.
 \end{align*}
 $$
-Thus, we have discovered exactly what our 3-layer linear network will learn through gradient descent: the input-output correlation matrix. The problem has been reduced to matrix factorization[^5].
+Thus, we have discovered exactly what our 2-layer linear network will learn through gradient descent: the input-output correlation matrix. The problem has been reduced to matrix factorization[^5].
 
 That distinct connectivity modes must become orthogonal (in order for gradient descent on $E$ to settle on a solution) is a crucial observation. This is the "alignment" mentioned in the Plan of Attack. Once distinct connectivity modes are orthogonal, equations (5) and (6) become much easier to analyze since the second term in both equations go to 0. Then, the dependence between distinct connectivity modes completely dissolves and we are left with decoupled, independent differential equations. Intuitively, this means the model can allocate entirely separate, non-interfering sub-networks within the hidden layer to process distinct modes. We can exploit this to extract even more information from our equations; namely, the time course of learning.
 ## How the network learns.
@@ -384,7 +345,7 @@ We made a few assumptions to get to this point; the main ones being that the inp
 
 Sources: [Exact solutions to the nonlinear dynamics of learning in deep linear neural networks](https://arxiv.org/pdf/1312.6120), [A mathematical theory of semantic development in deep neural networks](https://arxiv.org/pdf/1810.10531)
 
-[^1]: From equations (1) and (2) follows a conservation law. Observe that $\tau \frac{dW^{21}}{dt}{W^{21}}^\top = {W^{32}}^\top \tau \frac{dW^{32}}{dt}$. This implies that $\frac{dW^{21}}{dt}{W^{21}}^\top - {W^{32}}^\top \frac{dW^{32}}{dt} = {W^{21}}\frac{dW^{21}}{dt}^\top - \frac{dW^{32}}{dt}^\top{W^{32}}  = 0$ where for the second equality we took the transpose of both sides. From this and the product rule, it follows that $\frac{d}{dt}(W^{21}{W^{21}}^\top - {W^{32}}^\top W^{32}) = 0$. So, the quantity $W^{21}{W^{21}}^\top - {W^{32}}^\top W^{32}$ is conserved throughout time.
+[^1]: From equations (1) and (2) follows a conservation law. Observe that $\frac{dW^{21}}{dt}{W^{21}}^\top = {W^{32}}^\top \frac{dW^{32}}{dt}$. This implies that $\frac{dW^{21}}{dt}{W^{21}}^\top - {W^{32}}^\top \frac{dW^{32}}{dt} = {W^{21}}\frac{dW^{21}}{dt}^\top - \frac{dW^{32}}{dt}^\top{W^{32}}  = 0$ where for the second equality we took the transpose of both sides. From this and the product rule, it follows that $\frac{d}{dt}(W^{21}{W^{21}}^\top - {W^{32}}^\top W^{32}) = 0$. So, the quantity $W^{21}{W^{21}}^\top - {W^{32}}^\top W^{32}$ is conserved throughout time.
 
 [^2]: Observe that in figure 3, unlike the input modes, the output modes do not form a complete basis for the feature space. This is essentially because four categorical directions are enough to completely characterize the structure of the data. 
 

@@ -14,22 +14,20 @@ tags:
 </center>
 
 ## Introduction.
-Understanding deep learning is a *very* hard problem. Despite the rapid increase in AI capabilities, we have yet to create a cohesive mathematical framework that explains *what* and *how* these powerful models learn. When tackling a problem this monumental—specifically, the task of erecting a rigorous mathematical framework that describes a complex system—it helps to think like a physicist. Likely, a physicist's first instinct would be to conjure up a toy model. By studying a simplified system that still exhibits the complex, non-trivial phenomena of the original, we can find mathematically solid ground.
+Understanding deep learning is a *very* hard problem. Despite the rapid increase in AI capabilities, we have yet to create a cohesive mathematical framework that explains *what* and *how* these powerful models learn. When tackling a problem this monumental—specifically, the task of erecting a rigorous mathematical framework that describes a ridiculously complex system—it helps to think like a physicist. Likely, a physicist's first instinct would be to [[On Learning Mechanics|conjure up a toy model]]. By studying a simplified system that still exhibits the complex, non-trivial phenomena of the original, we can find mathematically solid ground.
 
 At first glance, deep linear networks seem quite uninteresting. Indeed, no expressiveness is gained from adding layers in linear networks as the input-output map can always be rewritten as a single shallow layer:
 $$
-\hat{y}= W^lW^{l-1} \ldots W^1x = W_{\text{total}}x.
+\hat{y}= W_{l}W_{l-1} \ldots W_{1}x = W_{\text{total}}x.
 $$
-However, their training dynamics are nonlinear and thus capture some of the mysterious phenomena that we observe in their nonlinear cousins. Such phenomena include long plateaus at saddle points, rapid drops in the loss and low-rank bias for solutions. 
-
-Deep linear networks are a rare breed of highly mathematically tractable models that still retain interesting phenomena. They offer a golden opportunity to probe both the what and how in an analytically tractable setting. We should not take this for granted.
+However, their training dynamics are nonlinear and thus capture some of the mysterious phenomena that we observe in their nonlinear cousins. Such phenomena include long plateaus at saddle points, rapid drops in the loss and low-rank bias for solutions. Deep linear networks are a rare breed of highly mathematically tractable models that still retain interesting phenomena. They offer a golden opportunity to probe both the *what* and *how* in an analytically tractable setting. We should not take this for granted.
 
 We shall follow the work of [Saxe et al. (2014)](https://arxiv.org/pdf/1312.6120) and [Saxe et al. (2018)](https://arxiv.org/pdf/1810.10531). The first paper, titled "Exact solutions to the nonlinear dynamics of learning in deep linear neural networks," is the more 'canonical text' within the deep learning community. It focuses on the derivation of the theory and various implications related to machine learning. The second paper, titled "A mathematical theory of semantic development in deep neural networks," seems to aim for a broader audience with a focus on 'semantic cognition.' Figures are pulled from both papers: figure 1 and 3 from the latter, and figure 4 from the former. Figure 2 was generated from [this](https://alexlenail.me/NN-SVG/) website.
 ## Setup.
 #### A toy task for a toy model.
-It will prove useful to keep in mind a simple toy task. Imagine the network is presented with an item $i$ (e.g. a "Canary") represented as a one-hot input vector $x^\mu$. The network's objective is to predict a vector of features $y^\mu$, such as "Can Fly," "Has Wings," or "Is Yellow".
+It will prove useful to keep in mind a simple toy task. Imagine the network is presented with an item $\mu$ (e.g. a "Canary") represented as a one-hot input vector $x^\mu$[^1]. The network's objective is to predict a vector of features $y^\mu$, such as "Can Fly," "Has Wings," or "Is Yellow".
 
-Throughout training, the network experiences many such examples $\{x^\mu, y^\mu\}$. The statistical structure of this environment is captured by the input-output correlation matrix $\Sigma^{31} \equiv \sum_{\mu}y^\mu {x^\mu}^\top$:
+Throughout training, the network experiences many such examples $\{x^\mu, y^\mu\}$. The statistical structure of this environment is captured by the input-output correlation matrix $\Sigma_{xy} \equiv \sum_{\mu}y^\mu {x^\mu}^\top$:
 
 <center>
 <img src="Screenshot 2026-02-12 at 9.48.02 PM.png" width="200">
@@ -38,7 +36,7 @@ Throughout training, the network experiences many such examples $\{x^\mu, y^\mu\
 
 This matrix represents how strongly specific items correlate with specific properties across the entire dataset and is a key component of our analysis.
 #### The toy model.
-Consider a simple 2-layer linear network $\hat{y} = W^{32}W^{21}x$ with training data $\{ x^{\mu},y^\mu\}$ ($\mu=1,\dots,P$) and mean squared error $\mathcal{E} = \sum^P_{i=1}\frac{1}{2}||y^\mu-W^{32}W^{21}x^\mu||^2_2$. Let's say that the input has dimension $N_1$, the hidden layer has dimension $N_{2}$ and the output has dimension $N_{3}$. So, $x^\mu \in \mathbb{R}^{N_{1}}$, $y^\mu \in \mathbb{R}^{N_{3}}$, $W^{21}$ is an $N_{2}\times N_{1}$ matrix and $W^{32}$ is an $N_{3}\times N_{2}$ matrix. In terms of our toy task, this means that we have $N_1$ items, $N_3$ possible features that the items can have and $P$ examples of items having features.
+Consider a simple 2-layer linear network $\hat{y} = W_2 W_1 x$ with training data $\{ x^{\mu},y^\mu\}$ ($\mu=1,\dots,P$) and mean squared error $\mathcal{E} = \sum^P_{\mu=1}\frac{1}{2}||y^\mu-W_2 W_1 x^\mu||^2_2$. Let's say that the input has dimension $N_1$, the hidden layer has dimension $N_{2}$ and the output has dimension $N_{3}$. So, $x^\mu \in \mathbb{R}^{N_{1}}$, $y^\mu \in \mathbb{R}^{N_{3}}$, $W_1$ is an $N_{2}\times N_{1}$ matrix and $W_2$ is an $N_{3}\times N_{2}$ matrix[^2]. In terms of our toy task, this means that we have $N_1$ items, $N_3$ possible features that the items can have and $P$ examples of items having features.
 
 <center>
 <img src="Screenshot 2026-02-14 at 12.39.03 AM.png" width="350">
@@ -49,163 +47,167 @@ Consider a simple 2-layer linear network $\hat{y} = W^{32}W^{21}x$ with training
 To run gradient descent on $\mathcal{E}$, we need to compute the partial derivatives for each of the weight matrices. The simplest way to do this is how a computer does it: with backpropagation (see [[2-layer linear network backprop]] for derivation). We get the following partial derivatives from backprop:
 $$
 \begin{align*}
-\frac{\partial \mathcal{E}}{\partial W^{21}} &= \sum^P_{\mu=1} \frac{\partial}{\partial W^{21}} \frac{1}{2}||y^\mu - W^{32}W^{21}x^\mu||^2_{2}  \\
-&= \sum^P_{\mu=1} -{W^{32}}^\top (y^\mu {x^\mu}^\top - W^{32}W^{21}x^\mu {x^\mu}^\top) \\
-&= -{W^{32}}^\top \left( \sum^P_{\mu=1}y^\mu {x^\mu}^\top-W^{32}W^{21}\sum^P_{\mu=1}x^\mu {x^\mu}^\top \right) \\
-&= -{W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11})
+\frac{\partial \mathcal{E}}{\partial W_1} &= \sum^P_{\mu=1} \frac{\partial}{\partial W_1} \frac{1}{2}||y^\mu - W_2 W_1 x^\mu||^2_{2}  \\
+&= \sum^P_{\mu=1} -{W_2}^\top (y^\mu {x^\mu}^\top - W_2 W_1 x^\mu {x^\mu}^\top) \\
+&= -{W_2}^\top \left( \sum^P_{\mu=1}y^\mu {x^\mu}^\top-W_2 W_1\sum^P_{\mu=1}x^\mu {x^\mu}^\top \right) \\
+&= -{W_2}^\top (\Sigma_{xy}-W_2 W_1\Sigma_{xx})
 \end{align*}
 $$
 $$
 \begin{align*}
 
-\frac{\partial \mathcal{E}}{\partial W^{32}} &= \sum^P_{\mu=1} \frac{\partial}{\partial W^{32}} \frac{1}{2}||y^\mu - W^{32}W^{21}x^\mu||^2_{2} \\
+\frac{\partial \mathcal{E}}{\partial W_2} &= \sum^P_{\mu=1} \frac{\partial}{\partial W_2} \frac{1}{2}||y^\mu - W_2 W_1 x^\mu||^2_{2} \\
 
-&= \sum^P_{\mu=1} -(y^\mu {x^\mu}^\top - W^{32}W^{21}x^\mu {x^\mu}^\top){W^{21}}^\top \\
+&= \sum^P_{\mu=1} -(y^\mu {x^\mu}^\top - W_2 W_1 x^\mu {x^\mu}^\top){W_1}^\top \\
 
-&= -\left( \sum^P_{\mu=1}y^\mu {x^\mu}^\top  - W^{32}W^{21}\sum^P_{\mu=1}x^\mu {x^\mu}^\top  \right){W^{21}}^\top \\
+&= -\left( \sum^P_{\mu=1}y^\mu {x^\mu}^\top  - W_2 W_1\sum^P_{\mu=1}x^\mu {x^\mu}^\top  \right){W_1}^\top \\
 
-&= -(\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top
+&= -(\Sigma_{xy}-W_2 W_1\Sigma_{xx}){W_1}^\top
 
 \end{align*}
 $$
-where we defined the input-output correlation matrix as $\Sigma^{31}\equiv \sum^P_{\mu=1}y^\mu {x^\mu}^\top$ and the input correlation matrix as $\Sigma^{11} \equiv \sum^P_{\mu=1} x^\mu {x^\mu}^\top$. Observe that the matrices $\Sigma^{31}$ and $\Sigma^{11}$ contain all the information from the dataset used in training.  
+where we defined the input-output correlation matrix as $\Sigma_{xy}\equiv \sum^P_{\mu=1}y^\mu {x^\mu}^\top$ and the input correlation matrix as $\Sigma_{xx} \equiv \sum^P_{\mu=1} x^\mu {x^\mu}^\top$. Observe that the matrices $\Sigma_{xy}$ and $\Sigma_{xx}$ contain all the information from the dataset used in training.
 
 To use tools from differential equations, we'll have to find the 'gradient flow' of the weights. We start by examining how the weight matrices get updated:
 $$
 \begin{align*}
-\Delta W^{21} &= -\lambda\frac{\partial \mathcal{E}}{\partial W^{21}}=  \lambda{W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11})
+\Delta W_1 &= -\lambda\frac{\partial \mathcal{E}}{\partial W_1}=  \lambda{W_2}^\top (\Sigma_{xy}-W_2 W_1\Sigma_{xx})
 \\
-\Delta W^{32} &= -\lambda\frac{\partial \mathcal{E}}{\partial W^{32}}= \lambda (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top
+\Delta W_2 &= -\lambda\frac{\partial \mathcal{E}}{\partial W_2}= \lambda (\Sigma_{xy}-W_2 W_1\Sigma_{xx}){W_1}^\top
 \end{align*}
 $$
-where $\lambda$ is some small positive number, i.e. the learning rate. Then, for sufficiently small $\lambda$, we can make the following approximation[^1]:
+where $\lambda$ is some small positive number, i.e. the learning rate. Then, for sufficiently small $\lambda$, we can make the following approximation:
 $$
 \begin{align*}
-\frac{dW^{21}}{dt} = \lim_{ \lambda \to 0 } \frac{\Delta W^{21}}{\lambda} = {W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}) \\
-\frac{dW^{32}}{dt} = \lim_{ \lambda \to 0 } \frac{\Delta W^{32}}{\lambda} = (\Sigma^{31}-W^{32}W^{21}\Sigma^{11}){W^{21}}^\top. \\
+\frac{dW_1}{dt} = \lim_{ \lambda \to 0 } \frac{\Delta W_1}{\lambda} = {W_2}^\top (\Sigma_{xy}-W_2 W_1\Sigma_{xx}) \\
+\frac{dW_2}{dt} = \lim_{ \lambda \to 0 } \frac{\Delta W_2}{\lambda} = (\Sigma_{xy}-W_2 W_1\Sigma_{xx}){W_1}^\top. \\
 \end{align*}
 $$
+(Note: from these equations, we can infer a [[Balancedness|conserved quantity]][^3])
 #### What the network learns.
-Looking at equations (1) and (2), we can already discern what the network will learn. The weights will stop changing and will have reached a minima of the loss when $\frac{dW^{21}}{dt}$, $\frac{dW^{32}}{dt} \approx 0$, i.e. when $W^{32}W^{21}\Sigma^{11} \approx \Sigma^{31}$. So, the network will learn weight matrices $W^{32}$ and $W^{21}$ such that $W^{32}W^{21}\Sigma^{11} \approx \Sigma^{31}$. Intuitively, the deviation of $W^{32}W^{21}\Sigma^{11}$ from $\Sigma^{31}$ is what generates the learning signal. In this sense, $\Sigma^{31}$ is the 'target' the network is chasing. On the other hand, $\Sigma^{11}$  multiplicatively modifies the model matrix $W^{32}W^{21}$, but it doesn't directly drive the gradient. This is most apparent when the weight matrices $W^{32}$ and $W^{21}$ are small. Then, the entire $W^{32}W^{21}\Sigma^{11}$ term is approximately equal to 0, so the gradient is almost entirely dictated by $\Sigma^{31}$. 
+Looking at equations (1) and (2), we can already discern what the network will learn. The weights will stop changing and will have reached a minima of the loss when $\frac{dW_1}{dt}$, $\frac{dW_2}{dt} \approx 0$, i.e. when $W_2 W_1\Sigma_{xx} \approx \Sigma_{xy}$. In other words, the network will learn weight matrices $W_2$ and $W_1$ such that $W_2 W_1\Sigma_{xx} \approx \Sigma_{xy}$. Intuitively, the deviation of $W_2 W_1\Sigma_{xx}$ from $\Sigma_{xy}$ is what generates the learning signal. In this sense, $\Sigma_{xy}$ is the 'target' the network is chasing. On the other hand, $\Sigma_{xx}$  only multiplicatively modifies the model matrix $W_2 W_1$, and it doesn't directly drive the gradient. This is most apparent when the weight matrices $W_2$ and $W_1$ are vanishingly small (which would be the case at initialization if we initialized small). When the weights are very small, the entire $W_2 W_1\Sigma_{xx}$ term is approximately equal to 0, so the gradient is almost entirely dictated by $\Sigma_{xy}$.
 
-That the input-output correlation matrix $\Sigma^{31}$ is what generates the learning signal is an important intuition to have in mind. This matrix is what captures the important structure in the data and will dictate the coordinate system we work in.
+That the input-output correlation matrix $\Sigma_{xy}$ generates the learning signal is an important intuition to have in mind. This matrix captures the important structure in the data and will dictate the coordinate system we work in.
 #### Plan of Attack.
-Equations (1) and (2) are quite complex, containing interconnected, nonlinear interactions. We are dealing with a coupled system in the sense that a change in one weight (an entry in $W^{21}$ or $W^{32}$) will affect every other weight. This kind of coupling is the main reason why studying deep networks is usually intractable. An exception to this intractability occurs when we are able to find a *decoupled* regime. 
+Equations (1) and (2) are quite complex, containing interconnected, nonlinear interactions. We are dealing with a coupled system in the sense that a change in one weight (an entry in $W_1$ or $W_2$) will affect every other weight. This kind of coupling is the main reason why studying deep networks is usually intractable. An exception to this intractability occurs when we are able to find a *decoupled* regime.
 
 What does it mean for a regime to be decoupled? In this case, we want to find a *coordinate system* in which the interdependent matrix dynamics separate into simpler independent one-dimensional dynamics. Mathematically, this means that the change in a specific weight depends only on itself and the relevant statistical mode of the data, rather than the state of the entire weight matrix. By identifying these independent "modes" of learning, we can reduce a complex system of intertwined differential equations into a collection of parallel scalar equations. Once we have parallel, decoupled scalar differential equations, we will be able to *solve* for the dynamics, i.e. extract the full learning trajectory.
 
 The concrete steps we will take are as follows:
-1. **Identify the simplifying coordinate system**. We want to work in a fixed basis that reflects the structure of the data. The two natural potential candidates are the principal components of the input-output correlation matrix ($\Sigma^{31}=\Sigma_{\mu}y^\mu {x^\mu}^\top$) and of the input-input correlation matrix ($\Sigma^{11}=\Sigma_{\mu}x^\mu {x^\mu}^\top$). Recall that $\Sigma^{31}$ is what generates the learning signal. $\Sigma^{11}$ is more of a '[preconditioner](https://rkube.github.io/jekyll/update/2021/03/02/neural-networks-and-iterative-solvers.html)' for the network matrix. This is intuitively why the principal components of $\Sigma^{31}$ are the natural coordinate axes. To eliminate the competition between the two natural bases, we will assume $\Sigma^{11} = I$. Notice that once $\Sigma^{11} = I$, the gradient flow equations (1) and (2) immediately reveal that the learning task is matrix factorization: the network must find $W^{32}$ and $W^{21}$ such that $W^{32}W^{21} \approx \Sigma^{31}$.
-2. **Reduce to a growth-only picture**. Matrix factorization in principle involves two subtasks: *aligning* the network's principal directions with the singular vectors of $\Sigma^{31}$, and *growing* the effective singular values to match the data's. We re-express the dynamics in the SVD basis of $\Sigma^{31}$ to make this decomposition explicit, then assume that alignment happens extremely quickly and focus on the dynamics after this alignment phase. This reduces the coupled matrix dynamics to independent scalar equations—one per singular value.
+1. **Identify the simplifying coordinate system**. We want to work in a fixed coordinate system that reflects the structure of the data. The two natural potential candidates are the singular vectors of the input-output correlation matrix ($\Sigma_{xy}=\Sigma_{\mu}y^\mu {x^\mu}^\top$) and of the input-input correlation matrix ($\Sigma_{xx}=\Sigma_{\mu}x^\mu {x^\mu}^\top$). Recall that $\Sigma_{xy}$ is what generates the learning signal. $\Sigma_{xx}$ is more of a '[preconditioner](https://rkube.github.io/jekyll/update/2021/03/02/neural-networks-and-iterative-solvers.html)' for the network matrix. This is intuitively why the singular vectors of $\Sigma_{xy}$ are the natural coordinate axes. To eliminate the competition between the two natural bases, we will assume $\Sigma_{xx} = I$. Notice that once $\Sigma_{xx} = I$, the gradient flow equations (1) and (2) immediately reveal that the learning task is matrix factorization: the network must find $W_2$ and $W_1$ such that $W_2 W_1 \approx \Sigma_{xy}$.
+2. **Reduce to a growth-only picture**. Matrix factorization in principle involves two subtasks: *aligning* the network's principal directions with the singular vectors of $\Sigma_{xy}$, and *growing* the effective singular values to match the data's. We re-express the dynamics in the SVD basis of $\Sigma_{xy}$ to make this decomposition explicit, then assume that alignment happens extremely quickly and focus on the dynamics after this alignment phase. This reduces the coupled matrix dynamics to independent scalar equations—one per singular value.
 It turns out that this growth-only picture is both a simple way to view learning and a good approximation of what happens empirically. We will also show why quick alignment is actually quite reasonable.
 #### The first simplifying assumption.
-Let us make our first simplifying assumption: that the covariance of the input vectors $x^\mu$ is whitened, i.e. that $\Sigma^{11}=I$. Back when the original Saxe et al. (2014) paper was published, this was seen as a reasonable assumption as it was often done in practice. This is no longer the case and that $\Sigma^{11}=I$ is more of an assumption born out of the desire for an analytically tractable system. In fact, without this assumption, [the problem is NP-hard](https://arxiv.org/abs/1012.0197).  
+Let us make our first simplifying assumption: that the covariance of the input vectors $x^\mu$ is whitened, i.e. that $\Sigma_{xx}=I$. Back when the original Saxe et al. (2014) paper was published, this was a reasonable assumption as it was often done in practice. This is no longer the case and that $\Sigma_{xx}=I$ is more of an assumption born out of the desire for an analytically tractable system. In fact, without this assumption, [the problem is NP-hard](https://arxiv.org/abs/1012.0197).
 
-Once we assume that $\Sigma^{11}=I$, the input-output correlation matrix $\Sigma^{31}$ becomes the sole source of information about the training data that can be used in learning. This assumption simplifies equations (1) and (2):
+Once we assume that $\Sigma_{xx}=I$, the input-output correlation matrix $\Sigma_{xy}$ becomes the sole source of information about the training data that can be used in learning. This assumption simplifies equations (1) and (2):
 $$
 \begin{align}
-\frac{dW^{21}}{dt} &= {W^{32}}^\top (\Sigma^{31}-W^{32}W^{21}) \\
-\frac{dW^{32}}{dt} &=  (\Sigma^{31}-W^{32}W^{21}){W^{21}}^\top. \\
+\frac{dW_1}{dt} &= {W_2}^\top (\Sigma_{xy}-W_2 W_1) \\
+\frac{dW_2}{dt} &=  (\Sigma_{xy}-W_2 W_1){W_1}^\top. \\
 \end{align}
 $$
-The problem has been reduced to matrix factorization; the network will learn weight matrices $W^{32}$ and $W^{21}$ such that $W^{32}W^{21} \approx \Sigma^{31}$.
+The problem has been reduced to matrix factorization; the network will learn weight matrices $W_2$ and $W_1$ such that $W_2 W_1 \approx \Sigma_{xy}$.
 
-Even after this simplifying assumption, we are left with complicated matrix expressions. Might there be a way to get vector, or perhaps even scalar equations that represent the same thing? It turns out the answer is yes (with some more simplifying assumptions), but to get there, we first need to take a closer look at the input-output correlation matrix.
+Even after this simplifying assumption, we are left with complicated matrix expressions. Might there be a way to get vector, or perhaps even scalar equations that are more easily solvable? It turns out the answer is yes (with some more simplifying assumptions), but to get there, we first need to take a closer look at the input-output correlation matrix.
 #### The input-output correlation matrix.
-In order to effectively explore the statistical structure in the data, we consider the (compact) [singular value decomposition (SVD)](https://www.cs.cmu.edu/~venkatg/teaching/CStheory-infoage/book-chapter-4.pdf) of $\Sigma^{31}$:
+Recall from the plan of attack that we want the singular vectors of $\Sigma_{xy}$ to determine the coordinate system we work in. Before we proceed, let us explore the significance of these singular vectors.
+
+Consider the (compact) [singular value decomposition (SVD)](https://www.cs.cmu.edu/~venkatg/teaching/CStheory-infoage/book-chapter-4.pdf) of $\Sigma_{xy}$:
 $$
-\Sigma^{31} = U^{33}S^{31}{V^{11}}^\top = \sum_{\alpha=1}^{N_1} s_\alpha u^\alpha {v^{\alpha}}^\top.
+\Sigma_{xy} = U S_* V^\top = \sum_{\alpha=1}^{N_1} s_\alpha \mathbf{u}_\alpha {\mathbf{v}_{\alpha}}^\top.
 $$
+Here $\alpha$ indexes the modes[^4], $\mathbf{u}_\alpha$ and $\mathbf{v}_\alpha$ are the left and right singular vectors (columns of $U$ and $V$), and $s_\alpha$ are the singular values (diagonal entries of $S_*$).
 
 <center>
 <img src="Screenshot 2026-02-12 at 10.04.20 PM.png" width=700>
 <figcaption>Figure 3: Modes link a set of coherently covarying properties with a set of coherently covarying items</figcaption>
 </center>
 
-Using the SVD allows us to probe the data in terms of independent "modes." We refer to the columns of ${V^{11}}$ (i.e. the rows of ${V^{11}}^\top$) as *input-analyzing* vectors, or *input modes*. The $\alpha$th input mode determines the position of any given input item along an important 1-D semantic dimension. As a concrete example, consider the second row vector of $V^\top$ in figure 3. This vector, corresponding to the second input mode, acts as an "animal-plant" axis. Along this axis, animals (Canary, Salmon) have positive values while plants (Oak, Rose) have negative values. This animal-plant axis is a way of categorizing the data determined by mathematical structure.
+Using the SVD allows us to probe the data in terms of independent "modes." We refer to the columns of $V$ (i.e. the rows of $V^\top$) as *input-analyzing* vectors, or *input modes*. The $\alpha$th input mode determines the position of any given input item along an important 1-D semantic dimension. As a concrete example, consider the second row vector of $V^\top$ in figure 3. This vector, corresponding to the second input mode, acts as an "animal-plant" axis. Along this axis, animals (Canary, Salmon) have positive values while plants (Oak, Rose) have negative values. This animal-plant axis is a way of categorizing the data determined by mathematical structure.
 
-We refer to the columns of $U^{33}$ as *output-analyzing* vectors, or *output modes*. Similar to input modes, the $\alpha$th output mode determines the position of any given output feature along an important 1-D semantic dimension. Every input mode has a corresponding output mode and vice versa. In figure 3, the second column vector of $U$ ($u^2$) pairs with the second row vector of $V^\top$ (${v^2}^\top$) to define a unified animal-plant axis. While the input mode determines which items belong to the category (animals v.s. plants in this case), the output mode determines which properties belong to the category. Along this second output mode axis, more animal-like properties will have higher values, while more plant-like properties will have lower values (roots < leaves, petals < fly, swim < move). The "categorizing power" of any given axis is quantified by its singular value $s_\alpha$. Larger singular values correspond to more important distinctions, while smaller singular values correspond to finer subordinate details.
+We refer to the columns of $U$ as *output-analyzing* vectors, or *output modes*. Similar to input modes, the $\alpha$th output mode determines the position of any given output feature along an important 1-D semantic dimension. Every input mode has a corresponding output mode and vice versa. In figure 3, the second column vector of $U$ ($\mathbf{u}_2$) pairs with the second row vector of $V^\top$ ($\mathbf{v}_2^\top$) to define a unified animal-plant axis[^5]. While the input mode determines which items belong to the category (animals v.s. plants in this case), the output mode determines which properties belong to the category. Along this second output mode axis, more animal-like properties will have higher values, while more plant-like properties will have lower values (roots < leaves, petals < fly, swim < move). The "categorizing power" of any given axis is quantified by its singular value $s_\alpha$. Larger singular values correspond to more important distinctions, while smaller singular values correspond to finer subordinate details.
 #### From matrix to vector equations.
-Using the input and output modes, we can perform a change of variables:
+We use the input and output modes to rotate into the natural coordinate system we want to work in:
 $$
-\overline{W}^{21} \equiv W^{21}{V^{11}}, \space \overline{W}^{32} \equiv {U^{33}}^{\top}W^{32}.
+\tilde{W}_1 \equiv W_1 V, \space \tilde{W}_2 \equiv U^\top W_2.
 $$
-By rearranging, we can gain some intuition[^3] as to what these new matrices represent: $W^{21} = \overline{W}^{21} {V^{11}}^\top, \space W^{32}={U^{33}} \overline{W}^{32}$. The matrix $W^{21}$ takes inputs to the hidden layer. Since ${V^{11}}^\top$ ($={V^{11}}^{-1}$) can be thought of as a change of basis from input space to the space of input modes, $\overline{W}^{21}$ can be thought of as taking input modes to hidden neurons. Similarly, $W^{32}$ takes hidden neurons to outputs. Since $U^{33}$ can be thought of as a change of basis from the space of output modes to output space, $\overline{W}^{32}$ can be thought of as taking hidden neurons to output modes. We denote by $a^\alpha$ the $\alpha$th column vector of $\overline{W}^{21}$ and by $b^\alpha$ the $\alpha$th row vector of $\overline{W}^{32}$ (both $a^\alpha = a^\alpha(t)$ and $b^\alpha = b^\alpha(t)$ are time dependent). We refer to these vectors $a^\alpha$ and $b^\alpha$ as *connectivity modes* since they connect input and output modes to hidden neurons.
+By rearranging, we can gain some intuition[^6] as to what these new matrices represent: $W_1 = \tilde{W}_1 V^\top, \space W_2 = U \tilde{W}_2$. The matrix $W_1$ takes inputs to the hidden layer. Since $V^\top$ ($=V^{-1}$) can be thought of as a change of basis from input space to the space of input modes, $\tilde{W}_1$ can be thought of as taking input modes to hidden neurons. Similarly, $W_2$ takes hidden neurons to outputs. Since $U$ can be thought of as a change of basis from the space of output modes to output space, $\tilde{W}_2$ can be thought of as taking hidden neurons to output modes. We denote by $\mathbf{a}_\alpha$ the $\alpha$th column vector of $\tilde{W}_1$ and by $\mathbf{b}_\alpha$ the $\alpha$th row vector of $\tilde{W}_2$ (both $\mathbf{a}_\alpha = \mathbf{a}_\alpha(t)$ and $\mathbf{b}_\alpha = \mathbf{b}_\alpha(t)$ are time dependent). We refer to these vectors $\mathbf{a}_\alpha$ and $\mathbf{b}_\alpha$ as *connectivity modes* since they connect input and output modes to hidden neurons.
 
 Inserting our new matrices into equations (3) and (4),
 $$
-\begin{align*} \tau \frac{d W^{21}}{dt} &= {\overline{W}^{32}}^\top {U^{33}}^\top \left( U^{33} S^{31} {V^{11}}^\top - U^{33} \overline{W}^{32} \overline{W}^{21} {V^{11}}^\top \right) \\ 
-&= {\overline{W}^{32}}^\top \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {V^{11}}^\top \\ \\ 
-\implies \tau \frac{d W^{21}}{dt} V^{11} = \tau \frac{d \overline{W}^{21}}{dt} &={\overline{W}^{32}}^\top \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) \\\\
-\tau \frac{d\overline{W}^{32}}{dt} &= \left( U^{33} S^{31} {V^{11}}^\top - U^{33} \overline{W}^{32} \overline{W}^{21} {V^{11}}^\top \right) V^{11} {\overline{W}^{21}}^\top \\ 
-&= U^{33} \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {\overline{W}^{21}}^\top \\ \\ \implies \tau {U^{33}}^\top \frac{d W^{32}}{dt} 
-= \tau \frac{d \overline{W}^{32}}{dt} &= \left( S^{31} - \overline{W}^{32} \overline{W}^{21} \right) {\overline{W}^{21}}^\top \end{align*}
+\begin{align*} \frac{d W_1}{dt} &= \tilde{W}_2^\top U^\top \left( U S_* V^\top - U \tilde{W}_2 \tilde{W}_1 V^\top \right) \\
+&= \tilde{W}_2^\top \left( S_* - \tilde{W}_2 \tilde{W}_1 \right) V^\top \\ \\
+\implies  \frac{d W_1}{dt} V =  \frac{d \tilde{W}_1}{dt} &=\tilde{W}_2^\top \left( S_* - \tilde{W}_2 \tilde{W}_1 \right) \\\\
+ \frac{d\tilde{W}_2}{dt} &= \left( U S_* V^\top - U \tilde{W}_2 \tilde{W}_1 V^\top \right) V \tilde{W}_1^\top \\
+&= U \left( S_* - \tilde{W}_2 \tilde{W}_1 \right) \tilde{W}_1^\top \\ \\ \implies  U^\top \frac{d W_2}{dt}
+=  \frac{d \tilde{W}_2}{dt} &= \left( S_* - \tilde{W}_2 \tilde{W}_1 \right) \tilde{W}_1^\top \end{align*}
 $$
-we get new equations that can be thought of in terms of vector equations. Let's first examine the time derivative of $\overline{W}^{21}$:
+we get new equations that can be thought of in terms of vector equations. Let's first examine the time derivative of $\tilde{W}_1$:
 $$
-\tau \frac{d}{dt} \overline{W}^{21} = \tau 
-\underbrace{\begin{bmatrix} | & & | \\ \frac{da^1}{dt} & \cdots & \frac{da^{N_1}}{dt} \\ | & & | \end{bmatrix} }_{[N_{2} \times N_{1}]}
+ \frac{d}{dt} \tilde{W}_1 =
+\underbrace{\begin{bmatrix} | & & | \\ \frac{d\mathbf{a}_1}{dt} & \cdots & \frac{d\mathbf{a}_{N_1}}{dt} \\ | & & | \end{bmatrix} }_{[N_{2} \times N_{1}]}
 
-= \underbrace{\begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix}}_{[N_{2} \times N_{3}]}
-\left( 
+= \underbrace{\begin{bmatrix} | & & | \\ \mathbf{b}_1 & \cdots & \mathbf{b}_{N_3} \\ | & & | \end{bmatrix}}_{[N_{2} \times N_{3}]}
+\left(
 \underbrace{\begin{bmatrix} s_1 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & s_{N_1} \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix}}_{[N_{3}\times N_{1}]}
-- 
-\underbrace{\begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix}}_{[N_{3}\times N_{2}]} 
-\underbrace{\begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix}}_{[N_{2}\times N_{1}]} \right).
+-
+\underbrace{\begin{bmatrix} \text{---} & \mathbf{b}_1 & \text{---} \\ & \vdots & \\ \text{---} & \mathbf{b}_{N_3} & \text{---} \end{bmatrix}}_{[N_{3}\times N_{2}]}
+\underbrace{\begin{bmatrix} | & & | \\ \mathbf{a}_1 & \cdots & \mathbf{a}_{N_1} \\ | & & | \end{bmatrix}}_{[N_{2}\times N_{1}]} \right).
 $$
-Looking at a single column vector $a^\alpha$ of $\overline{W}^{21}$,
+Looking at a single column vector $\mathbf{a}_\alpha$ of $\tilde{W}_1$,
 $$
-\tau \frac{d}{dt}a^\alpha =
+ \frac{d}{dt}\mathbf{a}_\alpha =
 
-\tau \underbrace{\begin{bmatrix} | \\ \frac{da^\alpha}{dt} \\ | \end{bmatrix}}_{[N_{2}\times 1]} =  
-\underbrace{\begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix}}_{{\overline{W}^{32}}^\top}
-\left( \underbrace{ \begin{bmatrix} 0 \\ \vdots \\ s_\alpha \\ \vdots \\ 0 \end{bmatrix} }_{\text{Column } \alpha \text{ of } S} - \underbrace{ \begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix} \begin{bmatrix} | \\ a^\alpha \\ | \end{bmatrix} }_{\text{Column } \alpha \text{ of } \overline{W}^{32}\overline{W}^{21}} \right)
+ \underbrace{\begin{bmatrix} | \\ \frac{d\mathbf{a}_\alpha}{dt} \\ | \end{bmatrix}}_{[N_{2}\times 1]} =
+\underbrace{\begin{bmatrix} | & & | \\ \mathbf{b}_1 & \cdots & \mathbf{b}_{N_3} \\ | & & | \end{bmatrix}}_{\tilde{W}_2^\top}
+\left( \underbrace{ \begin{bmatrix} 0 \\ \vdots \\ s_\alpha \\ \vdots \\ 0 \end{bmatrix} }_{\text{Column } \alpha \text{ of } S_*} - \underbrace{ \begin{bmatrix} \text{---} & \mathbf{b}_1 & \text{---} \\ & \vdots & \\ \text{---} & \mathbf{b}_{N_3} & \text{---} \end{bmatrix} \begin{bmatrix} | \\ \mathbf{a}_\alpha \\ | \end{bmatrix} }_{\text{Column } \alpha \text{ of } \tilde{W}_2\tilde{W}_1} \right)
 $$
-<details markdown="1"> <summary> Detailed derivation  </summary> 
+<details markdown="1"> <summary> Detailed derivation  </summary>
 
 $$
 \begin{align*}
 &=
-\begin{bmatrix} | & & | \\ b^1 & \cdots & b^{N_3} \\ | & & | \end{bmatrix} \left( \begin{bmatrix} 0 \\ \vdots \\ s_\alpha \\ \vdots \\ 0 \end{bmatrix} - \begin{bmatrix} b^1 \cdot a^\alpha \\ \vdots \\ b^\alpha \cdot a^\alpha \\ \vdots \\ b^{N_3} \cdot a^\alpha \end{bmatrix} \right)
+\begin{bmatrix} | & & | \\ \mathbf{b}_1 & \cdots & \mathbf{b}_{N_3} \\ | & & | \end{bmatrix} \left( \begin{bmatrix} 0 \\ \vdots \\ s_\alpha \\ \vdots \\ 0 \end{bmatrix} - \begin{bmatrix} \mathbf{b}_1 \cdot \mathbf{a}_\alpha \\ \vdots \\ \mathbf{b}_\alpha \cdot \mathbf{a}_\alpha \\ \vdots \\ \mathbf{b}_{N_3} \cdot \mathbf{a}_\alpha \end{bmatrix} \right)
 \\\\
 &=
-\underbrace{\begin{bmatrix} \vert & &\vert && | \\ b^1 & \cdots & b^\alpha & \cdots & b^{N_3} \\ | & &  | & & | \end{bmatrix}}_{[N_{2} \times N_{3}]} \underbrace{\begin{bmatrix} - (b^1 \cdot a^\alpha) \\ \vdots \\ (s_\alpha - b^\alpha \cdot a^\alpha) \\ \vdots \\ - (b^{N_3} \cdot a^\alpha) \end{bmatrix}}_{[N_{3}\times 1]}
+\underbrace{\begin{bmatrix} \vert & &\vert && | \\ \mathbf{b}_1 & \cdots & \mathbf{b}_\alpha & \cdots & \mathbf{b}_{N_3} \\ | & &  | & & | \end{bmatrix}}_{[N_{2} \times N_{3}]} \underbrace{\begin{bmatrix} - (\mathbf{b}_1 \cdot \mathbf{a}_\alpha) \\ \vdots \\ (s_\alpha - \mathbf{b}_\alpha \cdot \mathbf{a}_\alpha) \\ \vdots \\ - (\mathbf{b}_{N_3} \cdot \mathbf{a}_\alpha) \end{bmatrix}}_{[N_{3}\times 1]}
 \end{align*}
 $$
 </details>
 
 $$
 =
-b^\alpha (s_\alpha - b^\alpha \cdot a^\alpha) - \sum_{\gamma \neq \alpha} b^\gamma (b^\gamma \cdot a^\alpha).
+\mathbf{b}_\alpha (s_\alpha - \mathbf{b}_\alpha \cdot \mathbf{a}_\alpha) - \sum_{\gamma \neq \alpha} \mathbf{b}_\gamma (\mathbf{b}_\gamma \cdot \mathbf{a}_\alpha).
 $$
 
-Now turning to the time derivative of $\overline{W}^{32}$,
+Now turning to the time derivative of $\tilde{W}_2$,
 $$
-\tau \frac{d}{dt} \overline W^{32} =  \tau \underbrace{\begin{bmatrix} \text{---} & db^1/dt & \text{---} \\ & \vdots & \\ \text{---} & db^{N_3}/dt & \text{---} \end{bmatrix}}_{[N_{3}\times N_{2}]} = 
-\left( 
+ \frac{d}{dt} \tilde{W}_2 =   \underbrace{\begin{bmatrix} \text{---} & d\mathbf{b}_1/dt & \text{---} \\ & \vdots & \\ \text{---} & d\mathbf{b}_{N_3}/dt & \text{---} \end{bmatrix}}_{[N_{3}\times N_{2}]} =
+\left(
 \underbrace{\begin{bmatrix} s_1 & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & s_{N_1} \\ \vdots & \ddots & \vdots \\ 0 & \cdots & 0 \end{bmatrix}}_{[N_{3}\times N_{1}]}
-- \underbrace{ \begin{bmatrix} \text{---} & b^1 & \text{---} \\ & \vdots & \\ \text{---} & b^{N_3} & \text{---} \end{bmatrix} }_{[N_3 \times N_2]} \underbrace{ \begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix} }_{[N_2 \times N_1]} \right) \underbrace{ \begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix} }_{[N_1 \times N_2]}
+- \underbrace{ \begin{bmatrix} \text{---} & \mathbf{b}_1 & \text{---} \\ & \vdots & \\ \text{---} & \mathbf{b}_{N_3} & \text{---} \end{bmatrix} }_{[N_3 \times N_2]} \underbrace{ \begin{bmatrix} | & & | \\ \mathbf{a}_1 & \cdots & \mathbf{a}_{N_1} \\ | & & | \end{bmatrix} }_{[N_2 \times N_1]} \right) \underbrace{ \begin{bmatrix} \text{---} & \mathbf{a}_1 & \text{---} \\ & \vdots & \\ \text{---} & \mathbf{a}_{N_1} & \text{---} \end{bmatrix} }_{[N_1 \times N_2]}
 $$
-This time looking at a single row vector $b^\alpha$ of $\overline{W}^{32}$,
+This time looking at a single row vector $\mathbf{b}_\alpha$ of $\tilde{W}_2$,
 $$
-\tau \frac{d}{dt} b^\alpha=
-\tau\underbrace{ \begin{bmatrix} \text{---} \frac{db^\alpha}{dt} \text{---} \end{bmatrix} }_{[1 \times N_{{2}}]}
-=    
-\left( \underbrace{ \begin{bmatrix} 0 & \cdots  & s_\alpha & \cdots & 0\end{bmatrix} }_{\text{Row } \alpha \text{ of } S} - 
-\underbrace{ \begin{bmatrix} \text{---} & b^\alpha & \text{---}  \end{bmatrix} \begin{bmatrix} | & & | \\ a^1 & \cdots & a^{N_1} \\ | & & | \end{bmatrix} }_{\text{Row } \alpha \text{ of } \overline{W}^{32}\overline{W}^{21}} \right) 
-\underbrace{ \begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix}}_{{\overline{W}^{21}}^\top}
+ \frac{d}{dt} \mathbf{b}_\alpha=
+\underbrace{ \begin{bmatrix} \text{---} \frac{d\mathbf{b}_\alpha}{dt} \text{---} \end{bmatrix} }_{[1 \times N_{{2}}]}
+=
+\left( \underbrace{ \begin{bmatrix} 0 & \cdots  & s_\alpha & \cdots & 0\end{bmatrix} }_{\text{Row } \alpha \text{ of } S_*} -
+\underbrace{ \begin{bmatrix} \text{---} & \mathbf{b}_\alpha & \text{---}  \end{bmatrix} \begin{bmatrix} | & & | \\ \mathbf{a}_1 & \cdots & \mathbf{a}_{N_1} \\ | & & | \end{bmatrix} }_{\text{Row } \alpha \text{ of } \tilde{W}_2\tilde{W}_1} \right)
+\underbrace{ \begin{bmatrix} \text{---} & \mathbf{a}_1 & \text{---} \\ & \vdots & \\ \text{---} & \mathbf{a}_{N_1} & \text{---} \end{bmatrix}}_{\tilde{W}_1^\top}
 $$
 <details markdown="1"> <summary>Detailed derivation</summary>
 
 $$
 \begin{align*}
 &=
-\left( \begin{bmatrix} 0 & \cdots  & s_\alpha & \cdots & 0\end{bmatrix} - \begin{bmatrix} b^\alpha \cdot a^1 & \cdots  & b^\alpha \cdot a^\alpha & \cdots & b^\alpha \cdot a^{N_{1}}\end{bmatrix}
-\right)\begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix}
+\left( \begin{bmatrix} 0 & \cdots  & s_\alpha & \cdots & 0\end{bmatrix} - \begin{bmatrix} \mathbf{b}_\alpha \cdot \mathbf{a}_1 & \cdots  & \mathbf{b}_\alpha \cdot \mathbf{a}_\alpha & \cdots & \mathbf{b}_\alpha \cdot \mathbf{a}_{N_{1}}\end{bmatrix}
+\right)\begin{bmatrix} \text{---} & \mathbf{a}_1 & \text{---} \\ & \vdots & \\ \text{---} & \mathbf{a}_{N_1} & \text{---} \end{bmatrix}
 \\\\
 &=
-\underbrace{\begin{bmatrix} -(b^\alpha \cdot a^1) & \cdots  & (s^\alpha-b^\alpha \cdot a^\alpha) & \cdots & -(b^\alpha \cdot a^{N_{1}})\end{bmatrix}}_{1 \times N_{1}} 
-\underbrace{\begin{bmatrix} \text{---} & a^1 & \text{---} \\ & \vdots & \\ \text{---} & a^{\alpha} & \text{---} \\ & \vdots & \\ \text{---} & a^{N_1} & \text{---} \end{bmatrix}}_{[N_{1}\times N_{2}]}
+\underbrace{\begin{bmatrix} -(\mathbf{b}_\alpha \cdot \mathbf{a}_1) & \cdots  & (s_\alpha-\mathbf{b}_\alpha \cdot \mathbf{a}_\alpha) & \cdots & -(\mathbf{b}_\alpha \cdot \mathbf{a}_{N_{1}})\end{bmatrix}}_{1 \times N_{1}}
+\underbrace{\begin{bmatrix} \text{---} & \mathbf{a}_1 & \text{---} \\ & \vdots & \\ \text{---} & \mathbf{a}_\alpha & \text{---} \\ & \vdots & \\ \text{---} & \mathbf{a}_{N_1} & \text{---} \end{bmatrix}}_{[N_{1}\times N_{2}]}
 \end{align*}
 $$
 
@@ -213,67 +215,51 @@ $$
 
 $$
 =
-(s_\alpha - b^\alpha \cdot a^\alpha)a^{\alpha} - \sum_{\gamma \neq \alpha} (b^\alpha \cdot a^\gamma)a^\gamma.
+(s_\alpha - \mathbf{b}_\alpha \cdot \mathbf{a}_\alpha)\mathbf{a}_{\alpha} - \sum_{\gamma \neq \alpha} (\mathbf{b}_\alpha \cdot \mathbf{a}_\gamma)\mathbf{a}_\gamma.
 $$
 Thus, we have successfully turned our matrix equations (3) and (4) into vector equations:
 $$
 \begin{align}
-\tau \frac{d}{dt}a^\alpha &= b^\alpha (s_\alpha - b^\alpha \cdot a^\alpha) - \sum_{\gamma \neq \alpha} b^\gamma (b^\gamma \cdot a^\alpha) \\ 
-\tau \frac{d}{dt} b^\alpha &= (s_\alpha - b^\alpha \cdot a^\alpha)a^{\alpha} - \sum_{\gamma \neq \alpha} (b^\alpha \cdot a^\gamma)a^\gamma.
+ \frac{d}{dt}\mathbf{a}_\alpha &= \mathbf{b}_\alpha (s_\alpha - \mathbf{b}_\alpha \cdot \mathbf{a}_\alpha) - \sum_{\gamma \neq \alpha} \mathbf{b}_\gamma (\mathbf{b}_\gamma \cdot \mathbf{a}_\alpha) \\
+ \frac{d}{dt} \mathbf{b}_\alpha &= (s_\alpha - \mathbf{b}_\alpha \cdot \mathbf{a}_\alpha)\mathbf{a}_{\alpha} - \sum_{\gamma \neq \alpha} (\mathbf{b}_\alpha \cdot \mathbf{a}_\gamma)\mathbf{a}_\gamma.
 \end{align}
 $$
-## What the network learns.
-Because our toy model is so simple, we can analytically derive exactly what the model will end up learning. We first observe that equations (5) and (6) would result from gradient descent on the following loss:
-$$
-E = \frac{1}{2\tau}\sum_{\alpha}(s_{\alpha}-a^\alpha \cdot b^\alpha)^2+\frac{1}{2\tau}\sum_{\alpha \neq \beta}(a^\alpha \cdot b^\beta)^2,
-$$
-i.e. $\frac{da^\alpha}{dt}=-\frac{\partial E}{\partial a^\alpha}, \space \frac{db^\alpha}{dt}=-\frac{\partial E}{\partial b^\alpha}$. To minimize $E$, we need $a^\alpha \cdot b^\alpha \approx s_{\alpha} \delta_{\alpha \beta}$[^4]. So, if $E$ is minimal, it must be the case that connectivity modes of the same index point in similar directions since their inner product needs to approximately equal $s_{\alpha}$ (the strength of the $\alpha$th input-output mode). On the other hand, connectivity modes of distinct indices must be approximately orthogonal since their inner product needs to approximately equal 0. 
-
-Suppose after some training that $E$ has become minimal and that $a^\alpha \cdot b^\alpha \approx s_{\alpha} \delta_{\alpha \beta}$ such that
-$$
-\overline{W}^{32}\overline{W}^{21} \approx S^{31}.
-$$
-Changing variables back,
-$$
-\begin{align*}
-{U^{33}}^{\top}W^{32}W^{21}{V^{11}} &\approx S^{31} \\
-\implies W^{32}W^{21} &\approx U^{33}S^{31}{V^{11}}^\top = \Sigma^{31}.
-\end{align*}
-$$
-Thus, we have discovered exactly what our 2-layer linear network will learn through gradient descent: the input-output correlation matrix. The problem has been reduced to matrix factorization[^5].
-
-That distinct connectivity modes must become orthogonal (in order for gradient descent on $E$ to settle on a solution) is a crucial observation. This is the "alignment" mentioned in the Plan of Attack. Once distinct connectivity modes are orthogonal, equations (5) and (6) become much easier to analyze since the second term in both equations go to 0. Then, the dependence between distinct connectivity modes completely dissolves and we are left with decoupled, independent differential equations. Intuitively, this means the model can allocate entirely separate, non-interfering sub-networks within the hidden layer to process distinct modes. We can exploit this to extract even more information from our equations; namely, the time course of learning.
+Equations (5) and (6) reveal the structure of the learning problem in a useful way. Each connectivity mode pair $\mathbf{a}_\alpha, \mathbf{b}_\alpha$ is driven toward alignment by its corresponding singular value $s_{\alpha}$​ through the first term, but is simultaneously coupled to every other mode through the sum $\sum_{{\gamma\neq \alpha}}$ (essentially, the network wants to learn $\mathbf{a}_\alpha \cdot \mathbf{b}_\alpha \approx \delta_{\alpha \beta}$[^7]). The cross-terms are the sole source of inter-mode dependence and are what make the system difficult to solve. However, notice that they vanish exactly when distinct connectivity modes are orthogonal, i.e. when $\mathbf{b}_\gamma \cdot \mathbf{a}_\alpha = 0$ and $\mathbf{b}_\alpha \cdot \mathbf{a}_\gamma = 0$ for all $\gamma \neq \alpha$. In other words, the matrix factorization problem $W_2 W_1 \approx \Sigma_{xy}$ that gradient descent must solve involves two subtasks: *aligning* the connectivity modes so that cross-mode interference disappears, and *growing* the effective mode strengths $\mathbf{a}_\alpha \cdot \mathbf{b}_\alpha$ toward the corresponding singular values $s_\alpha$​. Once alignment is achieved, the coupled vector equations collapse into independent scalar equations—one per mode—and we can solve for the full time course of learning.
 ## How the network learns.
-#### More simplifying assumptions: from vector to scalar equations.
-Although we inferred what the network will look like after it has reached a solution in the previous section, we failed to derive any expression with a time dependence. This is unfortunate since we want to understand how the model will evolve throughout training. However, solving equations (5) and (6) from scratch is difficult because all the differential equations are intertwined. This is where an orthogonality assumption can be useful. 
+#### Quick Alignment
+Although we have inferred what the network will look like after it has reached a solution ($W_2 W_1 \approx \Sigma_{xy}$), we failed to derive any expression with a time dependence. This is unfortunate since we want to understand how the model will evolve throughout training. However, solving equations (5) and (6) from scratch is difficult because all the differential equations are intertwined. This is where an orthogonality assumption can be useful.
 
-We know that eventually distinct connectivity modes must become orthogonal. What if we assumed that they were orthogonal from the start, i.e. assume alignment? Specifically, we will assume that 
-$$
-a^\alpha(t) = a_{\alpha}(t) r^\alpha, \space b^\alpha(t) = b_{\alpha}(t)r^\alpha
-$$
-where $a_{\alpha}(t),b_{\alpha}(t)$ are scalar variables with a time dependence and $r^\alpha$ are vector constants such that $r^\alpha \cdot r^\beta = \delta_{\alpha \beta}$[^6]. This means that $a^\alpha \cdot b^\alpha = a_{\alpha}b_{\alpha}\cdot\delta_{{\alpha \beta}}$. Here, we are assuming something slightly stronger than simple orthogonality of the connectivity modes: we are assuming that connectivity modes of the same index start out perfectly aligned. Orthogonality of distinct connectivity modes is likely to be satisfied simply by the fact that [high dimensional random vectors are approximately orthogonal](https://math.stackexchange.com/questions/995623/why-are-randomly-drawn-vectors-nearly-perpendicular-in-high-dimensions). 
+We know that eventually distinct connectivity modes must become orthogonal, i.e. they must become aligned. Wouldn't it be nice if this alignment happened so early on in training that the vast majority of the training time was spent simply growing the effective singular values? It turns out, there's good reason to believe this is exactly what happens.
 
-If we change variables back, then throughout training, 
+(quick alignment explanation here)
+#### From vector to scalar equations.
+Let's assume that
+$$
+\mathbf{a}_\alpha(t) = a_{\alpha}(t) \mathbf{r}_\alpha, \space \mathbf{b}_\alpha(t) = b_{\alpha}(t)\mathbf{r}_\alpha
+$$
+where $a_{\alpha}(t),b_{\alpha}(t)$ are scalar variables with a time dependence and $\mathbf{r}_\alpha$ are unit vectors such that $\mathbf{r}_\alpha \cdot \mathbf{r}_\beta = \delta_{\alpha \beta}$[^8]. This means that $\mathbf{a}_\alpha \cdot \mathbf{b}_\alpha = a_{\alpha}b_{\alpha}\cdot\delta_{{\alpha \beta}}$. Here, we are assuming something slightly stronger than simple orthogonality of the connectivity modes[^9]: we are assuming that connectivity modes of the same index start out perfectly aligned. See the next section for justification for this seemingly strong assumption.
+
+If we change variables back, then throughout training,
 $$
 \begin{align}
-W^{32}W^{21} = U^{33} \text{diag}(u_{1}(t),\dots,u_{N_{2}}(t)){V^{11}}^\top  = U^{33} A(t){V^{11}}^\top
+W_2 W_1 = U \,\text{diag}(\hat{s}_{1}(t),\dots,\hat{s}_{N_{2}}(t))\, V^\top  = U \hat{S}(t) V^\top
 \end{align}
 $$
-where $A(t)$ is a diagonal matrix with the values $a_{\alpha}b_{\alpha}$ on the diagonal. We define $u_{\alpha}(t) \equiv a_{\alpha}(t)b_{\alpha}(t)$ as the 'effective singular value' (equivalently, the 'effective mode strength') of the network at time $t$. In this decoupled regime, gradient descent on the network reduces to growing the effective singular values $u_{\alpha}$ toward $s_{\alpha}$ assuming we start with small $a_{\alpha}$ and $b_{\alpha}$.
+where $\hat{S}(t)$ is a diagonal matrix with the values $a_{\alpha}b_{\alpha}$ on the diagonal. We define $\hat{s}_{\alpha}(t) \equiv a_{\alpha}(t)b_{\alpha}(t)$ as the 'effective singular value' (equivalently, the 'effective mode strength') of the network at time $t$. In this decoupled regime, gradient descent on the network reduces to growing the effective singular values $\hat{s}_{\alpha}$ toward $s_{\alpha}$ assuming we start with small $a_{\alpha}$ and $b_{\alpha}$.
 
 Inserting our new variables into equations (5) and (6),
 $$
 \begin{align*}
-\tau \frac{d}{dt}a_{\alpha}r^\alpha &= b_{\alpha}r^\alpha (s_\alpha - b_{\alpha}r^\alpha \cdot a_{\alpha}r^\alpha) - \sum_{\gamma \neq \alpha} b_{\alpha}r^\gamma (b_{\alpha}r^\gamma \cdot a_{\alpha}r^\alpha) \\ 
-&=b_{\alpha}(s_{\alpha} - b_{\alpha}a_{\alpha})r^\alpha \\
-\implies \tau \frac{d}{dt}a_{\alpha} &= b_{\alpha}(s_{\alpha}-a_{\alpha}b_{\alpha}) 
+ \frac{d}{dt}a_{\alpha}\mathbf{r}_\alpha &= b_{\alpha}\mathbf{r}_\alpha (s_\alpha - b_{\alpha}\mathbf{r}_\alpha \cdot a_{\alpha}\mathbf{r}_\alpha) - \sum_{\gamma \neq \alpha} b_{\gamma}\mathbf{r}_\gamma (b_{\gamma}\mathbf{r}_\gamma \cdot a_{\alpha}\mathbf{r}_\alpha) \\
+&=b_{\alpha}(s_{\alpha} - b_{\alpha}a_{\alpha})\mathbf{r}_\alpha \\
+\implies  \frac{d}{dt}a_{\alpha} &= b_{\alpha}(s_{\alpha}-a_{\alpha}b_{\alpha})
 \\\\
-\tau \frac{d}{dt}b_{\alpha}r^\alpha &= (s_\alpha - b_{\alpha}r^\alpha \cdot a_{\alpha}r^\alpha) a_{\alpha}r^\alpha - \sum_{\gamma \neq \alpha} (b_{\alpha}r^\alpha \cdot a_{\alpha}r^\gamma)a_{\alpha}r^\gamma \\ 
-&=(s_{\alpha} - b_{\alpha}a_{\alpha})a_{\alpha}r^\alpha \\
-\implies \tau \frac{d}{dt}b_{\alpha} &= a_{\alpha}(s_{\alpha}-a_{\alpha}b_{\alpha}).
+ \frac{d}{dt}b_{\alpha}\mathbf{r}_\alpha &= (s_\alpha - b_{\alpha}\mathbf{r}_\alpha \cdot a_{\alpha}\mathbf{r}_\alpha) a_{\alpha}\mathbf{r}_\alpha - \sum_{\gamma \neq \alpha} (b_{\alpha}\mathbf{r}_\alpha \cdot a_{\gamma}\mathbf{r}_\gamma)a_{\gamma}\mathbf{r}_\gamma \\
+&=(s_{\alpha} - b_{\alpha}a_{\alpha})a_{\alpha}\mathbf{r}_\alpha \\
+\implies  \frac{d}{dt}b_{\alpha} &= a_{\alpha}(s_{\alpha}-a_{\alpha}b_{\alpha}).
 \end{align*}
 $$
-Thus, we have successfully turned our vector equations (5) and (6) into decoupled, independent scalar equations[^7] :
+Thus, we have successfully turned our vector equations (5) and (6) into decoupled, independent scalar equations[^10] :
 $$
 \begin{align}
 \tau \frac{d}{dt}a_{\alpha} &= b_{\alpha}(s_{\alpha}-a_{\alpha}b_{\alpha})  \\
@@ -282,33 +268,33 @@ $$
 $$
 We need to make one last assumption to create an easily solvable differential equation: that $a_{\alpha} \approx b_{\alpha}$ at initialization. This is a reasonable assumption if we assume $a_{\alpha},b_{\alpha}$ are both initialized with very small values (which is often the case in practice).
 #### A differential equation we can solve.
-Consider the derivative of the effective singular value $u_{\alpha}(t)=a_{\alpha}(t)b_{\alpha}(t)$ using the product rule:
+Consider the derivative of the effective singular value $\hat{s}_{\alpha}(t)=a_{\alpha}(t)b_{\alpha}(t)$ using the product rule:
 $$
 \begin{align*}
-\tau \frac{du_{\alpha}}{dt} = \tau \left( b_{\alpha} \frac{da_{\alpha}}{dt} + a_{\alpha} \frac{db_{\alpha}}{dt} \right) &= b_{\alpha}^2(s_{\alpha}-a_{\alpha}b_{\alpha}) + a_{\alpha}^2(s_{\alpha}-a_{\alpha}b_{\alpha}) \\ 
+\tau \frac{d\hat{s}_{\alpha}}{dt} = \tau \left( b_{\alpha} \frac{da_{\alpha}}{dt} + a_{\alpha} \frac{db_{\alpha}}{dt} \right) &= b_{\alpha}^2(s_{\alpha}-a_{\alpha}b_{\alpha}) + a_{\alpha}^2(s_{\alpha}-a_{\alpha}b_{\alpha}) \\
 &= (s_{\alpha}-a_{\alpha}b_{\alpha})(a_{\alpha}^2+b_{\alpha}^2) \\
 &\approx 2a_{\alpha}b_{\alpha}(s_{\alpha}-a_{\alpha}b_{\alpha}) \\
-&= 2u_{\alpha}(s_{\alpha}-u_{\alpha})
+&= 2\hat{s}_{\alpha}(s_{\alpha}-\hat{s}_{\alpha})
 \end{align*}
 $$
 where we used the assumption that $a\approx b$ to get $a^2+b^2\approx 2ab$. Now,
 $$
 \begin{align}
-\tau \frac{du_{\alpha}}{dt} = 2u_{\alpha}(s_{\alpha}-u_{\alpha})
+\tau \frac{d\hat{s}_{\alpha}}{dt} = 2\hat{s}_{\alpha}(s_{\alpha}-\hat{s}_{\alpha})
 \end{align}
 $$
 is a separable differential equation that we can easily solve:
 $$
 \begin{align*}
-\int_{{u_{\alpha}}^0}^{u_{\alpha}(t)} \frac{\tau}{2u(s_{\alpha}-u)} du &= \int_{t_0}^{t} dt' \\\\
+\int_{{\hat{s}_{\alpha}}^0}^{\hat{s}_{\alpha}(t)} \frac{\tau}{2\hat{s}(s_{\alpha}-\hat{s})} d\hat{s} &= \int_{t_0}^{t} dt' \\\\
 
-\implies \Delta t &= \tau \int_{{u_{\alpha}}^0}^{u_{\alpha}(t)} \frac{1}{-2u^2 + 2us_{\alpha}} du \\\\
-&= \frac{\tau}{2s_{\alpha}} \ln \frac{u_{\alpha}(t)(s_{\alpha}-{u_{\alpha}}^0)}{{u_{\alpha}}^0(s_{\alpha}-u_\alpha(t))}.
+\implies \Delta t &= \tau \int_{{\hat{s}_{\alpha}}^0}^{\hat{s}_{\alpha}(t)} \frac{1}{-2\hat{s}^2 + 2\hat{s}s_{\alpha}} d\hat{s} \\\\
+&= \frac{\tau}{2s_{\alpha}} \ln \frac{\hat{s}_{\alpha}(t)(s_{\alpha}-{\hat{s}_{\alpha}}^0)}{{\hat{s}_{\alpha}}^0(s_{\alpha}-\hat{s}_\alpha(t))}.
 \end{align*}
 $$
-Where we can use partial fraction decomposition to solve the integral. 
+Where we can use partial fraction decomposition to solve the integral.
 
-Suppose $u_{\alpha}$ starts at a small value i.e. $u_{\alpha}^0 = u_{\alpha}(t_{0}) =\varepsilon$ and $t_{0}=0$ . How long does it take for $u_{\alpha}(t)$ to equal $s_{\alpha}-\varepsilon$? 
+Suppose $\hat{s}_{\alpha}$ starts at a small value i.e. $\hat{s}_{\alpha}^0 = \hat{s}_{\alpha}(t_{0}) =\varepsilon$ and $t_{0}=0$ . How long does it take for $\hat{s}_{\alpha}(t)$ to equal $s_{\alpha}-\varepsilon$?
 $$
 \begin{align*}
 t &= \frac{\tau}{2s_{\alpha}} \ln{\frac{(s_{\alpha}-\varepsilon)^2}{\varepsilon^2}} \\
@@ -316,47 +302,53 @@ t &= \frac{\tau}{2s_{\alpha}} \ln{\frac{(s_{\alpha}-\varepsilon)^2}{\varepsilon^
 &= O\left( \frac{1}{s_{\alpha}} \right)
 \end{align*}
 $$
-Thus, the amount of time it takes for the effective singular value $u_{\alpha}$ to grow to $s_{\alpha}$ for small initialization is inversely proportional to $s_{\alpha}$. The network learns larger singular values corresponding to more significant input-output modes first.
+Thus, the amount of time it takes for the effective singular value $\hat{s}_{\alpha}$ to grow to $s_{\alpha}$ for small initialization is inversely proportional to $s_{\alpha}$. The network learns larger singular values corresponding to more significant input-output modes first.
 
 If we assume that $t_{0}=0$, then by rearranging terms,
 $$
 \begin{align*}
-\frac{2ts_{\alpha}}{\tau} &= \ln{\frac{u_\alpha(t)(s_{\alpha}-{u_{\alpha}}^0)}{{u_{\alpha}}^0(s_{\alpha}-u_{f})}}\\
-\implies e^{2ts_{\alpha}/\tau}&= \frac{u_\alpha(t)(s_{\alpha}-{u_{\alpha}}^0)}{{u_{\alpha}}^0(s_{\alpha}-u_\alpha(t))} \\
-\implies u_\alpha(t)(s_{\alpha}-{u_{\alpha}}^0+{u_{\alpha}}^0e^{2s_{\alpha}t/\tau}) &={u_{\alpha}}^0s_{\alpha}e^{2s_{\alpha}t/\tau}\\\\
-\implies u_\alpha(t) = a_{\alpha}(t)b_{\alpha}(t)&= \frac{s_{\alpha}e^{2s_{\alpha}t/\tau}}{e^{2s_{\alpha}t/\tau}-1+\frac{s_{\alpha}}{{u_{\alpha}}^0}} \\
-&=\frac{s_{\alpha}}{1+\left( \frac{s_{\alpha}}{{u_{\alpha}}^0}-1 \right){e^{-2s_{\alpha}t/\tau}}}.
+\frac{2ts_{\alpha}}{\tau} &= \ln{\frac{\hat{s}_\alpha(t)(s_{\alpha}-{\hat{s}_{\alpha}}^0)}{{\hat{s}_{\alpha}}^0(s_{\alpha}-\hat{s}_\alpha(t))}}\\
+\implies e^{2ts_{\alpha}/\tau}&= \frac{\hat{s}_\alpha(t)(s_{\alpha}-{\hat{s}_{\alpha}}^0)}{{\hat{s}_{\alpha}}^0(s_{\alpha}-\hat{s}_\alpha(t))} \\
+\implies \hat{s}_\alpha(t)(s_{\alpha}-{\hat{s}_{\alpha}}^0+{\hat{s}_{\alpha}}^0e^{2s_{\alpha}t/\tau}) &={\hat{s}_{\alpha}}^0 s_{\alpha}e^{2s_{\alpha}t/\tau}\\\\
+\implies \hat{s}_\alpha(t) = a_{\alpha}(t)b_{\alpha}(t)&= \frac{s_{\alpha}e^{2s_{\alpha}t/\tau}}{e^{2s_{\alpha}t/\tau}-1+\frac{s_{\alpha}}{{\hat{s}_{\alpha}}^0}} \\
+&=\frac{s_{\alpha}}{1+\left( \frac{s_{\alpha}}{{\hat{s}_{\alpha}}^0}-1 \right){e^{-2s_{\alpha}t/\tau}}}.
 \end{align*}
 $$
-Thus, we have found an expression for how the effective singular values will evolve throughout training. This is a significant result since through equation (7), we are able to characterize the evolution of all the parameters of the network $W^{32}W^{21}$ using only the effective singular values $u_{\alpha}(t)$ (this characterization was derived from the assumption of initially decoupled connectivity modes).
+Thus, we have found an expression for how the effective singular values will evolve throughout training. This is a significant result since through equation (7), we are able to characterize the evolution of all the parameters of the network $W_2 W_1$ using only the effective singular values $\hat{s}_{\alpha}(t)$ (this characterization was derived from the assumption of initially decoupled connectivity modes).
 ## Findings.
-The form of the expression for $u_{\alpha}(t)$ suggests that the effective singular values, or effective mode strengths, should follow a sigmoidal trajectory[^8]. These sigmoidal trajectories can be arbitrarily sharp and represent rapid transitions from unlearned to learned. In a standard 1-layer regression, the error drops exponentially. The 'S-curve' (slow start, rapid transition, plateau) is a unique signature of depth, even without non-linearities.
+The form of the expression for $\hat{s}_{\alpha}(t)$ suggests that the effective singular values, or effective mode strengths, should follow a sigmoidal trajectory[^11]. These sigmoidal trajectories can be arbitrarily sharp (the sharpness is controlled by the ratio $s_\alpha / \hat{s}_\alpha^0$: a larger target singular value relative to initialization produces a sharper transition) and represent rapid transitions from unlearned to learned. In a shallow linear network, by contrast, each mode's effective singular value grows exponentially rather than sigmoidally. The 'S-curve' (slow start, rapid transition, plateau) is a unique signature of depth, even without non-linearities.
 
 <center>
 <img src="Screenshot 2026-02-11 at 12.29.19 AM.png" width="400">
-<figcaption>Figure 4: Red represents analytical curves, blue represents linear curves and green represents nonlinear curves</figcaption>
+<figcaption>Figure 4: Red represents analytical curves, blue represents 1-layer linear network curves, and green represents nonlinear network curves</figcaption>
 </center>
 
 Some notable facts that we derived with theory:
-- The time it takes for the network to learn a specific input-output mode is inversely proportional to that mode's singular value strength $s_\alpha$. We see this phenomenon in non-linear neural networks as well: they grasp the dominant, broad structure of the data (large $s$) very quickly, but take much longer to fine-tune the subtle details (small $s$).
-- In deep linear networks, though the mapping is linear, the gradient descent dynamics are coupled and nonlinear. The derivation shows that the learning trajectory of a mode follows a sigmoid function. This proves that plateaus (periods of little apparent improvement) and sudden phase transitions (rapid learning) are inherent to gradient descent in deep architectures, not just a side effect of activation functions like ReLU or Tanh.
+- The time it takes for the network to learn a specific input-output mode is inversely proportional to that mode's singular value strength $s_\alpha$. We see this phenomenon in non-linear neural networks as well: they grasp the dominant, broad structure of the data (large $s$) very quickly, but take much longer to internalize the subtle details (small $s$).
+- In deep linear networks, though the mapping is linear, the gradient descent dynamics are coupled and nonlinear. The derivation shows that the learning trajectory of a mode follows a sigmoid function. This proves that plateaus (periods of little apparent improvement) and sudden transitions of rapid learning are inherent to gradient descent in deep architectures, not just a side effect of activation functions like ReLU or Tanh.
 
 We made a few assumptions to get to this point; the main ones being that the input data was whitened and that initially the connectivity modes were decoupled and aligned. The assumption of whitened input data is reasonable as it's often done in practice. However, somewhat surprisingly, the problem [becomes NP-hard](https://arxiv.org/pdf/2506.06489) if this assumption is relaxed. These assumptions allowed us to simplify the problem from many intertwined matrix equations all the way down to decoupled scalar equations. Ultimately, all our assumptions are vindicated by the fact that the results we ended up with approximate the real thing well (see figure 4). And they are of course also justified by the fact that they make the math easier and arguably more elegant. Recall our decoupled and aligned connectivity modes assumption. The fact that equations which follow from that assumption line up well with reality suggests that aligning connectivity modes of the same index is easy and/or happens quickly.
 
 Sources: [Exact solutions to the nonlinear dynamics of learning in deep linear neural networks](https://arxiv.org/pdf/1312.6120), [A mathematical theory of semantic development in deep neural networks](https://arxiv.org/pdf/1810.10531)
 
-[^1]: From equations (1) and (2) follows a conservation law. Observe that $\frac{dW^{21}}{dt}{W^{21}}^\top = {W^{32}}^\top \frac{dW^{32}}{dt}$. This implies that $\frac{dW^{21}}{dt}{W^{21}}^\top - {W^{32}}^\top \frac{dW^{32}}{dt} = {W^{21}}\frac{dW^{21}}{dt}^\top - \frac{dW^{32}}{dt}^\top{W^{32}}  = 0$ where for the second equality we took the transpose of both sides. From this and the product rule, it follows that $\frac{d}{dt}(W^{21}{W^{21}}^\top - {W^{32}}^\top W^{32}) = 0$. So, the quantity $W^{21}{W^{21}}^\top - {W^{32}}^\top W^{32}$ is conserved throughout time.
+[^1]: Here $\mu$ indexes the training examples ($\mu = 1, \dots, P$).
 
-[^2]: Observe that in figure 3, unlike the input modes, the output modes do not form a complete basis for the feature space. This is essentially because four categorical directions are enough to completely characterize the structure of the data. 
+[^2]: A slight caveat: usually the hidden layer acts as a sort of bottleneck in the sense that $N_{2} < N_{1},N_{3}$. This means that the rank of $W_2 W_1$ will be constrained by the size of the hidden layer. In this case, the network will only be able to learn the top $N_{2}$ singular vectors of $\Sigma_{xy}$.
 
-[^3]: Don't worry too much if this explanation is in fact not intuitive and seems to only complicate things. The important result from this change of variables is that the equations get much simpler.
+[^3]: From the gradient flow equations one can show that $\frac{d}{dt}(W_2^\top W_2 - W_1 W_1^\top) = 0$, i.e., the difference $W_2^\top W_2 - W_1 W_1^\top$ is a conserved quantity throughout training. See [[Balancedness]] for the full derivation.
 
-[^4]: Here, $\delta_{\alpha \beta}=1$ if $\alpha=\beta$ and $\delta_{\alpha \beta}=0$ if $\alpha \neq \beta$.
+[^4]: Here $\alpha$ enumerates the modes ($\alpha = 1, \dots, N_1$, ordered so that $s_1 \geq s_2 \geq \cdots$).
 
-[^5]: A slight caveat: usually the hidden layer acts as a sort of bottleneck in the sense that $N_{2} < N_{1},N_{3}$. This means that the rank of $W^{32}W^{21}$ will be constrained by the size of the hidden layer. In this case, the network will only be able to learn the top $N_{2}$ singular vectors of $\Sigma^{31}$.
+[^5]: Observe that in figure 3, unlike the input modes, the output modes do not form a complete basis for the feature space. This is essentially because four categorical directions are enough to completely characterize the structure of the data.
 
-[^6]: A similar caveat to footnote 5: if $N_{2}<N_{1},N_{3}$, i.e. the hidden layer serves as a bottleneck, then we assume $a^\alpha = a_{\alpha} r^\alpha, \space b^\alpha = b_{\alpha}r^\alpha$ for $\alpha=\{1,\dots,N_{2}\}$ and $a^\alpha=b^\alpha=0$ for $\alpha=\{N_{2}+1,\dots\}$.
+[^6]: Don't worry too much if this explanation is in fact not intuitive and seems to only complicate things. The important result from this change of variables is that the equations get much simpler.
 
-[^7]: Similar to footnote 1, we can infer a conservation law from equations (8) and (9): $\frac{d}{dt}(a^2-b^2)=0$. This means that all possible trajectories of $a$ and $b$ must lie on hyperbolas of constant $a^2-b^2=k$ in the $(a,b)$ plane.
+[^7]: Here, $\delta_{\alpha \beta}=1$ if $\alpha=\beta$ and $\delta_{\alpha \beta}=0$ if $\alpha \neq \beta$.
 
-[^8]: Recall that a sigmoid function has the form: $\frac{1}{1+e^{-x}}$.
+[^8]: A similar caveat to footnote 2: if $N_{2}<N_{1},N_{3}$, i.e. the hidden layer serves as a bottleneck, then we assume $\mathbf{a}_\alpha = a_{\alpha} \mathbf{r}_\alpha, \space \mathbf{b}_\alpha = b_{\alpha}\mathbf{r}_\alpha$ for $\alpha=\{1,\dots,N_{2}\}$ and $\mathbf{a}_\alpha=\mathbf{b}_\alpha=0$ for $\alpha=\{N_{2}+1,\dots\}$.
+
+[^9]: Orthogonality of distinct connectivity modes is likely to be satisfied simply by the fact that [high dimensional random vectors are approximately orthogonal](https://math.stackexchange.com/questions/995623/why-are-randomly-drawn-vectors-nearly-perpendicular-in-high-dimensions).
+
+[^10]: From equations (8) and (9) one can infer a conservation law: $\frac{d}{dt}(a_\alpha^2-b_\alpha^2)=0$. This is the scalar analogue of the conserved quantity from footnote 3. All possible trajectories of $a_\alpha$ and $b_\alpha$ must lie on hyperbolas of constant $a_\alpha^2-b_\alpha^2=k$ in the $(a_\alpha,b_\alpha)$ plane.
+
+[^11]: Recall that a sigmoid function has the form: $\frac{1}{1+e^{-x}}$.

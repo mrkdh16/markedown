@@ -9,25 +9,29 @@ A collection of notes from college courses, self-study and research. Domains spa
 </center>
 
 ## 🛠️ A Learning Mechanic's Toolkit
-*A learning mechanic studies [learning mechanics](https://learningmechanics.org/)—the precise mechanisms by which deep networks acquire, compress, and represent knowledge. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning. [[A Learning Mechanic's Toolkit|Link]] to full page.*
-
-#### Deep Dives
+A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dynamical and mechanistic perspective on traditional deep learning theory. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning.
+#### 🔧 Deep Dives
 *Step-by-step derivations, refined expositions*
+
 - [[Deep Linear Networks; A deep dive into Saxe et al. and the role of depth in learning]]
-	- *matrix factorization · dynamics · exact solutions*
+	- *deep linear networks · dynamics · exact solutions*
 	- Deep linear networks are mathematically tractable yet retain some of the mysterious phenomena of deep learning. We derive the exact training dynamics of these toy models and prove that long plateaus and rapid transitions are inherent to depth.
-#### Field Notes
-*Quick insights, summaries of important phenomena and models*
+
+#### 🔨 Notes
+*Quick insights, useful math, summaries of important phenomena and models*
 
 - [[Maximal stable learning rate derivation]]
-	- *edge of stability*
+	- *edge of stability · optimization*
 	- Given a well-behaved loss (constant Hessian), we analytically derive the maximal stable learning rate under gradient descent.
 - [[Quadratic word embedding model (QWEM)]]
-	- *word embeddings · matrix factorization · exact solutions*
+	- *word embeddings · exact solutions*
 	- The second-order approximation of the Word2Vec loss yields an equivalent supervised matrix factorization loss.
 - [[When (wide) neural networks become linear]]
 	- *infinite limits · neural tangent kernel*
 	- As the widths of the layers in a neural network become large, the network becomes approximately equal to its first-order (linear) approximation.
+- [[Singular values under perturbation]]
+	- $\sigma_{\text{max}}(A+B) \leq \sigma_{max}(A)+\sigma_{max}(B)$
+
 ## 🧮 Math Proofs
 *Proving cool math theorems*
 - [[Weierstrass Approximation Theorem]]
@@ -52,5 +56,7 @@ A collection of notes from college courses, self-study and research. Domains spa
 </center>
 
 ## Margins
+*A small subset of thoughts that pass through my mind* 
+#### Miscellaneous
 - [[overwhelmed]]
 - [[movies & tv shows]]

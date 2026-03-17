@@ -9,7 +9,7 @@ A collection of notes from college courses, self-study and research. Domains spa
 </center>
 
 ## 🛠️ A Learning Mechanic's Toolkit
-A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dynamical and mechanistic perspective on traditional deep learning theory. This toolkit collects instruments for diagnosing, tuning, and understanding the engines of deep learning.
+A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dynamical and mechanistic perspective on traditional deep learning theory. This toolkit collects instruments for characterizing important properties and statistics of the training process, hidden representations, and final weights of neural networks.
 #### 🔧 Deep Dives
 *Step-by-step derivations, refined expositions*
 

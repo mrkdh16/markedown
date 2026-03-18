@@ -3,6 +3,7 @@ title: Learning Mechanics DeCal
 draft: true
 tags:
 ---
+#### tentative schedule
 - week 1 (first week: no class)
 - week 2 (intro to learn mech)
 	- read the white paper
@@ -33,3 +34,17 @@ tags:
 - week 14 (final project hypothesis presentations)
 - week 15 (final project OH) (maybe FLAB members could come and help out)
 - week 16 (RRR week: no class)
+
+---
+
+#### advertising.
+- ed post
+**Learning Mechanics**
+
+Deep learning is arguably one of the most powerful technologies humans have ever built — yet we have almost no idea why it works.
+
+Engineers once built working steam engines long before anyone understood thermodynamics. The scientific effort to explain those engines didn't just improve them; it created an entirely new branch of science.
+
+Deep learning may be our generation's steam engine. _Learning mechanics_ is the emerging discipline that aims to understand it from first principles — treating deep learning the way physics treats the natural world: seeking compact mathematical principles, tight connections between theory and experiment, and simple, intuitive explanations for complex phenomena.
+
+This course is for those who want to be part of building that new science.

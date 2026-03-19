@@ -3,7 +3,9 @@ title: dln widget edits
 draft: true
 tags:
 ---
+nonlinear target fn to try: f*(x) = g(Ux) where g is some nonlinear function, x \in R^d, U \in R^{r \times d}
 
+staircase fns: f*(x) = x1 +x1x2 + x1x2x3
 
 - [ ] balancedness
 - [ ] quick (silent) alignment

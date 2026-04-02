@@ -32,6 +32,12 @@ interactive elements
 	- plateau, sharp drop loss curves
 - full dln widget
 
+pitch for alignment section and some stuff on lazy/rich.
+- we want this blog post to be the one-stop shop for DLNs, the premier resource on DLNs on the internet
+- DLNs are great because they are a toy model amenable to rigorous mathematical analysis
+	- therefore, we should explore anything and everything we can in DLNs
+- alignment and lazy/rich are very important concepts in learning mechanics and we should explore them when we can.
+# Conclusion draft
 Let's take stock of the assumptions that got us here. We assumed whitened inputs ($\Sigma_{xx} = I$), strong alignment of the individual weight matrices with the SVD basis of $\Sigma_{yx}$ (a rich-regime phenomenon), and balanced initialization ($a_\alpha(0) \approx b_\alpha(0)$). These allowed us to reduce the coupled matrix dynamics all the way down to independent scalar ODEs each admitting an exact sigmoidal solution.
 
 The ultimate validation is empirical: these analytical curves closely match both the full (non-decoupled) dynamics of deep linear networks _and_ the dynamics of nonlinear networks with tanh activations (see Saxe et al., 2014, Figure 4). The fact that our theory — which assumed strong alignment — approximates reality well provides indirect evidence that strong alignment is indeed a good description of what happens in the rich regime.

@@ -4,30 +4,33 @@ draft: true
 tags:
 ---
 # Why study matrix factorization and deep linear networks?
+How should we approach the development of a mathematical, first principles theory for deep learning? The large models used in practice are infamously black-box, often containing billions of parameters which traverse complex highly non-convex optimization landscapes . One approach that we may borrow from physicists is to study toy models. By stripping a system down to its absolute essentials—making it as simple as possible, but no simpler—we aim to create a mathematically tractable environment that still retains the complex, non-trivial phenomena of the original. In this section, we will make the case that deep linear networks (and by extension matrix factorization) are a great toy model for deep nonlinear networks. 
 ## Word2vec and matrix factorization
+Arguably, the most powerful machine learning systems we have today are Large Language Models (LLMs). We don't yet have the tools to understand what and how LLMs learn. Are there perhaps simpler language models where we could understand such things?
 
 (QWEM widget)
 
-We first motivate the study of matrix factorization and deep linear networks through Word2vec, one of the most influential models in natural language processing (NLP). Word2vec is a minimal language model that learns vector representations of words by modeling the probability of finding two given words co-occurring in natural text (Mikolov et al., 2013). Despite its simplicity—the model is essentially just a two-layer linear network—the resulting models succeed on a variety of semantic understanding tasks. One striking ability exhibited by these embeddings is analogy completion: most famously, man − woman $\approx$ king − queen, where man is the embedding for the word "man" and so on.
+Word2vec, one of the most influential models in natural language processing (NLP), is a minimal language model that learns vector representations of words by modeling the probability of finding two given words co-occurring in natural text (Mikolov et al., 2013). Despite its simplicity—the model is essentially just a two-layer linear network—the resulting models succeed on a variety of semantic understanding tasks. One striking ability exhibited by these embeddings is analogy completion: most famously, man − woman  king − queen, where man is the embedding for the word "man" and so on. We may think of Word2vec as a toy model for modern Large Language Models (LLMs).
 
-How does a model this simple learn something so structured? The connection between Word2vec and matrix factorization was made explicit in Karkada et al. (2025), where the authors showed that learning Word2vec embeddings is equivalent to factorizing a target matrix built from language co-occurrence statistics. Concretely, if $W$ is the matrix whose $i$th row is the learned embedding of the $i$th word, then 
+The connection between Word2vec and matrix factorization was made explicit in Karkada et al. (2025), where the authors showed that learning Word2vec embeddings is equivalent to factorizing a target matrix built from language co-occurrence statistics. Concretely, if $W$ is the matrix whose $i$th row is the learned embedding of the $i$th word, then 
 $$ 
 \begin{align*} \arg\min_W (\text{word2vec loss}) &\approx \arg\min_W (\text{quadratic approx. of word2vec loss}) \\ &= \underbrace{\arg\min_W \|WW^\top - M^*\|_F^2}_{\substack{\text{matrix factorization} \\ \text{loss}}} \end{align*} $$
 where $M^*$ is some matrix where the $ij$th element measures how much the co-occurrence of the $i$th and $j$th word deviates from pure random chance. So, by studying matrix factorization, we can indirectly study how a simple language model learns semantically meaningful representations.
 ## Matrix factorization and linear networks
-But matrix factorization is not confined to self-supervised models like Word2vec. Supervised learning with linear networks reduces to the same problem. Consider a network trained to map items to their properties: say, given "Canary" as a one-hot input $x^\mu$, predict a vector of features $y^\mu$ like "Can Fly," "Has Wings," or "Is Yellow." Under the assumption that input data is whitened (input covariance $\Sigma_{xx}=\sum_{\mu}x^\mu {x^\mu}^\top$ equals the identity), the gradient flow equations for the weight matrices drive the network toward a solution satisfying $W_L\dots W_1 \approx \Sigma_{yx}$, where $\Sigma_{yx} = \sum_{\mu} y^\mu {x^\mu}^\top$ is the input-output correlation matrix.
+It turns out that under certain conditions, matrix factorization is mathematically equivalent to a very well-studied system: deep linear networks trained on supervised learning tasks.
 
-(input-output covariance matrix figure or maybe widget)
+Consider a linear network trained to map discrete items to their properties: say, given "Canary" as a one-hot input vector $x^\mu$, it must predict a vector of features $y^\mu$ indicating properties like "Can Fly," "Has Wings," or "Is Yellow." If we assume the input data is whitened (the input covariance matrix $\Sigma_{xx}=\sum_{\mu}x^\mu {x^\mu}^\top$ is simply the identity) the gradient flow equations for the network's weights simplify drastically. They drive the network toward a solution satisfying $W_L\dots W_1 \approx \Sigma_{yx}$, where $\Sigma_{yx} = \sum_{\mu} y^\mu {x^\mu}^\top$ is the input-output correlation matrix.
 
-The learning problem is again matrix factorization: decompose the statistical structure of the data into a product of weight matrices. So, by studying the learning dynamics of deep linear networks we are effectively studying the learning dynamics of matrix factorization.
+In this whitened regime, the supervised learning task becomes pure matrix factorization: the network is forced to decompose the statistical structure of the data, encoded in $\Sigma_{yx}$, into a product of weight matrices. Because the learning dynamics of deep linear networks can be solved exactly, this equivalence gives us the exact mathematical machinery needed to watch matrix factorization learn its representations over time.
 ## Nonlinear learning phenomena in linear networks
 Another reason that matrix factorization and deep linear networks deserve our attention is that they exhibit interesting nonlinear learning phenomena.
 
-(linear vs nonlinear simulation widget)
+- stepwise dynamics
+- weight alignment
 
-Watch what happens when you train a depth-3 tanh network from small initialization: the loss _plateaus_ for long stretches, then _rapidly_ drops. To understand why, we can peek inside the network as it trains. Pick a weight matrix—here we'll use the first one—and decompose it into its principal components via the SVD. Each singular value measures how strongly the network has learned one independent mode of the input-output relationship. You'll see that they aren't learned all at once. Instead, they're learned _sequentially_: one singular value 'grows' from near-zero to its final magnitude while the others wait their turn. And there's an order to it: the largest singular values, corresponding to the most important modes of the data, are learned first. Crucially, these dynamics depend on initialization scale: all networks here are initialized with small random weights, which is what allows modes to emerge one at a time. With large initialization, all singular values grow simultaneously and the stepwise structure becomes harder to observe.
-
-These are fascinating dynamics, and you might assume they emerge from the complexity of nonlinear activations. But here's the surprising part: switch to the left-hand panel and select a deep _linear_ network. You'll see the same stepwise loss (clearest in depth-3), the same sequential learning of singular values, the same largest-first ordering; in fact, these phenomena become even clearer. A depth-1 linear network shows none of this, so these phenomena are a signature of _depth_, not nonlinearity.
+In summary, deep linear networks are a rare breed of highly mathematically tractable models that 
+1. give insight into a minimal language model in Word2vec
+2. 
 
 Deep linear networks are a rare breed of highly mathematically tractable models that not only retain interesting nonlinear learning phenomena, but also underlie real-world systems like Word2vec—and unlike their nonlinear cousins, we can solve for their learning dynamics exactly.
 # Solving for exact learning dynamics
@@ -114,7 +117,7 @@ To summarize:
 ### The balanced and unbalanced regimes
 Strong alignment is a feature of the **balanced regime** (small initialization): the regime where the weight matrices learn the spectral structure of the target, i.e. the singular vectors of the weight matrices satisfy the conditions above. In this regime, the weights are initialized small and must grow substantially during training. Intuitively, this is what allows the weight matrices to encode structure. In the **unbalanced regime** (large initialization), the weights barely move from their random starting values and thus the weight matrices do not learn any structure. The product $\tilde{W}_2 \tilde{W}_1$ converges to $S_*$ through small perturbations, but the individual weight matrices never develop the aligned singular vector structure that strong alignment requires. No clean modal structure emerges inside the network, and the interesting phenomena we saw in the introduction (sequential learning, plateaus, sudden transitions) do not appear.
 
-For real-world systems like Word2vec, it is critical that we work in the balanced regime. We don't just want the model to minimize the loss, we want its _internal representations_ to be meaningful. The whole point of Word2vec is that the learned weight matrices contain semantically structured embeddings: directions in the embedding space correspond to meaningful relationships like gender or royalty. This kind of structure is exactly what strong alignment provides, where each mode of the weight matrix corresponds to a mode of the data. In the unbalanced regime, the network might produce correct predictions, but the weights themselves would be a meaningless mess. The balanced regime is where the network understands the task in a way that is reflected in its parameters.
+For real-world systems like Word2vec, it is important that we work in the balanced regime (or somewhere close). We don't just want the model to minimize the loss, we want its _internal representations_ to be meaningful. The whole point of Word2vec is that the learned weight matrices contain semantically structured embeddings: directions in the embedding space correspond to meaningful relationships like gender or royalty. This kind of structure is exactly what strong alignment provides, where each mode of the weight matrix corresponds to a mode of the data. In the unbalanced regime, the network might produce correct predictions, but the weights themselves would be a meaningless mess. The balanced regime is where the network understands the task in a way that is reflected in its parameters.
 
 (lazy/rich widget showing W2, W1 becoming diagonal in rich and staying dense in lazy)
 
@@ -174,7 +177,7 @@ The structure is recognizably similar: the same $(s_\alpha - \hat{s}_\alpha)$ dr
 ### The full network trajectory
 Under strong alignment, the full network map at time $t$ is completely characterized by the collection of sigmoids: 
 $$
-W_2(t), W_1(t) = U, \hat{S}(t), V^\top = \sum_\alpha \hat{s}_\alpha(t), \mathbf{u}_\alpha \mathbf{v}_\alpha^\top 
+W_2(t) W_1(t) = U \hat{S}(t) V^\top = \sum_\alpha \hat{s}_\alpha(t) \mathbf{u}_\alpha \mathbf{v}_\alpha^\top 
 $$where $\hat{S}(t) = \text{diag}(\hat{s}_1(t), \dots, \hat{s}_r(t))$. The network shares the same singular vectors as $\Sigma_{yx}$ throughout training. Only the singular values change, each following its own sigmoidal trajectory.
 
 (theory curves + empirical curves widget)

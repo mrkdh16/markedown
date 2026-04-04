@@ -45,3 +45,17 @@ The ultimate validation is empirical: these analytical curves closely match both
 (full dln widget)
 
 This arc of making simplifying assumptions, deriving clean theory, generating predictions, and checking them against experiment is the scientific method as applied to understanding neural networks.
+
+
+meeting notes
+- want to understand large, deep models
+	- w2v as the simplest possible language model (2 birds)
+	- DLNs exhibit nonlinear learning phenomena
+		- toy model that captures interesting complex stuff
+		- weight alignment, stepwise learning dynamics (quanta => reduction of complexity)
+- no linear vs nonlinear widget
+	- reference nonlinear learning phenomena also seen in dlns (footnote/sidenote)
+- all in one widget: 
+	- sv curves (empirical vs theory)
+	- loss plot
+	- 3d saddle plot

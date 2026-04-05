@@ -1,0 +1,245 @@
+---
+title: "[Unnamed deep linear network essay]"
+author: "Mark Rhee, Dhruva Karkada, [dummy author]"
+date: "2026-04-16"
+description: "Deep linear networks are simple enough to study analytically but rich enough to exhibit key phenomena of neural network training. Explore their training dynamics interactively."
+thumbnail: "static/assets/dummy-thumbnail.svg"
+---
+
+## Why study matrix factorization and deep linear networks?
+How should we approach the development of a first principles, mathematical theory for deep learning? The large models used in practice today are infamously black-box, often containing billions of parameters which traverse complex highly non-convex optimization landscapes . One approach that we may borrow from physicists is to study toy models. By stripping a system down to its absolute essentials—making it as simple as possible, but no simpler—we aim to create a mathematically tractable environment that still retains the complex, non-trivial phenomena of the original. In this section, we will make the case that deep linear networks (and by extension matrix factorization) are a great toy model for deep nonlinear networks. 
+
+### Word2vec and matrix factorization
+Arguably, the most powerful machine learning systems we have today are Large Language Models (LLMs). We don't yet have the tools to understand *what* and *how* LLMs learn. Are there perhaps simpler language models where we could understand such things?
+
+Word2vec, one of the most influential models in natural language processing (NLP), is a minimal language model that learns vector representations of words by modeling the probability of finding two given words co-occurring in natural text (Mikolov et al., 2013). Despite its simplicity—the model is essentially just a two-layer linear network—the resulting models succeed on a variety of semantic understanding tasks. One striking ability exhibited by these embeddings is analogy completion: most famously, man − woman  king − queen, where man is the embedding for the word "man" and so on. We may think of Word2vec as a toy model for modern Large Language Models (LLMs).
+
+<div id="qwem-widget"></div>
+
+The interactive widget above visualizes the exact learning dynamics of this simple model. As you play the animation, you can watch the word embeddings gradually organize into a structured semantic space (left panel) as the underlying singular values of the embedding matrix sequentially emerge (right panel). Unlike massive, black-box LLMs where the training trajectory is obscured, Word2vec is amenable to mathematical analysis via the lens of matrix factorization.
+
+The connection between Word2vec and matrix factorization was made explicit in Karkada et al. (2025), where the authors showed that learning Word2vec embeddings is equivalent to factorizing a target matrix built from language co-occurrence statistics. Concretely, if $W$ is the matrix whose $i$th row is the learned embedding of the $i$th word, then 
+$$ 
+\begin{align*} \arg\min_W (\text{word2vec loss}) &\approx \arg\min_W (\text{quadratic approx. of word2vec loss}) \\ &= \underbrace{\arg\min_W \|WW^\top - M^*\|_F^2}_{\substack{\text{matrix factorization} \\ \text{loss}}} \end{align*} $$
+where $M^*$ is some matrix where the $ij$th element measures how much the co-occurrence of the $i$th and $j$th word deviates from pure random chance. So, by studying matrix factorization, we are indirectly studying how a simple language model learns semantically meaningful representations.
+
+### Matrix factorization and linear networks
+It turns out that under certain conditions, matrix factorization is mathematically equivalent to a very well-studied system: deep linear networks trained on supervised learning tasks (essentially feedforward neural networks with no activation function).
+
+Consider a linear network trained to map discrete items to their properties: say, given "Canary" as a one-hot input vector $x^\mu$, it must predict a vector of features $y^\mu$ indicating properties like "Can Fly," "Has Wings," or "Is Yellow." If we assume the input data is whitened (the input covariance matrix $\Sigma_{xx}=\sum_{\mu}x^\mu {x^\mu}^\top$ is simply the identity) the gradient flow equations for the network's weights simplify drastically. They drive the network toward a solution satisfying $W_L\dots W_1 \approx \Sigma_{yx}$, where $\Sigma_{yx} = \sum_{\mu} y^\mu {x^\mu}^\top$ is the input-output correlation matrix.
+
+In this whitened input regime, the supervised learning task becomes pure matrix factorization: the network is forced to decompose the statistical structure of the data, encoded in $\Sigma_{yx}$, into a product of weight matrices.
+
+### Nonlinear dynamics in linear networks
+The highly mathematically tractable nature of linear networks means that not only can we understand exactly what they learn ($\Sigma_{yx}$ in the whitened input regime), we can also solve for their learning trajectory exactly. In other words, we can understand both *what* and *how* these simple models learn. But if these models with no nonlinearities are so simple that we can understand them inside and out, how can we expect to learn anything about deep *nonlinear* models by studying them? 
+
+The key insight is that while the input-output mapping of a deep linear network is strictly linear, its learning dynamics are profoundly nonlinear. Because the overall transformation is parameterized as a product of multiple weight matrices, the optimization landscape becomes highly non-convex.
+
+<div id="dln-intro"></div>
+
+The interactive visualization above demonstrates these nonlinear dynamics in a 3-layer linear network. By playing the animation, you can observe stepwise learning: the training loss remains stagnant for long periods before suddenly dropping. Under the hood, this corresponds to the **sequential growth of singular values**; the network learns the most prominent statistical features (the largest singular components of the target matrix) one by one. The matrix heatmaps illustrate "weight alignment"—a phenomenon occurring in the early stages of training where the internal representations of the network organize themselves to reflect the structure of the target matrix.
+
+These learning dynamics mirror what is often seen during the training of massive models (need sources for this). However, because deep linear networks are mathematically tractable, we can move beyond empirical observation. In the following section, we will solve for the exact learning dynamics of deep linear networks, rigorously deriving how and why these fascinating trajectories emerge from first principles.
+
+## Solving for exact learning dynamics
+We follow the derivation of Saxe et al. (2014) while making some simplifications and clarifications along the way.
+
+### Setup
+We want to use deep linear networks to solve a supervised learning problem. Concretely, we are presented with $P$ pairs of data points $\{ x^\mu, y^\mu\}_{\mu=1}^P$, each consisting of an input point and an output point. We want to learn a function $\hat{f}$, i.e. a model, such that $\hat{f}(x^\mu) \approx y^\mu$ for all $\mu = 1, \dots, P$. Our model $\hat{f}$ is _linear_ because it is linear in its parameters and it is _deep_ because it consists of many layers of parameters: $$ \hat{f}(x) \equiv W_L \dots W_1 x. $$The matrices $W_L, \dots, W_1$ are the parameters of the model, or the _weights_. To learn an appropriate set of weights, or to _train_ the model, we apply gradient descent to the mean squared error loss: 
+$$ \mathcal{L}_{\text{mse}}(W_1, \dots, W_L) = \sum_{\mu=1}^{P} \frac{1}{2} ||y^\mu - W_L \dots W_1 x^\mu||_2^2. 
+$$
+
+#### Two-layer linear networks
+In order to keep the math as simple as possible, we will solve for the dynamics of a minimally deep network: a 2-layer linear network $\hat{f}(x) = W_2 W_1 x$. A similar procedure applies for deeper networks of arbitrary depth. For a 2-layer network, the mean squared error loss is: $$ \mathcal{L}_{\text{mse}}(W_1, W_2) = \sum_{\mu=1}^{P} \frac{1}{2} ||y^\mu - W_2 W_1 x^\mu||_2^2. $$We assume that $x^\mu \in \mathbb{R}^{N_1}$, $y^\mu \in \mathbb{R}^{N_3}$, $W_1$ is $N_2 \times N_1$, and $W_2$ is $N_3 \times N_2$, where $N_2$ is the hidden layer dimension. To train the model, we run gradient descent: at each step, we compute the gradient of the loss with respect to each weight matrix using backpropagation, then update the weights by taking a small step in the negative gradient direction. For example, the update rule for $W_1$ is:
+$$
+\Delta W_1 = -\lambda \frac{\partial \mathcal{L}}{\partial W_1}
+$$
+where $\lambda$ is the learning rate, a small positive number controlling the step size. To make the resulting equations amenable to the tools of differential equations, we take the *continuous-time limit*: we imagine shrinking the learning rate to zero while taking infinitely many steps, so that the discrete updates become continuous time derivatives. This is called *gradient flow*, and it replaces the update rule above with:
+$$
+\frac{dW_1}{dt} = -\frac{\partial \mathcal{L}}{\partial W_1}.
+$$
+Computing the gradients via backpropagation and writing the result in terms of summary statistics of the data, we arrive at the gradient flow equations:
+$$
+\begin{align*}
+\frac{dW_1}{dt} &= W_2^\top(\Sigma_{yx} - W_2 W_1 \Sigma_{xx}) \tag{1}\\
+\frac{dW_2}{dt} &= (\Sigma_{yx} - W_2 W_1 \Sigma_{xx}) W_1^\top \tag{2}
+\end{align*}
+$$
+where $\Sigma_{yx} \equiv \sum_\mu y^\mu {x^\mu}^\top$ is the input-output correlation matrix and $\Sigma_{xx} \equiv \sum_\mu x^\mu {x^\mu}^\top$ is the input correlation matrix. Observe that all the information from the training data enters only through these two matrices.
+
+A useful observation: from equations (1) and (2), one can show that $\frac{d}{dt}(W_2^\top W_2 - W_1 W_1^\top) = 0$, meaning the difference $W_2^\top W_2 - W_1 W_1^\top$ is a conserved quantity throughout training.
+
+#### Reading the gradient flow equations
+Before we start simplifying, let's build some intuition for what equations (1) and (2) are telling us. The weights stop changing when $\frac{dW_1}{dt}, \frac{dW_2}{dt} \approx 0$, which requires $W_2 W_1 \Sigma_{xx} \approx \Sigma_{yx}$. So $\Sigma_{yx}$, the matrix that encodes the statistical structure of the input-output relationship, is the target the network is chasing and thus drives the learning. The term $\Sigma_{xx}$ plays a secondary role; it rescales the model's current guess $W_2 W_1$ but doesn't directly drive the gradient. This is easiest to see at small initialization: when the weights are tiny, $W_2 W_1 \Sigma_{xx} \approx 0$, and the gradient is almost entirely determined by $\Sigma_{yx}$.
+
+#### Whitened inputs and the reduction to matrix factorization
+A necessary assumption to reduce deep linear network training to matrix factorization is to assume that the input data is _whitened_, meaning $\Sigma_{xx} = I$. Back when the original Saxe et al. (2014) paper was published, whitening the inputs was common practice. Today this is more of a tractability assumption. With $\Sigma_{xx} = I$, equations (1) and (2) simplify to: 
+$$ 
+\begin{align*}
+\frac{dW_1}{dt} &= W_2^\top(\Sigma_{yx} - W_2 W_1) \tag{3}\\ \frac{dW_2}{dt} &= (\Sigma_{yx} - W_2 W_1) W_1^\top \tag{4}
+\end{align*} 
+$$and the learning problem reduces cleanly to matrix factorization: the network must find $W_2$ and $W_1$ such that $W_2 W_1 \approx \Sigma_{yx}$.
+
+#### The natural coordinate system
+While the learning problem has become clear by whitening the input, equations (3) and (4) are still quite complicated: they are coupled and nonlinear (each weight's rate of change depends on every other weight). Our strategy of attacking these equations is to find a coordinate system in which these dynamics _decouple_ into independent scalar equations—one per "mode" of the data—that we can solve one at a time.
+
+The natural coordinate system comes from the SVD of the target matrix. Consider the compact singular value decomposition of $\Sigma_{yx}$: 
+$$ 
+\Sigma_{yx} = U S_* V^\top = \sum_{\alpha=1}^r s_\alpha \mathbf{u}_\alpha \mathbf{v}_\alpha^\top 
+$$where $r$ is the rank of $\Sigma_{yx}$, $\mathbf{u}_\alpha$ and $\mathbf{v}_\alpha$ are the left and right singular vectors (columns of $U$ and $V$), and $s_1 \geq s_2 \geq \cdots \geq s_r > 0$ are the singular values.
+
+(not sure if we need this; maybe make this collapsable?)
+Why does the SVD give the right coordinate system? The SVD decomposes the data into independent "modes." Each mode $\alpha$ pairs an _input mode_ $\mathbf{v}_\alpha$ (a direction in input space) with an _output mode_ $\mathbf{u}_\alpha$ (a direction in output space) and a _strength_ $s_\alpha$ (how important that mode is). For example, one mode might act as an "animal vs. plant" axis: the input mode assigns positive values to animals and negative values to plants, while the output mode assigns positive values to animal-like properties (can fly, can swim) and negative values to plant-like properties (has roots, has petals). The singular value tells you how prominent this distinction is in the data. Larger singular values correspond to coarser, more important structure; smaller ones correspond to finer details.
+
+### From matrix equations to scalar dynamics
+
+#### Rotating into the SVD basis
+We rotate the weight matrices into the coordinate system defined by the SVD of $\Sigma_{yx}$: 
+$$ 
+\tilde{W}_1 \equiv W_1 V, \quad \tilde{W}_2 \equiv U^\top W_2. 
+$$What does this rotation buy us? If we substitute these definitions into equations (3) and (4) and use $\Sigma_{yx} = U S_* V^\top$, we get: 
+$$ 
+\begin{align*} 
+\frac{d\tilde{W}_1}{dt} &= \tilde{W}_2^\top (S_* - \tilde{W}_2 \tilde{W}_1) \tag{5}
+\\ \frac{d\tilde{W}_2}{dt} &= (S_* - \tilde{W}_2 \tilde{W}_1) \tilde{W}_1^\top \tag{6} 
+\end{align*} 
+$$
+These equations have the same structure as before, but now the target matrix $S_*$ is _diagonal_. The diagonal structure of the target is what will eventually let us decouple the system. But we aren't there yet. The rotated weights $\tilde{W}_1$ and $\tilde{W}_2$ are still full matrices, so the dynamics are still coupled.
+
+#### Convergence vs. weight alignment
+Here is a subtle but important distinction that will determine whether we can actually solve the dynamics.
+
+At convergence, the _product_ $\tilde{W}_2 \tilde{W}_1$ must approximate $S_*$, which is diagonal. This is just the convergence condition; it says the network has found the right input-output map. This will be true at any minimum of the loss, _regardless_ of what the individual weight matrices look like.
+
+But the product being diagonal at convergence is not enough to decouple the dynamics during training. To see what we actually need, it helps to think about what each weight matrix is doing. Any matrix can be decomposed via the SVD into _directions_ (the singular vectors) and _magnitudes_ (the singular values). Learning, in general, involves both: the network must figure out the right directions _and_ grow them to the right magnitudes. Decoupled dynamics arise when the directional structure has already been resolved, i.e. when all the singular vectors are in the right place, so that the only thing left to evolve is the magnitudes.
+
+Let's make this precise. Write the SVD of each weight matrix as $W_2 = U_2 S_2 V_2^\top$ and $W_1 = U_1 S_1 V_1^\top$. Then the rotated weights are: $$ \begin{align*} \tilde{W}_2 &= U^\top W_2 = (U^\top U_2) S_2 V_2^\top \\ \tilde{W}_1 &= W_1 V = U_1 S_1 (V_1^\top V) \end{align*} $$and their product is: 
+$$
+\tilde{W}_2 \tilde{W}_1 = (U^\top U_2) S_2 (V_2^\top U_1) S_1 (V_1^\top V). 
+$$
+This product reduces to a product of only the magnitude matrices $S_2 S_1$, with all the directional factors gone, when three orthogonality conditions are satisfied:
+
+1. $U_2 = U$ — the left singular vectors of $W_2$ align with the output modes of the data.
+2. $V_1 = V$ — the right singular vectors of $W_1$ align with the input modes of the data.
+3. $V_2 = U_1$ — the right singular vectors of $W_2$ match the left singular vectors of $W_1$, i.e. the two weight matrices are coherent across the hidden layer.
+
+We call the conjunction of these three conditions **weight alignment**. The key idea is that these conditions make the product diagonal because every directional factor has been absorbed by alignment, leaving only the singular values $S_2$ and $S_1$ to evolve.
+
+#### The small and large initialization regimes
+Weight alignment is a feature of the **small initialization regime**: the regime where the weight matrices learn the spectral structure of the target, i.e. the singular vectors of the weight matrices satisfy the conditions above. In this regime, the weights are initialized small and must grow substantially during training. Intuitively, this is what allows the weight matrices to encode structure. In the **large initialization regime**, the weights barely move from their random starting values and thus the weight matrices do not learn any structure. The product $\tilde{W}_2 \tilde{W}_1$ converges to $S_*$ through small perturbations, but the individual weight matrices never develop the aligned singular vector structure that weight alignment requires. No clean modal structure emerges inside the network, and the interesting phenomena we saw in the introduction (sequential learning, plateaus, sudden transitions) do not appear.
+
+For real-world systems like Word2vec, it's useful to work in the small initialization regime (or somewhere close) since we want the model's _internal representations_ to be meaningful. The whole point of Word2vec is that the learned weight matrices contain semantically structured embeddings: directions in the embedding space correspond to meaningful relationships like gender or royalty. This kind of structure is exactly what weight alignment provides, where each mode of the weight matrix corresponds to a mode of the data. In the large initialization regime, the network might produce correct predictions, but the weights themselves would be a meaningless mess. The small initialization regime is where the network understands the task in a way that is reflected in its parameters.
+
+(collapsable section)
+
+#### Why should we expect weight alignment to hold in the small init regime?
+Why should we expect the network to actually self-organize this way? It turns out that starting with small, random weights naturally forces the network into alignment through two distinct mathematical mechanisms: one driving **inner alignment** (coherence between the layers) and one driving **outer alignment** (coherence with the data).
+
+##### Inner Alignment: The Conservation Law Argument
+To understand why the layers align with _each other_, we can exploit the conservation law we noted earlier: the matrix $H = W_2^\top W_2 - W_1 W_1^\top$ is strictly conserved throughout training.
+
+In the small initialization regime, the weights $W_1$ and $W_2$ start as very small random values. Consequently, their initial Gram matrices are tiny, meaning the conserved quantity $H$ is fixed at a vanishingly small size.
+
+As training progresses, the weights must grow substantially to capture the statistical structure of the target matrix. Suppose the singular values grow to be 10 times larger than they were at initialization. The matrices $W_2^\top W_2$ and $W_1 W_1^\top$ are now much larger, but $H$ remains exactly the same size it was at initialization.
+
+Because $H$ is now vanishingly small compared to the magnitude of the weights, we can treat it as a negligible perturbation. This gives us:
+
+$$W_2^\top W_2 \approx W_1 W_1^\top$$
+
+Because $W_2^\top W_2$ and $W_1 W_1^\top$ are positive semi-definite Gram matrices, equating them has strong mathematical consequences. Two such matrices are equal if and only if they share the same unique eigendecomposition (assuming non-degenerate eigenspaces). Therefore, their spectra and their eigenspaces must agree. This exact match directly forces the right singular vectors of $W_2$ to align with the left singular vectors of $W_1$, giving us our inner alignment condition ($V_2 = U_1$) and ensuring their singular values grow together.
+
+##### Outer Alignment: The Power Iteration Argument
+While the conservation law explains why the layers align with each other, why do they align with the singular vectors of the _data_? For this, we look at the very beginning of training.
+
+Recall our whitened gradient flow equations:
+
+$$\frac{dW_1}{dt} = W_2^\top(\Sigma_{yx} - W_2 W_1)$$
+$$\frac{dW_2}{dt} = (\Sigma_{yx} - W_2 W_1) W_1^\top$$
+
+At initialization, the weights are so small that their product $W_2 W_1 \approx 0$. Because the network's predictions are effectively zero, the gradient equations simplify dramatically:
+
+$$\frac{dW_1}{dt} \approx W_2^\top \Sigma_{yx}$$
+$$\frac{dW_2}{dt} \approx \Sigma_{yx} W_1^\top$$
+
+Notice the structure of these updates: the weights are being repeatedly multiplied by the target correlation matrix $\Sigma_{yx}$. In numerical linear algebra, repeatedly multiplying a matrix by a target matrix is the exact mechanism of **power iteration**—the standard algorithm for pulling out a matrix's dominant singular vectors.
+
+During this early phase of training, the power iteration dynamic aggressively pulls the network's weights toward the modes of the data. It rotates the right singular vectors of $W_1$ toward the right singular vectors of $\Sigma_{yx}$ ($V_1 \to V$) and the left singular vectors of $W_2$ toward the left singular vectors of $\Sigma_{yx}$ ($U_2 \to U$).
+
+By the time the weights have grown large enough for the $W_2 W_1$ term to matter, the power iteration phase has already locked the network's directional structure into the exact outer alignment conditions required to decouple the dynamics.
+
+#### The decoupled scalar equations
+Let's assume weight alignment as defined above. Under weight alignment, we get:
+$$
+\begin{align*}
+\frac{dS_1}{dt} &= S_2 (S_* - S_{2}S_{1}) \tag{7}
+\\ \frac{dS_2}{dt} &= (S_* - S_{2}S_{1}) S_{1} \tag{8}
+\end{align*} 
+$$
+Observe that each diagonal entry evolves independently and we naturally get decoupled scalar dynamics. Write the diagonal entries of $\tilde{W_{1}}$ and $\tilde{W_{2}}$ as $a_\alpha(t)$ and $b_\alpha(t)$ respectively, so that the $\alpha$th _effective singular value_ of the network is $\hat{s}_\alpha(t) = a_\alpha(t) b_\alpha(t)$. Since both rotated weight matrices are diagonal, all off-diagonal coupling in equations (5) and (6) vanishes, and each mode $\alpha$ evolves independently: 
+$$
+\begin{align*} 
+\frac{da_\alpha}{dt} &= b_\alpha(s_\alpha - a_\alpha b_\alpha) \tag{7}
+\\ \frac{db_\alpha}{dt} &= a_\alpha(s_\alpha - a_\alpha b_\alpha) \tag{8} \\
+\end{align*} 
+$$
+
+These are the decoupled scalar equations we were after. Each mode's dynamics are independent of other modes and depend only on its own state $(a_\alpha, b_\alpha)$ and its target singular value $s_\alpha$. We started with a complicated system of coupled matrix differential equations and reduced it, through a change of coordinates and the weight alignment assumption, to a collection of independent two-variable systems.
+
+From equations (7) and (8), we can verify that $\frac{d}{dt}(a_\alpha^2 - b_\alpha^2) = 0$: the quantity $a_\alpha^2 - b_\alpha^2$ is conserved throughout training for each mode. This is the scalar analogue of the matrix-level conservation law $\frac{d}{dt}(W_2^\top W_2 - W_1 W_1^\top) = 0$ that we noted earlier. 
+
+We make one final assumption: that $a_\alpha(0) \approx b_\alpha(0)$ at initialization. This is reasonable when both are initialized to small random values. Since $a_\alpha^2 - b_\alpha^2$ is conserved, starting with $a_\alpha \approx b_\alpha$ ensures they stay approximately equal throughout training.
+
+### Solving the dynamics
+We can now reduce each two-variable system to a single equation. Consider the effective singular value $\hat{s}_\alpha = a_\alpha b_\alpha$ and apply the product rule: 
+$$ 
+\frac{d\hat{s}_\alpha}{dt} = b_\alpha \frac{da_\alpha}{dt} + a_\alpha \frac{db_\alpha}{dt} = (a_\alpha^2 + b_\alpha^2)(s_\alpha - a_\alpha b_\alpha). 
+$$Using $a_\alpha \approx b_\alpha$, we have $a_\alpha^2 + b_\alpha^2 \approx 2 a_\alpha b_\alpha = 2\hat{s}_\alpha$, giving us: 
+$$ 
+\begin{align*}
+\frac{d\hat{s}_\alpha}{dt} = 2\hat{s}_\alpha(s_\alpha - \hat{s}_\alpha). \tag{9} \end{align*} 
+$$
+This is a logistic-type ODE. It is separable, meaning we can move all the $\hat{s}_\alpha$ terms to one side and the $t$ terms to the other and integrate directly. With initial condition $\hat{s}_\alpha(0) = \hat{s}_\alpha^0$, the solution is:
+$$ 
+\begin{align*}
+\boxed{\hat{s}_\alpha(t) = \frac{s_\alpha}{1 + \left(\frac{s_\alpha}{\hat{s}_\alpha^0} - 1\right) e^{-2 s_\alpha t}}} \tag{10}
+\end{align*}
+$$
+This is a sigmoid. Each effective singular value starts near its initial value $\hat{s}_\alpha^0$, stays there for a while (the plateau), then rapidly transitions to its target value $s_\alpha$ (the jump), then saturates.
+
+#### Deeper Networks
+While our derivation was done for a 2-layer network, the same framework extends naturally to networks of arbitrary depth $L$. In a network with $L$ weight matrices $W_1, \ldots, W_{L}$, the same decoupling into independent connectivity modes applies under the analogous initial conditions. Each mode is then described not by two scalars $(p_\alpha, q_\alpha)$ but by $L$ scalars $a^1_\alpha, \ldots, a^{L}_\alpha$, one per weight matrix, and the effective singular value becomes the product $\hat{s}_\alpha = \prod_{i=1}^{L} a^i_\alpha$.
+
+On the symmetric submanifold where all per-layer amplitudes are equal ($a^i_\alpha = a_\alpha$ for all $i$), the ODE for the overall mode strength generalizes from Equation (9) to
+$$
+\begin{align*}
+\boxed{\frac{d\hat{s}_\alpha}{dt} = L\,\hat{s}_\alpha^{\,2 - 2/L}(s_\alpha - \hat{s}_\alpha)} \tag{11}
+\end{align*}
+$$
+The structure is recognizably similar: the same $(s_\alpha - \hat{s}_\alpha)$ driving term appears, and learning is still ordered by singular value strength. What changes is the power of $\hat{s}_\alpha$ multiplying this term. For $L=2$, the exponent $2 - 2/L$ equals 1 and we recover $2\hat{s}_\alpha(s_\alpha - \hat{s}_\alpha)$, which is the separable logistic equation we solved in closed form above. But for any deeper network, the exponent is nonzero and the ODE becomes much more complicated. To obtain the time course of learning in deeper networks, it's easiest to numerically integrate Equation (11). The simulator below does exactly this, letting you vary network depth and observe how the sigmoid transitions sharpen and the learning dynamics change.
+
+(full dln widget with choice of depth)
+
+#### The full network trajectory
+Under weight alignment, the full network map at time $t$ is completely characterized by the collection of sigmoids: 
+$$
+W_2(t) W_1(t) = U \hat{S}(t) V^\top = \sum_\alpha \hat{s}_\alpha(t) \mathbf{u}_\alpha \mathbf{v}_\alpha^\top 
+$$where $\hat{S}(t) = \text{diag}(\hat{s}_1(t), \dots, \hat{s}_r(t))$. The network shares the same singular vectors as $\Sigma_{yx}$ throughout training. Only the singular values change, each following its own sigmoidal trajectory.
+
+### What the solution tells us
+
+#### Sequential learning and timescales
+How long does it take for mode $\alpha$ to be learned? Starting from $\hat{s}_\alpha^0 = \varepsilon$ (small), the time to reach $\hat{s}_\alpha(t) \approx s_\alpha - \varepsilon$ scales as: 
+$$ 
+t_\alpha \sim \frac{1}{s_\alpha} \ln \frac{s_\alpha}{\varepsilon} = O\left(\frac{1}{s_\alpha}\right). 
+$$
+The learning time is inversely proportional to the singular value. The coarse, dominant structure of the data, i.e. modes with larger singular values, is learned first. Finer details, i.e. modes with smaller singular values, take longer. This is a concrete, testable prediction: the _order_ in which a deep linear network learns features of the data is determined by the singular value spectrum of $\Sigma_{yx}$.
+
+#### Sigmoidal transitions are a signature of depth
+Each effective singular value follows a sigmoid: slow initial growth, a rapid transition, then saturation. The sharpness of the transition is controlled by the ratio $s_\alpha / \hat{s}_\alpha^0$: a larger target relative to initialization produces a sharper jump.
+
+Compare this to a depth-1 linear network ($\hat{y} = Wx$), where gradient flow on the same loss gives simple exponential convergence with no plateau-then-jump structure. The sigmoidal trajectory (and the plateaus and sudden transitions it produces in the loss curve) is a signature of _depth_, not nonlinearity.
+
+#### Plateaus and sudden drops in the loss
+The sequential, sigmoidal learning of individual modes explains the staircase-like loss curves we observed in the introduction. Each plateau corresponds to a period where no new mode is transitioning; each sudden drop corresponds to a new mode "switching on." Since each mode transitions at a different time (set by $1/s_\alpha$), the loss curve—which is a sum over all modes—looks like a cascade of drops.
+
+### Conclusion

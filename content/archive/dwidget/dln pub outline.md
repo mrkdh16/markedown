@@ -59,3 +59,12 @@ meeting notes
 	- sv curves (empirical vs theory)
 	- loss plot
 	- 3d saddle plot
+
+tell to dhruva.
+- im not sure how to add the prompt for the 3d saddle widget you were talking about
+- need to create full widget that comes after deriving the exact solutions
+	- depth 1, 2, 3; large, intermediate, small init; aligned, random init
+- need references for nonlinear learning phenomena
+- not sure if we need exposition on svd
+- need to make collapsable section actually collapsable
+- still need to write conclusion

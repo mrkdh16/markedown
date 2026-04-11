@@ -58,5 +58,4 @@ A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dy
 ## Margins
 *A small subset of thoughts that pass through my mind* 
 #### Miscellaneous
-- [[overwhelmed]]
 - [[movies & tv shows]]

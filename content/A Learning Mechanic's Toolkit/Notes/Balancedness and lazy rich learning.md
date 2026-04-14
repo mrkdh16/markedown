@@ -1,5 +1,5 @@
 ---
-title: Balancedness
+title: Balancedness and lazy rich learning
 draft: true
 tags:
 ---

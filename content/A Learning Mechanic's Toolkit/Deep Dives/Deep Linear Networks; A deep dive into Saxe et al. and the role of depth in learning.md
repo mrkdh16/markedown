@@ -83,7 +83,7 @@ $$
 \frac{dW_2}{dt} = (\Sigma_{xy}-W_2 W_1\Sigma_{xx}){W_1}^\top. \\
 \end{align}
 $$
-From these gradient flow equations we can show that $\frac{d}{dt}(W_2^\top W_2 - W_1 W_1^\top) = 0$, i.e., the difference $W_2^\top W_2 - W_1 W_1^\top$ is a conserved quantity throughout training (see [[Balancedness]] for the full derivation). This will become useful later.
+From these gradient flow equations we can show that $\frac{d}{dt}(W_2^\top W_2 - W_1 W_1^\top) = 0$, i.e., the difference $W_2^\top W_2 - W_1 W_1^\top$ is a conserved quantity throughout training (see [[Balancedness and lazy rich learning]] for the full derivation). This will become useful later.
 #### What the network learns.
 Looking at equations (1) and (2), we can already discern what the network will learn. The weights will stop changing and will have reached a minima of the loss when $\frac{dW_1}{dt}$, $\frac{dW_2}{dt} \approx 0$, i.e. when $W_2 W_1\Sigma_{xx} \approx \Sigma_{xy}$. In other words, the network will learn weight matrices $W_2$ and $W_1$ such that $W_2 W_1\Sigma_{xx} \approx \Sigma_{xy}$. Intuitively, the deviation of $W_2 W_1\Sigma_{xx}$ from $\Sigma_{xy}$ is what generates the learning signal. In this sense, $\Sigma_{xy}$ is the 'target' the network is chasing. On the other hand, $\Sigma_{xx}$  only multiplicatively modifies the model matrix $W_2 W_1$, and it doesn't directly drive the gradient. This is most apparent when the weight matrices $W_2$ and $W_1$ are vanishingly small (which would be the case at initialization if we initialized small). When the weights are very small, the entire $W_2 W_1\Sigma_{xx}$ term is approximately equal to 0, so the gradient is almost entirely dictated by $\Sigma_{xy}$.
 

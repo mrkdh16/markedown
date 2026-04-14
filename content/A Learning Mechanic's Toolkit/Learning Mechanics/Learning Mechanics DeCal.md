@@ -10,7 +10,7 @@ tags:
 	- big idea: physicist's approach to studying deep learning
 - week 3 (analytically solvable settings 1: DLNs)
 	- read [saxe et al](https://arxiv.org/pdf/1312.6120), [lm blog post](https://learningmechanics.pub/deep-linear-nets-tutorial)
-	- big idea: (holy grail) deep linear nets are highly mathematically tractable; we can solve exactly for their learning trajectories but they still exhibit interesting nonlinear learning phenomena
+	- big idea: deep linear nets are highly mathematically tractable; we can solve exactly for their learning trajectories but they still exhibit interesting nonlinear learning phenomena
 		- linearization in the data
 - week 4 (analytically solvable settings 2: the NTK and kernel regression)
 	- read [lee et al](https://arxiv.org/pdf/1902.06720) (optional: [jacot et al](https://arxiv.org/pdf/1806.07572))
@@ -25,6 +25,7 @@ tags:
 	- big idea(s): what is the richness parameter?
 - week 7 (analytically solvable settings 4: exact solutions of lazy rich)
 	- read [kunin et al](https://proceedings.neurips.cc/paper_files/paper/2024/file/94074dd5a072d28ff75a76dabed43767-Paper-Conference.pdf)
+	- big idea: 
 - week 8 (universality: the platonic representation hypothesis, fourier features in representations) (dhruva guest lecture)
 	- read [huh et al](https://arxiv.org/pdf/2405.07987), [karkada et al](https://arxiv.org/pdf/2602.15029)
 - week 9 (empirical laws: EoS and optimization phenomena)

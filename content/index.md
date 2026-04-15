@@ -14,7 +14,7 @@ A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dy
 *Step-by-step derivations, refined expositions*
 
 - [[Deep Linear Networks; A deep dive into Saxe et al. and the role of depth in learning]]
-	- *deep linear networks · dynamics · exact solutions*
+	- exact solutions · training dynamics · *deep linear networks*
 	- Deep linear networks are mathematically tractable yet retain some of the mysterious phenomena of deep learning. We derive the exact training dynamics of these toy models and prove that long plateaus and rapid transitions are inherent to depth.
 
 #### 🔨 Notes
@@ -27,8 +27,8 @@ A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dy
 	- *infinite limits · neural tangent kernel*
 	- As the widths of the layers in a neural network become large, the network becomes approximately equal to its first-order (linear) approximation.
 - [[Quadratic word embedding model (QWEM)]]
-	- *feature learning · exact solutions · word embeddings*
-	- The second-order approximation of the Word2Vec loss yields an equivalent supervised matrix factorization loss.
+	- *exact solutions · feature learning · word embeddings*
+	- The second-order approximation of the Word2Vec loss yields an equivalent supervised matrix factorization loss. This means we can study a minimal language model through a highly mathematically tractable model in matrix factorization.
 - [[Maximal stable learning rate derivation]]
 	- *optimization phenomena · edge of stability*
 	- Given a simple and well-behaved loss (constant Hessian), we analytically derive the maximal stable learning rate under gradient descent.

@@ -1,7 +1,8 @@
 ---
 title: Learning Mechanics DeCal
-draft: true
+draft: false
 tags:
+  - learning-mechanics
 ---
 ## Course Description
 *Learning Mechanics* is the emerging discipline that treats deep learning the way physics treats the natural world: seeking compact mathematical principles, tight connections between theory and experiment, and simple, intuitive explanations for complex phenomena.

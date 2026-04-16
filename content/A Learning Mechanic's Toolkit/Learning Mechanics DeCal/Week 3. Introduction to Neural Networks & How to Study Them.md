@@ -1,7 +1,8 @@
 ---
 title: Week 3. Introduction to Neural Networks & How to Study Them
-draft: true
+draft: false
 tags:
+  - learning-mechanics
 ---
 Notes for week 3 of the Learning Mechanics DeCal.
 

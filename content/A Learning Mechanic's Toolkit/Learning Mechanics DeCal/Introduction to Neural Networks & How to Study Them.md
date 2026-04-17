@@ -1,16 +1,14 @@
 ---
-title: Week 3. Introduction to Neural Networks & How to Study Them
+title: Introduction to Neural Networks & How to Study Them
 draft: false
 tags:
   - learning-mechanics
 ---
-Notes for week 3 of the Learning Mechanics DeCal.
-
 How can we develop a first-principles understanding of Artificial Intelligence (AI)? *What* does AI learn? *How* does AI learn? To begin to answer these big questions, we start with *deep neural networks*.
 ## The first (giant) step: deep neural networks
 At the heart of modern machine learning are *deep neural networks*. Nearly every headline-grabbing AI system of the past decade (AlphaGo, GPT, AlphaFold, Stable Diffusion, etc) is, at its core, a deep neural network trained by gradient descent on a large dataset---or some other similar architecture that heavily relies on deep neural networks. If we want a scientific theory of modern AI, we need a scientific theory of DNNs.
 
-Consider a standard supervised learning task. We are presented with $P$ pairs of data points $\{ \mathbf{x}^\mu, \mathbf{y}^\mu\}_{\mu=1}^P$, each consisting of an input point and an output point. We want to learn a function $\hat{f}$, i.e. a model, such that $\hat{f}(\mathbf{x}^\mu) \approx \mathbf{y}^\mu$ for all $\mu = 1, \dots, P$. A deep neural network is a particularly powerful model of the form:
+Consider a standard supervised learning task. We are presented with $P$ pairs of data points $\{ \mathbf{x}_{i}, \mathbf{y}_{i}\}_{i=1}^P$, each consisting of a sample vector $\mathbf{x} \in \mathbb{R}^{d_{\text{in}}}$ and a target vector $\mathbf{y} \in \mathbb{R}^{d_{\text{out}}}$. We want to learn a function $\hat{f}$, i.e. a model, such that $\hat{f}(\mathbf{x}_{i}) \approx \mathbf{y}_{i}$ for all $i = 1, \dots, P$. A deep neural network is a particularly powerful model of the form:
 
 $$
 \hat{f}(\mathbf{x})=W_{L}(\sigma(W_{L-1}\sigma(\dots \sigma(W_{1}\mathbf{x}))))
@@ -25,7 +23,7 @@ where $\sigma$ is a *nonlinearity* such as the ReLU or sigmoid.
 Training consists of minimizing a *loss function*, eg. mean squared error (MSE):
 
 $$
-\mathcal{L}_{\text{MSE}}(\mathbf{\theta}) = \sum^P_{\mu=1}||\mathbf{y}^\mu-\hat{f}(\mathbf{x}^\mu)||
+\mathcal{L}_{\text{MSE}}(\mathbf{\theta}) = \sum^P_{i=1}||\mathbf{y}_{i}-\hat{f}(\mathbf{x}_{i})||
 $$
 
 by updating the weights through Gradient Descent (GD):
@@ -51,7 +49,7 @@ So why are deep neural networks hard to study? The difficulty is not opacity, bu
 The depth, width, nonlinearity and data of a deep neural network form axes of complexity that all interact with each other. The art of learning mechanics is figuring out which axes we can turn off, simplify, or take to a limit, so that the remaining problem becomes tractable without throwing away the phenomenon we wanted to understand.
 ## So, how do we study deep neural networks?
 A non-exhaustive list of tools beloved by physicists is: **simplify, take limits, find the right variables, and look for universality.** Let's start by looking at what simplifying and taking limits can look like.
-#### Simplify: get rid of nonlinearities
+### Simplify: get rid of nonlinearities
 Surprisingly, there is a lot to learn from linear models. The key insight is that even if the model is linear in the *data*, it need not be linear in the *parameters*. A deep linear network
 
 $$
@@ -59,13 +57,25 @@ $$
 $$
 
 computes a linear function of $\mathbf{x}$ (it's just a product of matrices), but gradient descent on the individual $W_{l}$ matrices is a genuinely nonlinear dynamical system. One can observe real deep learning phenomena such as low-rank bias, saddle points, stage-wise learning, and sigmoidal learning curves in a setting simple enough to solve exactly. This is the subject of **week 4**. For now, let's look at two even simpler cases:
-- Depth = 1
-	-  $f(x) = Ax$, linear regression (least squares)
-- Width = 1
-	- $f(x)=w_{l}\dots w_{1}x$, scalar factorization
-#### Take a limit (Gradient Flow): $\eta \to 0$
+#### Depth = 1
+When $\text{depth} = 1$,  
 
-#### Take another limit: width $\to \infty$
+$$
+\hat{f}(\mathbf{x}) = A\mathbf{x}
+$$
+
+and the model reduces to linear regression.
+#### Width = 1 (and $d_{\text{in}}=d_{\text{out}}=1$)
+When $\text{width} = d_{\text{in}}=d_{\text{out}}= 1$, 
+
+$$
+\hat{f}(x)=w_{l}\dots w_{1}x
+$$
+
+and the model reduces to a scalar product of weights. The learning problem is then just factorizing a number. Observe that already in this highly simplified setting, we get coupled gradient descent dynamics.
+### Take a limit (Gradient Flow): $\eta \to 0$
+
+### Take another limit: width $\to \infty$
 
 
 

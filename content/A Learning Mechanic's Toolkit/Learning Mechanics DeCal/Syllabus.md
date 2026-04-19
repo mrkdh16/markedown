@@ -6,16 +6,18 @@ nav_order: 2
 # Syllabus
 
 ## Course Description
-*Learning Mechanics* is the emerging discipline that treats deep learning the way physics treats the natural world: seeking compact mathematical principles, tight connections between theory and experiment, and simple, intuitive explanations for complex phenomena.
+*Learning Mechanics* is the emerging discipline that treats deep learning the way physics treats the natural world: seeking compact mathematical principles, tight connections between theory and experiment, and simple, intuitive explanations for complex phenomena. Pieces of a scientific theory for deep learning are beginning to fit together, and in this course, we will examine what has been assembled so far, what remains contested, and where the field is heading.
 
-Deep learning is arguably one of the most powerful technologies humans have ever built. However, we have yet to build a comprehensive theory for how it works. The radical engineering success of deep learning has outpaced our scientific understanding of it, and the effort to close that gap may just constitute the founding of a genuinely new field of science, one whose implications for our understanding of intelligence, data, and learning extend far beyond the neural networks that motivated it. 
+Deep learning is among the most powerful technologies humans have ever built, and understanding it promises to be one of the defining intellectual challenges of the early 21st century. As of 2026, the engineering success of deep learning has dramatically outpaced our scientific understanding of it. Closing that gap may amount to founding a genuinely new field of science—one whose implications for our understanding of intelligence, data, and learning extend well beyond the neural networks that motivated it.
 
-Drawing heavily from the whitepaper *There Will Be a Scientific Theory of Deep Learning (Simon et al., 2026)* and the primary literature it synthesizes, we will examine the theoretical tools, empirical regularities, and open questions that are laying the groundwork for a physics-like understanding of deep learning. The course is organized around five lines of evidence that a scientific theory is possible: 
-1. analytically solvable settings exist,
-2. insightful limits reveal fundamental behavior,
-3. simple equations capture meaningful macroscopic statistics,
-4. hyperparameters can be disentangled and understood, and
-5. universal phenomena appear across settings and tasks.
+Readings draw heavily from the whitepaper _There Will Be a Scientific Theory of Deep Learning_ (Simon et al., 2026) and the primary literature it synthesizes. We will work through the theoretical tools, empirical regularities, and open questions that are laying the groundwork for a physics-like understanding of deep learning.
+
+## Prerequisites
+- Linear algebra and multivariate calculus at the level of Math 53, 54 / 110
+- Probability and statistics at the level of EECS 126 / Data 140 / Stat 134
+- Working knowledge of neural networks and deep learning (see ch. 1 from [Nielson (2019)](http://neuralnetworksanddeeplearning.com))
+
+It is highly recommended that you bring a *physicist's mindset* to the table. This means you should be comfortable with the scientific method: formulating testable hypotheses, checking theoretical predictions against empirical measurements, solving simplified cases first, and using educated guesses (ansatze) to solve equations. We care more about simple, intuitive insights and tight connections between theory and experiment than we do about technically true mathematics.
 
 ## Learning Objectives
 By the end of the course, students will be able to:
@@ -25,12 +27,24 @@ By the end of the course, students will be able to:
 - Critically evaluate empirical scaling laws and proposed explanations.
 - Design and execute small-scale experiments that test theoretical predictions about neural network training.
 
-## Prerequisites
-- Linear algebra and multivariate calculus at the level of Math 53, 54 / 110
-- Probability and statistics at the level of EECS 126 / Data 140 / Stat 134
-- Working knowledge of neural networks and deep learning (see ch. 1 from [Nielson (2019)](http://neuralnetworksanddeeplearning.com))
-
-It is highly recommended that you bring a *physicist's mindset* to the table. This means you should be comfortable with the scientific method: formulating testable hypotheses, checking theoretical predictions against empirical measurements, solving simplified cases first, and using educated guesses (ansatze) to solve equations. We care more about simple, intuitive insights and tight connections between theory and experiment than we do about technically true mathematics.
+## Course Content
+The course is structured around five lines of evidence that a scientific theory of deep learning is within reach:
+1. **Analytically solvable settings** (toy models) that exhibit nontrivial learning phenomena exist.
+2. **Insightful limits** reveal fundamental behavior.
+3. **Meaningful macroscopic statistics** are captured by simple equations.
+4. **Hyperparameters can be disentangled** and understood.
+5. **Universal phenomena** appear across settings and tasks.
+The following is a non-exhaustive list of content we will cover:
+- Deep Linear Networks (DLNs)
+- The Neural Tangent Kernel (NTK)
+- Kernel Ridge Regression (KRR)
+- Eigenlearning
+- The Hermite Eigenstructure Ansatz (HEA)
+- The Lazy (NTK) and Rich (muP) Regimes
+- Balancedness
+- Feature Learning
+- The Platonic Representation Hypothesis
+- The Edge of Stability (EoS)
 
 ## Grading
 - **Attendance & Participation 10%**

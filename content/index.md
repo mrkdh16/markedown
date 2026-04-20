@@ -50,6 +50,7 @@ A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dy
 - [[Applications]]
 #### Computer Science
 - [[Machine Learning]]
+- [[Occam's Razor and Honesty with respect to Beliefs]]
 ---
 <center>
 <img src="IMG_8555.jpg" width="400">

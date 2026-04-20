@@ -36,14 +36,16 @@ where $\eta$ is some small positive number called the *learning rate*.
 
 That's it. That's the whole setup. Four things: an **architecture**, some **data**, a **loss**, and a **learning rule**. Seems straightforward enough. Why then, are these deep neural networks so difficult to study?
 ## Why is it hard to study deep learning? 
-Usually, the first and primary hurdle to studying complex systems is _opacity_. Consider a biological cell: to understand what makes it tick, we must painstakingly infer its inner workings from a limited, noisy set of observations each giving us a partial, indirect view. The "equations of motion" are not handed to us; we must guess at them. The same is true of the brain, of the economy, of the climate: the systems are partially hidden, and much of science consists of figuring out what the variables even look like.
+Usually, the first and primary hurdle to studying complex systems is _opacity_. Consider a biological cell: to understand the relevant internal variables, we must painstakingly infer its inner workings from a limited, noisy set of observations each giving us a partial, indirect view. The "equations of motion" are not handed to us; we must guess at them. The same is true of the brain, of the economy, of the climate: the systems are partially hidden and highly opaque, so much of science consists of figuring out what the variables even look like.
 
 Deep neural networks are different. Every weight, every activation, every gradient, every loss value is exactly knowable at every step of training. The "laws of motion," i.e. gradient descent, are written down explicitly in three lines of math. We can freeze training, perturb any weight, and watch exactly what happens. In the history of science, we have rarely been handed a complex system this transparent.
+
+(MAYBE: deep learning is often referred to as 'black box.' but, again, the use of the word it is a black box because of complexity, not opacity. )
 
 So why are deep neural networks hard to study? The difficulty is not opacity, but **complexity**, and it comes in a few distinct flavors:
 
 - **Coupled dynamics (depth).** Gradient descent on a deep network is a coupled nonlinear dynamical system in millions to trillions of variables. The update to any given weight depends, through backpropagation, on the current values of many other weights across the network. Layers talk to each other. Change one weight in layer 3 and the gradients flowing through layer 17 change too.
-- **Pointwise nonlinearities.** The nonlinearity $\sigma$ is what gives deep networks their expressive power but it is also what makes them analytically painful. A ReLU or sigmoid ...
+- **Pointwise nonlinearities.** The nonlinearity $\sigma$ is what gives deep networks their expressive power but it is also what makes them analytically painful. A ReLU or sigmoid ... (UNFINISHED)
 - **Data complexity.** Even if we fully understood the network, we'd still have to reckon with the data. Real datasets—natural images, natural language, protein sequences—have rich, high-dimensional, poorly-characterized structure. A theory that only works on Gaussian data may miss what's actually going on.
 
 The depth, width, nonlinearity and data of a deep neural network form axes of complexity that all interact with each other. The art of learning mechanics is figuring out which axes we can turn off, simplify, or take to a limit, so that the remaining problem becomes tractable without throwing away the phenomenon we wanted to understand.
@@ -93,7 +95,10 @@ and the model reduces to a scalar product of weights. The learning problem is th
 			- Intuition: if there are obscenely many weights in each layer, then the weights need not move far from initialization to lower the loss.
 
 ## Math review
-#### Multivariable Calculus
+This section reviews the important math that we shall use throughout the course.
+### Multivariable Calculus
 #### Taylor Approximation
-#### Matrix Algebra
-#### Differential Equations
+### Matrix Algebra
+#### The Singular Value Decomposition
+### Differential Equations
+#### Decoupling coupled equations

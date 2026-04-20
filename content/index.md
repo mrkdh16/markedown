@@ -14,7 +14,7 @@ A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dy
 *Step-by-step derivations, refined expositions*
 
 - [[Deep Linear Networks; A deep dive into Saxe et al. and the role of depth in learning]]
-	- exact solutions · training dynamics · *deep linear networks*
+	- *exact solutions · training dynamics · deep linear networks*
 	- Deep linear networks are mathematically tractable yet retain some of the mysterious phenomena of deep learning. We derive the exact training dynamics of these toy models and prove that long plateaus and rapid transitions are inherent to depth.
 
 #### 🔨 Notes
@@ -50,10 +50,6 @@ A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dy
 - [[Applications]]
 #### Computer Science
 - [[Machine Learning]]
-#### Philosophy
-- [[AI, Values, and Alignment]]
-- [[A reasonable argument against reason]]
-- [[All actions are selfish]]
 ---
 <center>
 <img src="IMG_8555.jpg" width="400">
@@ -61,6 +57,17 @@ A *learning mechanic* studies [learning mechanics](learningmechanics.org)—a dy
 </center>
 
 ## Margins
-*A small subset of thoughts that pass through my mind* 
+*A small subset of my many thoughts* 
+#### Readings that influence how I think
+- [[The Unreasonable Effectiveness of Mathematics in the Natural Sciences]]
+- [[AI, Values, and Alignment]]
+- [Why Greatness Cannot Be Planned](https://link.springer.com/book/10.1007/978-3-319-15524-1)
+- [Slow Productivity](https://calnewport.com/my-new-book-slow-productivity/)
+- [Man's Search for Meaning](https://en.wikipedia.org/wiki/Man%27s_Search_for_Meaning)
+- [More is Different](https://www.tkm.kit.edu/downloads/TKM1_2011_more_is_different_PWA.pdf)
+- [Sometimes there is nothing wrong with letting a child drown](https://philarchive.org/archive/TIMSTI)
+#### Random thoughts of the more philosophical flavor
+- [[A reasonable argument against reason]]
+- [[All actions are selfish]]
 #### Miscellaneous
 - [[movies & tv shows]]

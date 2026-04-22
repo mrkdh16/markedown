@@ -3,6 +3,7 @@ title: Introduction to Neural Networks & How to Study Them
 draft: false
 tags:
   - learning-mechanics
+  - machine-learning
 ---
 How can we develop a first-principles understanding of Artificial Intelligence (AI)? *What* does AI learn? *How* does AI learn? To begin to answer these big questions, we start with *deep neural networks*.
 ## The first (giant) step: deep neural networks
@@ -93,12 +94,3 @@ and the model reduces to a scalar product of weights. The learning problem is th
 	- width $\to \infty$
 		- The NTK and the lazy training regime: a case where a simple first-order Taylor approximation is highly accurate, and in the limit, exactly right.
 			- Intuition: if there are obscenely many weights in each layer, then the weights need not move far from initialization to lower the loss.
-
-## Math review
-This section reviews the important math that we shall use throughout the course.
-### Multivariable Calculus
-#### Taylor Approximation
-### Matrix Algebra
-#### The Singular Value Decomposition
-### Differential Equations
-#### Decoupling coupled equations

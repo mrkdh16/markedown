@@ -4,9 +4,16 @@ title: Syllabus
 nav_order: 2
 ---
 # Syllabus
+- **Course Title**: Physics 198: (Deep) Learning Mechanics
+- **Units**: 2
+- **Instructor**: Mark Rhee
+- **Email**: mrkdh@berkeley.edu
+- **Faculty Sponsor**: Michael DeWeese
+- **Location**: TBD
+- **Time**: TBD
 
 ## Course Description
-*Learning Mechanics* is the emerging discipline that treats deep learning the way physics treats the natural world: seeking compact mathematical principles, tight connections between theory and experiment, and simple, intuitive explanations for complex phenomena. Pieces of a scientific theory for deep learning are beginning to fit together, and in this course, we will examine what has been assembled so far, what remains contested, and where the field is heading.
+*Learning Mechanics* is the emerging discipline that treats deep learning the way physics treats the natural world: seeking compact mathematical principles[^1], tight connections between theory and experiment, and simple, intuitive explanations for complex phenomena. Pieces of a scientific theory for deep learning are beginning to fit together, and in this course, we will examine what has been assembled so far, what remains contested, and where the field is heading.
 
 Deep learning is among the most powerful technologies humans have ever built, and understanding it promises to be one of the defining intellectual challenges of the early 21st century. As of 2026, the engineering success of deep learning has dramatically outpaced our scientific understanding of it. Closing that gap may amount to founding a genuinely new field of science—one whose implications for our understanding of intelligence, data, and learning extend well beyond the neural networks that motivated it.
 
@@ -156,3 +163,7 @@ Each session is 2 hours long. A typical class includes a 50-60 minute lecture on
 
 ### Week 16 
 (RRR Week: No Class)
+
+---
+
+[^1]: From [Wikipedia](https://en.wikipedia.org/wiki/First_principle): "*In physics and other sciences, theoretical work is said to be from first principles, or ab initio, if it starts directly at the level of established science and does not make assumptions such as empirical model and parameter fitting. "First principles thinking" consists of decomposing things down to the fundamental axioms in the given arena, before reasoning up by asking which ones are relevant to the question at hand, then cross referencing conclusions based on chosen axioms and making sure conclusions do not violate any fundamental laws.*"

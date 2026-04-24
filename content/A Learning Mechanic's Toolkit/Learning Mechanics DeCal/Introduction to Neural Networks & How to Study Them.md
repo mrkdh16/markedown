@@ -5,7 +5,7 @@ tags:
   - learning-mechanics
   - machine-learning
 ---
-How can we develop a first-principles understanding of Artificial Intelligence (AI)? *What/why/how* does AI learn? To begin to answer these big questions, we start with *deep neural networks*.
+How can we develop a first-principles understanding of Artificial Intelligence (AI)? *What/why/how* does AI learn? To begin to answer these big questions, we start with *deep neural networks*. 
 ## The first (giant) step: deep neural networks
 At the heart of modern machine learning are *deep neural networks*. Nearly every headline-grabbing AI system of the past decade (AlphaGo, GPT, AlphaFold, Stable Diffusion, etc) is, at its core, a deep neural network trained by gradient descent on a large dataset---or some other similar architecture that heavily relies on deep neural networks. If we want a scientific theory of modern AI, we need a scientific theory of DNNs.
 

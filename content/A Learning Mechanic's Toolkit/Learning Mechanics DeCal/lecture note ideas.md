@@ -5,23 +5,31 @@ tags:
 ---
 **Lecture 1**. Introduction I: Learning Mechanics (potential guest lecture)
 *What's the evidence for an emerging scientific theory of deep learning?*
-- Readings: Simon et al. (2026)
+- what is learning mechanics?
+- why study learning mechanics?
+- what is the evidence for the feasibility of learning mechanics as a field?
 
 **Lecture 2**. Introduction II: Neural Networks
 *What exactly are neural networks? Why are they hard to study? How will we study them anyways?*
-
+- what are hidden representations?
+- what are features?
+	- what does it mean for a model to learn?
+	- what kind of structure can a model learn? (stochastic parrots vs world model builders)
+- what tools are in the learning mechanic's toolkit?
 
 **Lecture 3**. Analytically Solvable Settings I: Deep Linear Networks
 *What can we learn about deep learning from a highly mathematically tractable toy model in deep linear networks?* 
-
+- what interesting folklore about deep learning can we gain insight into with deep linear nets?
+	- saddle-to-saddle dynamics, sequential feature learning
 
 **Lecture 4**. Analytically Solvable Settings II + Insightful Limits I: The Neural Tangent Kernel and Kernel Regression
 *How do neural networks simplify in the infinite-width limit?* 
 
-
 **Lecture 5**. Analytically Solvable Settings III: Eigenlearning and the HEA (potential guest lecture)
 *How can we develop a mathematical framework to study kernel regression? Can we predict how kernel regression will perform on real data?*
-
+- what interesting folklore about deep learning can we gain insight into with kernel regression?
+	- neural nets learn real data easier than random noise
+- how does kernel regression use data to learn?
 
 **Lecture 6**. Disentangling Hyperparameters I + Insightful Limits II: The Lazy (NTK) and Rich (muP) Regimes
 *In the lazy (NTK) regime, neural networks don't learn any structure. Is there a regime where they do?*
@@ -41,3 +49,7 @@ tags:
 
 **Lecture 11**. Empirical Laws I: The Edge of Stability
 *Why do neural networks routinely train successfully while hovering on the very brink of numerical divergence?*
+
+**Lecture 12**: (buffer)
+
+**Lecture 13**: maybe final project OH

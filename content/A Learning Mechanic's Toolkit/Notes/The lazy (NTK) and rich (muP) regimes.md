@@ -9,8 +9,14 @@ tags:
 ---
 Karkada et al. (2024) [The lazy (NTK) and rich (µP) regimes: A gentle tutorial](https://arxiv.org/pdf/2404.19719)
 ## Background
+In [[When (wide) neural networks become linear]], we saw that wide neural networks are approximately linear in their parameters. In particular, we saw that the empirical kernel corresponding to the model stays approximately constant throughout training such that the neural network essentially does kernel regression, i.e. linear regression in some high-dimensional projection space. This discovery was a big win for deep learning theorists as kernel regression is a well-studied machine learning algorithm. It allowed theorists to transfer insights from kernel regression to deep learning, shedding light on deep learning folklore for which researchers previously had no quantitative explanation. Some examples of such folklore:
 
-### setup and definitions
+- *Neural networks fit real data faster than random noise*: This is because the kernel of neural networks, i.e., the Neural Tangent Kernel (NTK), exhibits a "spectral bias." It is highly biased towards fitting low-frequency functions (which typically represent real-world data) and struggles to fit high-frequency functions (like random noise) _(Arora et al., 2019; Rahaman et al., 2019)_.
+
+However, while the NTK and the lazy regime provided a mathematical lifeline for theorists, it soon became clear that it doesn't capture the full magic of deep learning. In particular, we intuitively know that what's special about neural networks is that they learn structure. In the lazy regime, the neural network acts merely as a static feature extractor, mapping data into a fixed high-dimensional space. The true power of deep learning, however, lies in **feature learning** (or representation learning). In practice, neural networks dynamically adapt their internal weights to discover useful hierarchical patterns, representations, and lower-dimensional structures inherent to the data. Concretely, there exist tasks for which "feature learning" is provably much more effective than lazy learning as shown by [Damian et al. (2022)](https://arxiv.org/pdf/2206.15144).
+
+So, how can we ensure that the network does feature learning? To operate in the "rich" or "active" regime, the network's weights must be allowed to move significantly from their initialization during training. When the weights update meaningfully, the empirical kernel of the network actually evolves, adapting to the geometry of the target task rather than staying constant. To make sure this happens, we need to pay attention to the hyperparameters. It turns out, turning up the width is not the only way to get lazy learning, nor does infinite width fundamentally prevent feature learning. As we will soon find out, the line dividing the lazy and rich regimes is heavily dictated by the **initialization scale** and the **learning rate**. 
+## Setup and Definitions
 We consider a simple 3-layer linear network (simple, but not too simple) given by 
 
 $$
@@ -30,7 +36,7 @@ $$
 where the base input is $h_0(x) = x$. 
 
 The dimension of each layer is denoted by $n_l = \dim h_l$. The network assumes a wide limit governed by a single scale $n \sim n_1 \sim n_2 \gg n_0 \sim n_3 \sim 1$.
-### training criteria (constraints)
+## Training Criteria (Constraints)
 During training, the change in a layer's representation $\Delta h_l$ breaks down into three distinct parts:
 
 $$
@@ -58,7 +64,7 @@ Satisfying the constraints will use 6 degrees of freedom:
 - and 2 from MAX (since MAX is trivially satisfied for first layer).
 
 This leaves three degrees of freedom. Two are used to fix the initial hidden activations $||h_1||$ and $||h_2||$ to be $\Theta(1)$. The single remaining degree of freedom controls the richness of the training regime. In other words, enforcing the NTC, UUC, MAX, and fixing the initial hidden activations to be $\Theta(1)$ will imply that **all the hyperparameters at initialization are completely determined by a single degree of freedom: the richness parameter.**
-### derivation
+## Derivation
 We begin with an initial forward pass. We will enforce that the hidden activations satisfy $(h_l^{(i)})^2 \sim 1$ for $l=1, 2$; i.e. that $||h_{l}||^2 \sim n_{l}$ for $l=1,2$.
 
 Assuming the input scales as $(h_0^{(i)})^2 \sim 1$ (which implies that $||h_{0}||^2 \sim n_{0}$),

@@ -13,6 +13,7 @@ tags:
 <img src="Screenshot 2026-02-14 at 12.23.24 AM.png" width="600">
 </center>
 
+An interactive, albeit more concise, version of this blog post is hosted at [learningmechanics.pub](https://learningmechanics.pub/).
 ## Introduction.
 Understanding deep learning is a *very* hard problem. Despite the rapid increase in AI capabilities, we have yet to create a cohesive mathematical framework that explains *what* and *how* these powerful models learn. When tackling a problem this monumental—specifically, the task of erecting a rigorous mathematical framework that describes a ridiculously complex system—it helps to think like a physicist. Likely, a physicist's first instinct would be to [[On Learning Mechanics|conjure up a toy model]]. By studying a simplified system that still exhibits the complex, non-trivial phenomena of the original, we can find mathematically solid ground.
 

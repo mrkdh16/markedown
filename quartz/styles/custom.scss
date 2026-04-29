@@ -1,19 +1,15 @@
 @use "./base.scss";
 
-// Set the base font-size to match your personal site.
 body {
   font-size: 17px;
 }
 
-// Add the subtle bottom border to h2 headers, a key part of the aesthetic.
-// We'll use the existing Quartz font sizes for h2 to maintain responsiveness.
 h2 {
   font-weight: normal;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--lightgray);
 }
 
-// A class for bold titles, like on your personal site.
 .papertitle {
   font-weight: 700;
 }

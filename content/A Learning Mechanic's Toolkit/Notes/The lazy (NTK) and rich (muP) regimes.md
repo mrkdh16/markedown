@@ -8,6 +8,8 @@ tags:
   - physics
 ---
 Karkada et al. (2024) [The lazy (NTK) and rich (µP) regimes: A gentle tutorial](https://arxiv.org/pdf/2404.19719)
+## Background
+
 ### setup and definitions
 We consider a simple 3-layer linear network (simple, but not too simple) given by 
 

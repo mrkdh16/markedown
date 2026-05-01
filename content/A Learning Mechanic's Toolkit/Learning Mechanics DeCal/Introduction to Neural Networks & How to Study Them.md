@@ -5,7 +5,9 @@ tags:
   - learning-mechanics
   - machine-learning
 ---
-How can we develop a first-principles understanding of Artificial Intelligence (AI)? *What/why/how* does AI learn? To begin to answer these big questions, we start with *deep neural networks*. 
+How can we develop a first-principles understanding of Artificial Intelligence (AI)? *What/why/how* does AI learn? 
+- In 2026, the most powerful AIs we have are Large Language Models (LLMs). If we could gain a first-principles understanding of LLMs, that would have broad implications for our understanding of intelligence in general, the role of data in intelligence, etc...
+To begin to answer these big questions, we start with *deep neural networks*. 
 ## The first (giant) step: deep neural networks
 At the heart of modern machine learning are *deep neural networks*. Nearly every headline-grabbing AI system of the past decade (AlphaGo, GPT, AlphaFold, Stable Diffusion, etc) is, at its core, a deep neural network trained by gradient descent on a large dataset---or some other similar architecture that heavily relies on deep neural networks. If we want a scientific theory of modern AI, we need a scientific theory of DNNs.
 
@@ -36,12 +38,13 @@ $$
 where $\eta$ is some small positive number called the *learning rate*.
 
 That's it. That's the whole setup. Four things: an **architecture**, some **data**, a **loss**, and a **learning rule**. Seems straightforward enough. Why then, are these deep neural networks so difficult to study?
+- of course, there are numerous engineering tricks that we can leverage to train these networks more effectively: residual connections, various optimizers with various batch sizes (eg. SGD and its variants such as Adam, spectral optimizers such as muon) and batch normalization are some representative examples. however, we shall start with a stripped down version with minimal distractions.
 ## Why is it hard to study deep learning? 
 Usually, the first and primary hurdle to studying complex systems is _opacity_. Consider a biological cell: to understand the relevant internal variables, we must painstakingly infer its inner workings from a limited, noisy set of observations each giving us a partial, indirect view. The "equations of motion" are not handed to us; we must guess at them. The same is true of the brain, of the economy, of the climate: the systems are partially hidden and highly opaque, so much of science consists of figuring out what the variables even look like.
 
 Deep neural networks are different. Every weight, every activation, every gradient, every loss value is exactly knowable at every step of training. The "laws of motion," i.e. gradient descent, are written down explicitly in three lines of math. We can freeze training, perturb any weight, and watch exactly what happens. In the history of science, we have rarely been handed a complex system this transparent.
 
-(MAYBE: deep learning is often referred to as 'black box.' but, again, the use of the word it is a black box because of complexity, not opacity. )
+- MAYBE: deep learning is often referred to as 'black box.' but, again, the use of the word it is a black box because of complexity, not opacity.
 
 So why are deep neural networks hard to study? The difficulty is not opacity, but **complexity**, and it comes in a few distinct flavors:
 
@@ -60,37 +63,37 @@ $$
 $$
 
 computes a linear function of $\mathbf{x}$ (it's just a product of matrices), but gradient descent on the individual $W_{l}$ matrices is a genuinely nonlinear dynamical system. One can observe real deep learning phenomena such as low-rank bias, saddle points, stage-wise learning, and sigmoidal learning curves in a setting simple enough to solve exactly. This is the subject of **week 4**. For now, let's look at two even simpler cases:
-#### Depth = 1
+#### Depth = 1 (linear regression)
 When $\text{depth} = 1$,  
 
 $$
 \hat{f}(\mathbf{x}) = A\mathbf{x}
 $$
 
-and the model reduces to linear regression.
-#### Width = 1 (and $d_{\text{in}}=d_{\text{out}}=1$)
-When $\text{width} = d_{\text{in}}=d_{\text{out}}= 1$, 
+and the model reduces to linear regression. Linear regression is often considered uninteresting as a learning algorithm since we know exactly what it learns, how it learns it and the strict limitations it has due to its inexpressiveness. Open any standard machine learning textbook and you're bound to find the analytical solution for linear regression in one of its opening chapters:
+$$
+(X^\top X)^{-1}X^\top \mathbf{y}.
+$$
+However, read a little closer and you'll find that there's an assumption being made about the data matrix $X$: that has more rows than columns, i.e. that the task is underparameterized. In the underparameterized regime, as long as the columns of $X$ are linearly independent (which is usually true), $X^\top X$ will be invertible and the analytical solution will work just fine. 
+- modern machine learning tasks are often overparameterized
+- in this case, can apply Moore-Penrose pseudoinverse to obtain analytical solution; but we are implicitly choosing the pseudoinverse solution among infinitely many solutions.
+	- the pseudoinverse solution has a minimum-norm bias
+- it turns out, gradient descent also has a minimum-norm bias, i.e. running gradient descent on an overparameterized linear regression problem will yield the minimum-norm solution
+	- so, somewhat surprisingly, linear regression is a useful toy model for understanding the implicit bias of gradient descent (fn: this is different from the implicit bias of SGD, which is said to favor "flat" solutions)
+- we will later learn a more direct connection between linear regression and neural networks through the neural tangent kernel, where when we take a limit (width -> \infty), neural networks reduce to linear regression in some high-dimensional projection space, i.e. kernel regression.
+#### Width = 1 (scalar factorization)
+When $\text{width} = 1$ for all layers (including the input and output), 
 
 $$
 \hat{f}(x)=w_{l}\dots w_{1}x
 $$
 
 and the model reduces to a scalar product of weights. The learning problem is then just factorizing a number. Observe that already in this highly simplified setting, we get coupled gradient descent dynamics.
+- preview for DLNs
 ### Take a limit (Gradient Flow): $\eta \to 0$
-
+- caveat: taking this limit does not capture the stochastic discrete-time effects of SGD, which has been hypothesized to provide simplicity biases that matter for choosing a generalizing solution
 ### Take another limit: width $\to \infty$
-
-
-
-- simplified cases: toy models, taking limits
-	- $\sigma(x) = x$, i.e. no nonlinearities
-		- Surprisingly, there is a lot to learn from linear models; mainly because even if the model is linear in the data, it may not be linear in the parameters. In fact, we can get highly nonlinear dynamics during training.
-		- depth = 1
-			- $f(x) = Ax$, linear regression (least squares)
-		- width = 1
-			- $f(x)=w_{l}\dots w_{1}x$, scalar factorization
-		- continuous time limit
-			- gradient flow; get differential equations w.r.t. time
-	- width $\to \infty$
-		- The NTK and the lazy training regime: a case where a simple first-order Taylor approximation is highly accurate, and in the limit, exactly right.
-			- Intuition: if there are obscenely many weights in each layer, then the weights need not move far from initialization to lower the loss.
+- The NTK and the lazy training regime: a case where a simple first-order Taylor approximation is highly accurate, and in the limit, exactly right.
+	- requires tuning other hyperparameters as well; as we'll later learn, there is one degree of freedom that determines whether we are in the lazy or rich regime
+- Intuition: if there are obscenely many weights in each layer, then the weights need not move far from initialization to lower the loss.
+- caveat: in the infinite-width limit, although neural networks simplify immensely, they also don't learn any structure (with the exception of the special muP regime)

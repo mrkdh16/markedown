@@ -37,7 +37,9 @@ tags:
 
 **Lecture 7**. Analytically Solvable Settings IV: Balancedness and Feature Learning
 *Are there toy models where we can exactly characterize a lazy/rich phase transition?*
-
+- grokking as a case study
+	- grokking first discovered by mech interp
+	- several hypotheses proposed to explain
 
 **Lecture 8**. Universality I: The Platonic Representation Hypothesis
 *Do deep learning models learn similar representations of data across diverse architectures?*
@@ -45,7 +47,8 @@ tags:
 
 **Lecture 10**. Universality II: Fourier Features in Learned Representations
 *What kind of features are learned by language models? How might we characterize where such features come from and how they're learned?*
-
+- fourier features as a case study
+	- a particular scenario in which we have (basically) an end-to-end theory from data to representation geometry to computation
 
 **Lecture 11**. Empirical Laws I: The Edge of Stability
 *Why do neural networks routinely train successfully while hovering on the very brink of numerical divergence?*

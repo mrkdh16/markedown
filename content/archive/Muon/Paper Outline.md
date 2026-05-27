@@ -19,6 +19,14 @@ Concretely we will show that
     \item There exists an approximately conserved quantity $|P|_F-|Q|_F$. This implies that Muon learns the balanced solution from small initialization.
 \end{enumerate}
 
+GD vs. Muon (in matrix factorization)
+- the main/most general difference (all the other qualitative distinctions are downstream of this central distinction): GD goes from saddle point to saddle point in the loss landscape, learning one singular direction at a time in a greedy manner; on the other hand, Muon learns all the singular directions simultaneously early in training, then uniformly grows the singular values until convergence
+	- hamiltonian dynamics (approximate in some, exact in others)
+		- conserved quantity (=> muon learns balanced solution for different reason from GD which has a different conserved quantity)
+	- in GD, the max stable learning rate is bounded by the local sharpness of the loss; this is not true for Muon---once the weights are aligned, we may grow the singular values at any speed we desire
+- another difference is that the overparameterized and underparameterized settings are qualitatively different when using Muon (consequently, we will treat them differently in this paper.)
+	- essentially, the reason is that we are orthogonalizing (M*-PQ^T)P = RP, where R is always full rank but P can only be either full row-rank or full column-rank dependent on whether it's over or under parameterized 
+
 Body.
 - notation
 - uniform growth phase

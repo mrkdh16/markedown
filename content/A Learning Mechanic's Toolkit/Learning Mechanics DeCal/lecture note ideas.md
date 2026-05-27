@@ -40,6 +40,9 @@ tags:
 - grokking as a case study
 	- grokking first discovered by mech interp
 	- several hypotheses proposed to explain
+	- https://arxiv.org/pdf/2205.10343 (grokking and representation learning)
+	- https://openreview.net/pdf?id=vt5mnLVIVo (grokking as the transition from lazy to rich learning)
+	- https://arxiv.org/pdf/2406.06158 (balancedness => feature learning)
 
 **Lecture 8**. Universality I: The Platonic Representation Hypothesis
 *Do deep learning models learn similar representations of data across diverse architectures?*

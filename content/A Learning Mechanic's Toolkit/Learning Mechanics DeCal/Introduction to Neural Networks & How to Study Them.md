@@ -5,11 +5,10 @@ tags:
   - learning-mechanics
   - machine-learning
 ---
-How can we develop a first-principles understanding of Artificial Intelligence (AI)? *What/why/how* does AI learn? 
-- In 2026, the most powerful AIs we have are Large Language Models (LLMs). If we could gain a first-principles understanding of LLMs, that would have broad implications for our understanding of intelligence in general, the role of data in intelligence, etc...
-To begin to answer these big questions, we start with *deep neural networks*. 
+## Introduction
+As of 2026, the most powerful AIs we have are Large Language Models (LLMs). Frontier labs have spent hundreds of billions of dollars scaling these models, guided more or less by an empirical observation: that more compute, more data, and more parameters seem to reliably produce better models. Data center investment now accounts for roughly half of U.S. GDP growth, surpassing total consumer spending as a share of the economy. Yet ask any honest AI researcher and they will tell you that we have barely scratched the surface in terms of understanding _why_ or *how* any of this works. If we could gain a first-principles understanding of LLMs—of what they are actually computing, and how—the implications would extend far beyond engineering. It would reshape our understanding of intelligence itself: how structure emerges from data, why certain representations arise, and what it even means to learn.
 ## The first (giant) step: deep neural networks
-At the heart of modern machine learning are *deep neural networks*. Nearly every headline-grabbing AI system of the past decade (AlphaGo, GPT, AlphaFold, Stable Diffusion, etc) is, at its core, a deep neural network trained by gradient descent on a large dataset---or some other similar architecture that heavily relies on deep neural networks. If we want a scientific theory of modern AI, we need a scientific theory of DNNs.
+At the heart of modern machine learning are *deep neural networks*. Nearly every headline-grabbing AI system of the past decade (AlphaGo, GPT, AlphaFold, Stable Diffusion, etc) is, at its core, a deep neural network trained by gradient descent on a large dataset—or some other similar architecture that heavily relies on deep neural networks. If we want a scientific theory of modern AI, we need a scientific theory of DNNs.
 
 Consider a standard supervised learning task. We are presented with $P$ pairs of data points $\{ \mathbf{x}_{i}, \mathbf{y}_{i}\}_{i=1}^P$, each consisting of a sample vector $\mathbf{x} \in \mathbb{R}^{d_{\text{in}}}$ and a target vector $\mathbf{y} \in \mathbb{R}^{d_{\text{out}}}$. We want to learn a function $\hat{f}$, i.e. a model, such that $\hat{f}(\mathbf{x}_{i}) \approx \mathbf{y}_{i}$ for all $i = 1, \dots, P$. A deep neural network is a particularly powerful model of the form:
 

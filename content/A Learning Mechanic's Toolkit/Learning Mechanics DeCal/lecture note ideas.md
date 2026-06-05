@@ -3,59 +3,40 @@ title: lecture note ideas
 draft: true
 tags:
 ---
-**Lecture 1**. Introduction I: Learning Mechanics (potential guest lecture)
-*What's the evidence for an emerging scientific theory of deep learning?*
-- what is learning mechanics?
-- why study learning mechanics?
-- what is the evidence for the feasibility of learning mechanics as a field?
-
-**Lecture 2**. Introduction II: Neural Networks
-*What exactly are neural networks? Why are they hard to study? How will we study them anyways?*
-- what are hidden representations?
-- what are features?
-	- what does it mean for a model to learn?
-	- what kind of structure can a model learn? (stochastic parrots vs world model builders)
-- what tools are in the learning mechanic's toolkit?
-
-**Lecture 3**. Analytically Solvable Settings I: Deep Linear Networks
-*What can we learn about deep learning from a highly mathematically tractable toy model in deep linear networks?* 
-- what interesting folklore about deep learning can we gain insight into with deep linear nets?
-	- saddle-to-saddle dynamics, sequential feature learning
-
-**Lecture 4**. Analytically Solvable Settings II + Insightful Limits I: The Neural Tangent Kernel and Kernel Regression
-*How do neural networks simplify in the infinite-width limit?* 
-
-**Lecture 5**. Analytically Solvable Settings III: Eigenlearning and the HEA (potential guest lecture)
-*How can we develop a mathematical framework to study kernel regression? Can we predict how kernel regression will perform on real data?*
-- what interesting folklore about deep learning can we gain insight into with kernel regression?
-	- neural nets learn real data easier than random noise
-- how does kernel regression use data to learn?
-
-**Lecture 6**. Disentangling Hyperparameters I + Insightful Limits II: The Lazy (NTK) and Rich (muP) Regimes
-*In the lazy (NTK) regime, neural networks don't learn any structure. Is there a regime where they do?*
-
-
-**Lecture 7**. Analytically Solvable Settings IV: Balancedness and Feature Learning
-*Are there toy models where we can exactly characterize a lazy/rich phase transition?*
-- grokking as a case study
-	- grokking first discovered by mech interp
-	- several hypotheses proposed to explain
-	- https://arxiv.org/pdf/2205.10343 (grokking and representation learning)
-	- https://openreview.net/pdf?id=vt5mnLVIVo (grokking as the transition from lazy to rich learning)
-	- https://arxiv.org/pdf/2406.06158 (balancedness => feature learning)
-
-**Lecture 8**. Universality I: The Platonic Representation Hypothesis
-*Do deep learning models learn similar representations of data across diverse architectures?*
-
-
-**Lecture 10**. Universality II: Fourier Features in Learned Representations
-*What kind of features are learned by language models? How might we characterize where such features come from and how they're learned?*
-- fourier features as a case study
-	- a particular scenario in which we have (basically) an end-to-end theory from data to representation geometry to computation
-
-**Lecture 11**. Empirical Laws I: The Edge of Stability
-*Why do neural networks routinely train successfully while hovering on the very brink of numerical divergence?*
-
-**Lecture 12**: (buffer)
-
-**Lecture 13**: maybe final project OH
+- the learning mechanics introduction to neural networks
+- toy model I: deep linear networks
+	- adapt from blog post
+		- get rid of all the history/literature references
+		- be more verbose with math
+- toy model II: kernel regression
+	- why study kernel regression?
+		- when lazy/ntk training happens
+			- large width, large initial weights, label rescaling, output rescaling
+	- how to study kernel regression?
+		- start with linear regression
+		- eigenlearning
+	- applying eigenlearning to real datasets
+	- the implications of understanding kernel regression for our understanding of deep learning
+		- the generalization aspect
+		- fundamental flaw: the lack of feature learning
+			- neural networks in the lazy learning regime (i.e., kernel regression with the NTK) have a strong inductive bias towards functions that are aligned to the NTK (makes sense from eigenlearning perspective). so, these models will not generalize well when trained on target functions misaligned to the NTK. by contrast, neural networks in the feature learning regime can adapt their internal representations to improve the sample complexity of learning for functions that would be difficult for the NTK
+- the lazy and rich training regimes
+	- intuition for why neural nets in the feature learning regime will outperform neural nets in the lazy regime
+		- there exist settings in which feature learning models provably have better sample complexity compared to lazy models (lee et al https://arxiv.org/pdf/2206.15144)
+		- The NTK has a fixed prior over functions (determined by the kernel's eigenspectrum). If the target function is not well-aligned with that prior — e.g., it lives in a low-dimensional subspace that the kernel spreads probability mass away from — then you need many samples to concentrate posterior mass on the right function.
+		- Feature learning networks can _update their effective prior_ during training. The early gradient steps effectively do hypothesis selection ("this subspace of inputs matters"), and later steps do function fitting within that subspace. You're getting two things done with the same samples.
+	- we want to train models in the rich regime!
+	- so we know that there exists a lazy regime and we know that there is a regime that is not lazy, i.e., a regime where models learn features. if there is a maximally lazy regime, is there a maximally feature learning (rich) regime?
+	- use deep linear networks as a toy model to study these regimes
+		- given desiderata for a feature learning model, can we determine what the hyperparameters should look like at init?
+- a case study: grokking
+	- example of symbiotic relationship between mech interp and lm
+		- first discovered by mech interp community (power et al https://arxiv.org/pdf/2201.02177), later explained by lm community
+	- precise empirics -> theory through an analytically solvable setting
+		- grokking as the result of delayed feature learning
+			- https://arxiv.org/pdf/2205.10343 (eric michaud): representation enables generalization
+			- https://openreview.net/pdf?id=vt5mnLVIVo (blake bordelon): grokking as a transition from lazy learning to feature learning
+		- balancedness -> grokking; analytically solvable toy setting
+			- https://arxiv.org/pdf/2406.06158 (dan kunin)
+- a case study: data statistics -> representation geometry -> computation
+	- another example of symbiotic relationship between mech interp and lm

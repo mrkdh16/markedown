@@ -29,7 +29,7 @@ tags:
 	- so we know that there exists a lazy regime and we know that there is a regime that is not lazy, i.e., a regime where models learn features. if there is a maximally lazy regime, is there a maximally feature learning (rich) regime?
 	- use deep linear networks as a toy model to study these regimes
 		- given desiderata for a feature learning model, can we determine what the hyperparameters should look like at init?
-- a case study: grokking
+- case study I: grokking
 	- example of symbiotic relationship between mech interp and lm
 		- first discovered by mech interp community (power et al https://arxiv.org/pdf/2201.02177), later explained by lm community
 	- precise empirics -> theory through an analytically solvable setting
@@ -38,5 +38,5 @@ tags:
 			- https://openreview.net/pdf?id=vt5mnLVIVo (blake bordelon): grokking as a transition from lazy learning to feature learning
 		- balancedness -> grokking; analytically solvable toy setting
 			- https://arxiv.org/pdf/2406.06158 (dan kunin)
-- a case study: data statistics -> representation geometry -> computation
+- case study II: data statistics -> representation geometry -> computation
 	- another example of symbiotic relationship between mech interp and lm

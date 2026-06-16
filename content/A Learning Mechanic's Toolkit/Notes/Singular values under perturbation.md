@@ -66,8 +66,11 @@ For Hermitian matrices $A$ and $B$, it is true that
 $$
 |\sigma_{k}(A+B)-\sigma_{k}(A)| \leq \sigma_{\max}(B),
 $$
-for all $k$. This is Weyl's Inequality. 
+for all $k$. This is Weyl's Inequality. The proof follows from the Courant-Fischer minimax characterization of singular values:
+$$
+\sigma_{k}(A)=\max_{S\subseteq \mathbb{R}^n, \space\dim(S)=d} \min_{x\in S,\space \|x\|=1} \|Ax\|.
+$$
 
 A particularly interesting application of these inequalities is in matrix perturbation: if $B$ is some small perturbation matrix $\Delta$ (with small singular values), then the maximum and minimum singular values of $A+\Delta$ cannot deviate much from the singular values of the original matrix $A$. For Hermitian matrices, since the inequality applies for all the singular values, we know that the entire spectrum must stay stable under perturbation. 
 
-Resources: [Terry Tao's blog](https://terrytao.wordpress.com/2010/01/12/254a-notes-3a-eigenvalues-and-sums-of-hermitian-matrices/)
+Resources: [Terry Tao's blog](https://terrytao.wordpress.com/2010/01/12/254a-notes-3a-eigenvalues-and-sums-of-hermitian-matrices/), [Courant-Fischer](https://ocw.mit.edu/courses/18-409-topics-in-theoretical-computer-science-an-algorithmists-toolkit-fall-2009/535add3f6457cc13e51d9774f16bf48f_MIT18_409F09_scribe3.pdf)

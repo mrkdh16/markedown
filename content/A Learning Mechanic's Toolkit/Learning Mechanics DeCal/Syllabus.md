@@ -17,7 +17,7 @@ nav_order: 2
 
 Deep learning is among the most powerful technologies humans have ever built, and understanding it promises to be one of the defining intellectual challenges of the early 21st century. As of 2026, the engineering success of deep learning has dramatically outpaced our scientific understanding of it. Closing that gap may amount to founding a genuinely new field of science—one whose implications for our understanding of intelligence, data, and learning extend well beyond the neural networks that motivated it.
 
-Readings draw heavily from the whitepaper _There Will Be a Scientific Theory of Deep Learning_ (Simon et al., 2026) and the primary literature it synthesizes.
+Readings draw heavily from the perspective paper _There Will Be a Scientific Theory of Deep Learning_ (Simon et al., 2026) and the primary literature it synthesizes.
 
 ## Prerequisites
 - Linear algebra and multivariate calculus at the level of Math 53, 54 / 110
@@ -31,16 +31,17 @@ By the end of the course, students will be able to:
 - Articulate what a scientific theory of deep learning would look like and why it matters.
 - Derive and analyze learning dynamics in solvable settings (deep linear networks, kernel regression).
 - Explain the lazy/rich dichotomy and its implications for feature learning.
-- Critically evaluate empirical scaling laws and proposed explanations.
+- Explain how the tools of learning mechanics are being used to tackle empirical phenomena discovered by the mechanistic interpretability community.
 - Design and execute small-scale experiments that test theoretical predictions about neural network training.
 
 ## Course Content
-The course is structured around five lines of evidence that a scientific theory of deep learning is within reach:
+The learning mechanics perspective paper (Simon et al., 2026) is structured around five lines of evidence that a scientific theory of deep learning is within reach:
 1. **Analytically solvable settings** (toy models) that exhibit nontrivial learning phenomena exist.
 2. **Insightful limits** reveal fundamental behavior.
 3. **Meaningful macroscopic statistics** are captured by simple equations.
 4. **Hyperparameters can be disentangled** and understood.
 5. **Universal phenomena** appear across settings and tasks.
+This course will focus on analytically solvable settings and insightful limits and briefly touch on uni 
 
 The following is a non-exhaustive list of content we will cover:
 - Deep Linear Networks (DLNs)
@@ -49,10 +50,10 @@ The following is a non-exhaustive list of content we will cover:
 - Eigenlearning
 - The Hermite Eigenstructure Ansatz (HEA)
 - The Lazy (NTK) and Rich (muP) Regimes
+- Grokking
 - Balancedness
 - Feature Learning
 - The Platonic Representation Hypothesis
-- The Edge of Stability (EoS)
 
 ## Grading
 Grading will be done on an absolute scale, with any grade above 70 points receiving a Pass.
@@ -90,7 +91,7 @@ Each session is 2 hours long. A typical class includes a 50-60 minute lecture on
 - Homework: MAYBE, optional math review
 
 ### Week 4
-**Lecture 3**. Analytically Solvable Settings I: Deep Linear Networks
+**Lecture 3**. Toy Model I: Deep Linear Networks
 
 *What can we learn about deep learning from a highly mathematically tractable toy model in deep linear networks?* 
 - Readings: [Saxe et al. (2014)](https://arxiv.org/pdf/1312.6120)
@@ -146,7 +147,7 @@ Each session is 2 hours long. A typical class includes a 50-60 minute lecture on
 - Homework: link
 
 ### Week 12
-**Lecture 11**. Empirical Laws I: The Edge of Stability
+**Lecture 11**. 
 
 *Why do neural networks routinely train successfully while hovering on the very brink of numerical divergence?*
 - Readings: [Damian et al. (2023)](https://arxiv.org/pdf/2209.15594)

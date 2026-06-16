@@ -41,7 +41,7 @@ The learning mechanics perspective paper (Simon et al., 2026) is structured arou
 3. **Meaningful macroscopic statistics** are captured by simple equations.
 4. **Hyperparameters can be disentangled** and understood.
 5. **Universal phenomena** appear across settings and tasks.
-This course will focus on analytically solvable settings and insightful limits and briefly touch on uni 
+This course will focus on analytically solvable settings and insightful limits and briefly touch on universal phenomena.
 
 The following is a non-exhaustive list of content we will cover:
 - Deep Linear Networks (DLNs)

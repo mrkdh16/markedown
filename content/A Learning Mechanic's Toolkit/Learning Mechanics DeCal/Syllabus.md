@@ -26,6 +26,21 @@ Readings draw heavily from the perspective paper _There Will Be a Scientific The
 
 It is highly recommended that you bring a *physicist's mindset* to the table. This means you should be comfortable with the scientific method: formulating testable hypotheses, checking theoretical predictions against empirical measurements, solving simplified cases first, and using educated guesses (ansatze) to solve equations. We care more about simple, intuitive insights and tight connections between theory and experiment than we do about technically true mathematics.
 
+## Grading
+Grading will be done on an absolute scale, with any grade above 70 points receiving a Pass.
+- **Attendance & Participation 10 points**
+	- The liveliness of this course heavily depends on in-class participation. Please show up to class and ask questions! Two unexcused absences are allowed without penalty.
+- **Reading Questions 20 points**
+	- For every paper we read, please generate 2-3 questions and submit them before class.
+- **Final Project 30 points**
+	- The final project is the capstone of the course. Working individually or in pairs, you will:
+		- **Identify a phenomenon** related to topics covered in class (or for the especially ambitious, a related open problem from the whitepaper).
+		- **Formulate a testable hypothesis** about that phenomenon.
+		- **Design and run an experiment** to test the hypothesis (computational experiments on small models are perfectly appropriate).
+		- **Present and write up your findings**, including whether the hypothesis was supported, what you learned, and what questions remain.
+- **Homework Assignments 40 points**
+	- Three to four problem sets will be distributed over the semester. These will mix analytical derivations with computational exercises. Collaboration is encouraged but each student must write up their own solutions.
+
 ## Learning Objectives
 By the end of the course, students will be able to:
 - Articulate what a scientific theory of deep learning would look like and why it matters.
@@ -41,7 +56,7 @@ The learning mechanics perspective paper (Simon et al., 2026) is structured arou
 3. **Meaningful macroscopic statistics** are captured by simple equations.
 4. **Hyperparameters can be disentangled** and understood.
 5. **Universal phenomena** appear across settings and tasks.
-This course will focus on analytically solvable settings and insightful limits and briefly touch on universal phenomena.
+This course will focus on 1) analytically solvable settings and 2) insightful limits and briefly touch on 4) disentangling hyperparameters and 5) universal phenomena.
 
 The following is a non-exhaustive list of content we will cover:
 - Deep Linear Networks (DLNs)
@@ -55,20 +70,12 @@ The following is a non-exhaustive list of content we will cover:
 - Feature Learning
 - The Platonic Representation Hypothesis
 
-## Grading
-Grading will be done on an absolute scale, with any grade above 70 points receiving a Pass.
-- **Attendance & Participation 10 points**
-	- The liveliness of this course heavily depends on in-class participation. Please show up to class and ask questions! Two unexcused absences are allowed without penalty.
-- **Reading Questions 20 points**
-	- For every paper we read, please generate 2-3 questions and submit them before class.
-- **Final Project 30 points**
-	- The final project is the capstone of the course. Working individually or in pairs, you will:
-		- **Identify a phenomenon** related to topics covered in class (or for the especially ambitious, a related open problem from the whitepaper).
-		- **Formulate a testable hypothesis** about that phenomenon.
-		- **Design and run an experiment** to test the hypothesis (computational experiments on small models are perfectly appropriate).
-		- **Present and write up your findings**, including whether the hypothesis was supported, what you learned, and what questions remain.
-- **Homework Assignments 40 points**
-	- Three to four problem sets will be distributed over the semester. These will mix analytical derivations with computational exercises. Collaboration is encouraged but each student must write up their own solutions.
+The course is organized around 5 chapters:
+1. Toy Model I: Deep Linear Networks
+2. Toy Model II: Kernel Regression and the NTK
+3. The Lazy and Rich Regimes
+4. Case Study I: Grokking
+5. Case Study II: Representational Geometry
 
 ## Weekly Schedule
 Each session is 2 hours long. A typical class includes a 50-60 minute lecture on the reading, a 10-minute break, and a 40-50 minute deep-dive on derivations, experiments, or open questions in the format of a discussion.
@@ -92,66 +99,59 @@ Each session is 2 hours long. A typical class includes a 50-60 minute lecture on
 
 ### Week 4
 **Lecture 3**. Toy Model I: Deep Linear Networks
-
 *What can we learn about deep learning from a highly mathematically tractable toy model in deep linear networks?* 
 - Readings: [Saxe et al. (2014)](https://arxiv.org/pdf/1312.6120)
 - Lecture Notes: link
-- Homework: link
 
 ### Week 5 
-**Lecture 4**. Analytically Solvable Settings II + Insightful Limits I: The Neural Tangent Kernel and Kernel Regression
+**Lecture 4**. Toy Model I: Deep Linear Networks (continued)
+*How can we analytically solve for the training dynamics of deep linear networks?*
+- Lecture Notes: link
+- Homework: link
 
-*How do neural networks simplify in the infinite-width limit?* 
+### Week 6 
+**Lecture 5**. Toy Model II: Kernel Regression and the NTK
+Analytically Solvable Settings III: Eigenlearning and the HEA (potential guest lecture)
+*Is there a limit in which neural networks become analytically solvable?*
 - Readings: [Lee et al. (2019)](https://arxiv.org/pdf/1902.06720) (optional: [Jacot et al. (2020)](https://arxiv.org/pdf/1806.07572))
 - Lecture Notes: link
 
-### Week 6 
-**Lecture 5**. Analytically Solvable Settings III: Eigenlearning and the HEA (potential guest lecture)
-
+### Week 7 
+**Lecture 6**. Toy Model II: Kernel Regression and the NTK (continued)
 *How can we develop a mathematical framework to study kernel regression? Can we predict how kernel regression will perform on real data?*
 - Readings: [Simon et al. (2023)](https://arxiv.org/pdf/2110.03922), [Karkada et al. (2026)](https://arxiv.org/pdf/2510.14878)
-- Lecture Notes: link
-
-### Week 7 
-**Lecture 6**. Disentangling Hyperparameters I + Insightful Limits II: The Lazy (NTK) and Rich (muP) Regimes
-
-*In the lazy (NTK) regime, neural networks don't learn any structure. Is there a regime where they do?*
-- Readings: [Karkada et al. (2024)](https://arxiv.org/pdf/2404.19719) (optional: [Yang et al. (2021)](https://proceedings.mlr.press/v139/yang21c/yang21c.pdf))
 - Lecture Notes: link
 - Homework: link
 
 ### Week 8 
-**Lecture 7**. Analytically Solvable Settings IV: Balancedness and Feature Learning
-
-*Are there toy models where we can exactly characterize a lazy/rich phase transition?*
-- Readings: [Kunin et al. (2024)](https://proceedings.neurips.cc/paper_files/paper/2024/file/94074dd5a072d28ff75a76dabed43767-Paper-Conference.pdf)
+**Lecture 7**. The Lazy (NTK) and Rich (muP) Regimes
+*In the lazy (NTK) regime, neural networks don't learn any structure. Is there a regime where they do?*
+- Readings: [Yang et al. (2024)](https://arxiv.org/pdf/2310.17813)
 - Lecture Notes: link
-- Homework: link
 
 ### Week 9 
-**Lecture 8**. Universality I: The Platonic Representation Hypothesis
-
-*Do deep learning models learn similar representations of data across diverse architectures?*
-- Readings: [Huh et al. (2024)](https://arxiv.org/pdf/2405.07987)
+**Lecture 8**. The Lazy (NTK) and Rich (muP) Regimes (continued)
+*How can we disentangle hyperparameters to maximize feature learning?*
+- Readings: [Yang et al. (2024)](https://arxiv.org/pdf/2310.17813)
 - Lecture Notes: link
+- Homework: link
 
 ### Week 10 
 (Thanksgiving Break: No Class)
 
 ### Week 11
-**Lecture 10**. Universality II: Fourier Features in Learned Representations
-
-*What kind of features are learned by language models? How might we characterize where such features come from and how they're learned?*
-- Readings: [Karkada et al. (2026)](https://arxiv.org/pdf/2602.15029)
+**Lecture 10**. Case Study I: Grokking
+*How can we apply the tools of learning mechanics to understand grokking?*
+- Readings: [Kunin et al. (2024)](https://arxiv.org/pdf/2406.06158v2), [Kumar et al. (2024)](https://arxiv.org/pdf/2310.06110) (optional: [Nanda et al. (2023)](https://arxiv.org/pdf/2301.05217))
 - Lecture Notes: link
 - Homework: link
 
 ### Week 12
-**Lecture 11**. 
-
-*Why do neural networks routinely train successfully while hovering on the very brink of numerical divergence?*
-- Readings: [Damian et al. (2023)](https://arxiv.org/pdf/2209.15594)
-- Lecture Notes:
+**Lecture 11**. Case Study II: Representational Geometry
+*What kind of features are learned by language models? How might we characterize where such features come from and how they're learned?*
+- Readings: [Karkada et al. (2026)](https://arxiv.org/pdf/2602.15029)
+- Lecture Notes: link
+- Homework: link
 
 ### Week 13
 (buffer)
